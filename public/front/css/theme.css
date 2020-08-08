@@ -1127,7 +1127,7 @@ ul#itemContainer { list-style: none; padding:0 0; margin:0 0; width:100%; }
 .avatar { float: left; margin:0 10px 0 0; }
 .pad_author { margin:15px 0px 0px 20px; }
 .media-body{ margin-bottom:0px;  }
-.media-body a:link { color:#888; }
+.media-body a:link { color:#888!important; }
 .media-body a:hover { color:#777; }
 
 /* Pager */

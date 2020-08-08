@@ -160,9 +160,15 @@
         </div>
     </div>
     <script>
-                @if (session('error'))
-        var message = "{{session('error')}}";
-        alert(message);
+                @if(session('error'))
+        var error = "{{session('error')}}";
+        Swal.fire({
+            icon: 'error',
+            title: 'ناموفق',
+            text: error,
+        });
         @endif
+
+
     </script>
 @endsection

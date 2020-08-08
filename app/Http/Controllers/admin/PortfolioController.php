@@ -68,7 +68,7 @@ class PortfolioController extends MainController
         if (!isset($request['categoryID_FK']) or $request['categoryID_FK'] == 0) {
             return back()->with('error', 'دسته بندی انتخاب نشده');
         }
-        if (!count($pictures)) {
+        if (!isset($request['picture'])) {
             return
                 back()->
                 with('error', 'هیچ تصویری انتخاب نشده');
