@@ -35,12 +35,15 @@ Route::prefix('admin')->namespace('admin')->group(function (){
 /*front routes*/
 Route::namespace('front')->group(function (){
     Route::resource('/message','MessageController');
+    Route::post('/saveAnswer','MessageController@saveAnswer');
     Route::get('/','MainController@index');
     Route::get('contact_us','MainController@contact');
     Route::get('about_us','MainController@about');
     Route::get('portfolio/{slug}','MainController@portfolioDetails');
     Route::get('portfolio','MainController@portfolios');
     Route::get('article/{slug}','MainController@articleDetails');
+    Route::get('beforeArticle/{article_id}','MainController@beforeArticle');
+    Route::get('afterArticle/{article_id}','MainController@afterArticle');
     Route::get('article','MainController@articles');
     Route::get('category_archive/{slug}','MainController@articleCategoryArchive');
     Route::post('art_search','MainController@articlesSearch');

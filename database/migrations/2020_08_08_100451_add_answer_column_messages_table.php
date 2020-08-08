@@ -14,7 +14,9 @@ class AddAnswerColumnMessagesTable extends Migration
     public function up()
     {
         Schema::table('messages', function (Blueprint $table) {
-            $table->string('answer');
+            $table->string('answer',1000)->nullable(true);
+            $table->integer('user_id')->unsigned()->default(0);
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\admin;
 
 use App\Article;
+use App\Customer;
 use App\Http\Controllers\Controller;
+use App\Message;
 use App\Vw_articles;
 use App\Vw_CategoryArticles;
 use Illuminate\Http\Request;
@@ -118,7 +120,14 @@ class ArticleController extends MainController
                 }
             }
         }
-        return view('admin.article.update', compact('categories', 'article', 'priorities'));
+
+        $messages = Message::where('article_id',$article->id)->Where(function ($query){
+            $query->whereNull('answer')->orWhere('answer','=','');
+        })->get();
+        foreach ($messages as $message){
+            $message['customerName'] = Customer::find($message->customer_id)->name;
+        }
+        return view('admin.article.update', compact('categories', 'article', 'priorities','messages'));
     }
 
     /**

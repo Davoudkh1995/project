@@ -71,48 +71,43 @@
                 <div class="pad5"></div>
                 <!--prev/next-->
                 <hr>
-                &larr; <a href="#"> مقاله قبلی</a> :: <a href="#">مقاله بعدی </a> &rarr;
+                &larr; @if($beforeBool)<a href="/beforeArticle/{{$beforeSlug}}" class="pointer"> مقاله قبلی</a> @else <a disabled="" class="pointer" > مقاله قبلی</a> @endif :: @if($afterBool) <a href="/afterArticle/{{$afterSlug}}" class="pointer">مقاله بعدی </a> @else <a disabled="" class="pointer">مقاله بعدی </a>@endif &rarr;
                 <hr>
                 <div class="pad5"></div>
 
+                @if(count($messages))
+                    @foreach($messages as $message)
                 <!-- Comments -->
-                <h6><span>3 comments</span></h6>
+                <h6><span>{{count($messages)}} پیام</span></h6>
                 <!--Comment 1-->
                 <div class="media">
-                    <a class="pull-left" href="#">
-                        <img src="/front/img/avatar1.jpg" alt="" class="avatar img-circle"/></a>
-                    <div class="media-body">
+                    <a class="pull-right" href="javascript:void(0)">
+                        <img src="/front/img/image/customer1.png" alt="" class="avatar img-circle" width="40" height="40"/></a>
+                    <div class="media-body rtl">
                         <p class="media-heading">
-                            <a href="#">Lauren Williams</a> &raquo; 27 March 2013 &raquo; <a href="#">Reply</a></p>
-                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo.
-                        Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
-                        Donec lacinia congue felis in faucibus.
+                            <a href="javascript:void(0)">{{$message->customer}}</a> &raquo; {{$message->date}}</p>
+                       {{$message->content}}
                         <!--Comment 2-->
-                        <div class="media">
-                            <a class="pull-left" href="#">
-                                <img src="/front/img/my_avatar.jpg" alt="" class="avatar img-circle"/></a>
+                        @if(isset($message->admin))
+                            <div class="media">
+                            <a class="pull-right" href="javascript:void(0)">
+                                <img src="/front/img/image/user.png" alt="" class="avatar img-circle" width="50" height="40"/></a>
                             <div class="media-body">
                                 <p class="media-heading">
-                                    <a href="#">Admin</a> &raquo; 27 March 2013 &raquo; <a href="#">Reply</a></p>
-                                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio,
-                                vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue
-                                felis in faucibus.
+                                    <a href="javascript:void(0)">ادمین( {{$message->admin}} )</a></p>
+                                <p>
+                                    {{$message->answer}}
+                                </p>
                             </div>
                         </div>
-                    </div>
-                    <!--Comment 3-->
-                    <div class="media">
-                        <a class="pull-left" href="#">
-                            <img src="/front/img/avatar2.jpg" alt="" class="avatar img-circle"/></a>
-                        <div class="media-body">
-                            <p class="media-heading">
-                                <a href="#">Lauren Williams</a> &raquo; 23 March 2013 &raquo; <a href="#">Reply</a></p>
-                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at,
-                            tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                        </div>
+                        @endif
                     </div>
                 </div>
+                    <hr/>
                 <!-- //Comments -->
+                    @endforeach
+                @endif
+
                 <div class="pad25"></div>
 
                 <div class="pad25"></div>
@@ -167,7 +162,7 @@
                     <div class="input-append">
                         <input class="span2" type="text" placeholder="جستجو" name="slug">
                         <span class="add-on">
-				<a onclick="searchItem()"><i class="icon-search"></i></a>
+				<a onclick="searchItem()" class="pointer"><i class="icon-search"></i></a>
 				</span>
                     </div>
                 </form>

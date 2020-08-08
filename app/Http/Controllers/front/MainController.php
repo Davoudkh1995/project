@@ -5,8 +5,10 @@ namespace App\Http\Controllers\front;
 use App\Aboutus;
 use App\Article;
 use App\Contactus;
+use App\Customer;
 use App\Http\Controllers\Controller;
 use App\ImageModel;
+use App\Message;
 use App\Portfolio;
 use App\Slider;
 use App\User;
@@ -66,7 +68,7 @@ class MainController extends Controller
     public function articles()
     {
         $categories = Vw_CategoryArticles::where('status', 1)->orderByDesc('id')->get();
-        $articles = Vw_articles::where(['status' => 1])->paginate(5);
+        $articles = Vw_articles::where(['status' => 1])->orderByDesc('id')->paginate(3);
         $articles = $this->handleDateAndUserForArray($articles);
         $latestArticles = Vw_articles::where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
         $latestArticles = $this->handleDateAndUserForArray($latestArticles);
@@ -78,6 +80,11 @@ class MainController extends Controller
     public function articleDetails($slug)
     {
         $article = Vw_articles::where(['slug' => $slug])->first();
+        $result = $this->handleBeforeAfterArticle($article->id);
+        $beforeBool = $result[0];
+        $afterBool = $result[1];
+        $beforeSlug = $result[2];
+        $afterSlug = $result[3];
         $article = $this->handleDateAndUserForObject($article);
         $categories = Vw_CategoryArticles::where('status', 1)->orderByDesc('id')->get();
         $latestArticles = Vw_articles::where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
@@ -88,7 +95,98 @@ class MainController extends Controller
         if (strlen($tags)){
             $tags =  explode(',',$tags);
         }
-        return view('front.article.details', compact('article','popularArticles','latestArticles','categories','tags'));
+        $messages = Message::where('article_id',$article->id)->get();
+        foreach ($messages as $message){
+            $user = User::find($message->user_id);
+            if (isset($user)){
+                $message['admin'] = $user->name;
+            }
+            $message['customer'] = Customer::find($message->customer_id)->name;
+            $v = new Verta($message->created_at);
+            $message['date'] = $v->format('Y/n/j');
+        }
+        return view('front.article.details', compact('article','popularArticles','latestArticles','categories','tags','messages','afterBool','beforeBool','afterSlug','beforeSlug'));
+    }
+
+    public function beforeArticle($slug)
+    {
+        $article = Vw_articles::where('slug',$slug)->first();
+        $result = $this->handleBeforeAfterArticle($article->id);
+        $beforeBool = $result[0];
+        $afterBool = $result[1];
+        $beforeSlug = $result[2];
+        $afterSlug = $result[3];
+        $article = $this->handleDateAndUserForObject($article);
+        $categories = Vw_CategoryArticles::where('status', 1)->orderByDesc('id')->get();
+        $latestArticles = Vw_articles::where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
+        $latestArticles = $this->handleDateAndUserForArray($latestArticles);
+        $popularArticles = Vw_articles::where(['status' => 1, 'popular' => 1])->orderByDesc('created_at')->take(3)->get();
+        $popularArticles = $this->handleDateAndUserForArray($popularArticles);
+        $tags = $article->tags;
+        if (strlen($tags)){
+            $tags =  explode(',',$tags);
+        }
+        $messages = Message::where('article_id',$article->id)->get();
+        foreach ($messages as $message){
+            $user = User::find($message->user_id);
+            if (isset($user)){
+                $message['admin'] = $user->name;
+            }
+            $message['customer'] = Customer::find($message->customer_id)->name;
+            $v = new Verta($message->created_at);
+            $message['date'] = $v->format('Y/n/j');
+        }
+        return view('front.article.details', compact('article','popularArticles','latestArticles','categories','tags','messages','afterBool','beforeBool','afterSlug','beforeSlug'));
+    }
+
+    public function afterArticle($slug)
+    {
+        $article = Vw_articles::where('slug',$slug)->first();
+        $result = $this->handleBeforeAfterArticle($article->id);
+        $beforeBool = $result[0];
+        $afterBool = $result[1];
+        $beforeSlug = $result[2];
+        $afterSlug = $result[3];
+        $article = $this->handleDateAndUserForObject($article);
+        $categories = Vw_CategoryArticles::where('status', 1)->orderByDesc('id')->get();
+        $latestArticles = Vw_articles::where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
+        $latestArticles = $this->handleDateAndUserForArray($latestArticles);
+        $popularArticles = Vw_articles::where(['status' => 1, 'popular' => 1])->orderByDesc('created_at')->take(3)->get();
+        $popularArticles = $this->handleDateAndUserForArray($popularArticles);
+        $tags = $article->tags;
+        if (strlen($tags)){
+            $tags =  explode(',',$tags);
+        }
+        $messages = Message::where('article_id',$article->id)->get();
+        foreach ($messages as $message){
+            $user = User::find($message->user_id);
+            if (isset($user)){
+                $message['admin'] = $user->name;
+            }
+            $message['customer'] = Customer::find($message->customer_id)->name;
+            $v = new Verta($message->created_at);
+            $message['date'] = $v->format('Y/n/j');
+        }
+        return view('front.article.details', compact('article','popularArticles','latestArticles','categories','tags','messages','afterBool','beforeBool','afterSlug','beforeSlug'));
+    }
+
+    public function handleBeforeAfterArticle($articleID)
+    {
+        $before = Vw_articles::where('id','<',$articleID)->orderByDesc('id')->first();
+        $after = Vw_articles::where('id','>',$articleID)->orderBy('id','asc')->first();
+        $afterBool = false;
+        $afterSlug = '';
+        $beforeBool = false;
+        $beforeSlug = '';
+        if (isset($before)){
+            $beforeBool = true;
+            $beforeSlug = $before->slug;
+        }
+        if (isset($after)){
+            $afterBool = true;
+            $afterSlug = $after->slug;
+        }
+        return [$beforeBool,$afterBool,$beforeSlug,$afterSlug];
     }
 
     public function articleCategoryArchive($slug)

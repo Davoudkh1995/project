@@ -1613,3 +1613,6 @@ ul.nav-tabs li{
 input{
     font-family:customFont, sans-serif;
 }
+.pointer {
+    cursor: pointer;
+}

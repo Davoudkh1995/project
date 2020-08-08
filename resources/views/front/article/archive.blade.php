@@ -55,7 +55,7 @@
                 <div class="input-append">
                     <input class="span2" type="text" placeholder="جستجو" name="slug">
                     <span class="add-on">
-				<a onclick="searchItem()"><i class="icon-search"></i></a>
+				<a onclick="searchItem()" class="pointer"><i class="icon-search"></i></a>
 				</span>
                 </div>
                 </form>

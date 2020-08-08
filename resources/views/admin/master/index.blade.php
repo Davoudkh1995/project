@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>پنل مدیریت سایت شرکتی | گروه رونیکا</title>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="preload" href="/front/font/aviny-700.woff" as="font" type="font/woff" crossorigin>
 
     <!-- begin::global styles -->

@@ -136,6 +136,50 @@
             </form>
         </div>
     </div>
+    @if(count($messages))
+    <div class="card">
+        <h5 class="card-header">پیام کاربران</h5>
+        <div class="card-body">
+            @foreach($messages as $message)
+            <div class="row" id="parent_{{$message->id}}">
+                <div class="col-md-2">
+                    {{$message->customerName}}
+                </div>
+                <div class="col-md-4 bg-danger" style="border-radius: 4px">
+                    {{$message->content}}
+                </div>
+                <div class="col-md-4">
+                    <textarea name="answer" id="textarea_{{$message->id}}" data-answer="{{$message->id}}" class="form-control"></textarea>
+                </div>
+                <div class="col-md-2 text-white">
+                    <a onclick="submitAnswer(this,'{{$message->id}}')" class="btn btn-success">ارسال پاسخ</a>
+                </div>
+                <hr/>
+            </div>
+                @endforeach
+        </div>
+    </div>
+    @endif
+    <script>
+        function submitAnswer(tag,id) {
+            var button = $(tag);
+            var parent = $('#parent_'+id);
+            var message = parent.find('#textarea_'+id).val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.post( "/saveAnswer",{data:{"_token": "{{ csrf_token() }}", message: message, message_id: id}},function(response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'موفقیت!',
+                    text: 'پاسخ به کامنت کاربر ارسال شد',
+                });
+                parent.remove();
+            });
+        }
+    </script>
     <script>
                 @if(session('error'))
         var error = "{{session('error')}}";

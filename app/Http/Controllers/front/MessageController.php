@@ -37,6 +37,7 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $customer = Customer::where('email',$request['email'])->first();
         if ($request['contact']){
             if (isset($customer)){
@@ -82,6 +83,18 @@ class MessageController extends Controller
         }
         return back()->with('message','پیام شما ثبت شد');
     }
+
+    public function saveAnswer(Request $request)
+    {
+        $data = $request['data'];
+        $message = $data['message'];
+        $id = $data['message_id'];
+        Message::find($id)->update([
+           'answer'=> $message,
+           'user_id'=> auth()->user()->id
+        ]);
+    }
+
 
     /**
      * Display the specified resource.
