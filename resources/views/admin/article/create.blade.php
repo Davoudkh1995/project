@@ -120,9 +120,9 @@
                         <input type="checkbox" class="custom-control-input" id="customCheck" checked name="status">
                         <label class="custom-control-label" for="customCheck">این خبر یا مقاله نمایش داده شود؟</label>
                     </div>
-                    <div class="custom-control custom-checkbox custom-checkbox-success">
-                        <input type="checkbox" class="custom-control-input" id="customCheck" checked name="popular">
-                        <label class="custom-control-label" for="customCheck">مقاله معروف؟</label>
+                    <div class="custom-control custom-checkbox custom-checkbox-success mt-0 mr-5">
+                        <input type="checkbox" class="custom-control-input" id="customCheck1" checked name="popular" >
+                        <label class="custom-control-label" for="customCheck1">مقاله معروف؟</label>
                     </div>
                 </div>
                 <button class="btn btn-primary" type="submit">ذخیره درخواست</button>
