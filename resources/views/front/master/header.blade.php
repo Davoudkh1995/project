@@ -45,11 +45,11 @@
         <nav id="main_menu">
             <div class="menu_wrap">
                 <ul class="nav sf-menu">
-                    <li class=""><a href="/contact_us"><i class="icon-phone-sign darkgrey"></i><br>تماس</a> </li>
-                    <li class=""><a href="/about_us"><i class="icon-user darkgrey"></i><br>درباره ما</a> </li>
-                    <li class=""><a href="/article"><i class="icon-book darkgrey"></i><br>مقالات</a> </li>
-                    <li class=""><a href="/portfolio"><i class="icon-suitcase darkgrey"></i><br>نمونه کار</a> </li>
-                    <li class="active"><a href="/"><i class="icon-home  darkgrey"></i><br>خانه</a> </li>
+                    <li class=" @if(Request::is('contact_us')) active @endif"><a href="/contact_us"><i class="icon-phone-sign darkgrey"></i><br>تماس</a> </li>
+                    <li class=" @if(Request::is('about_us')) active @endif"><a href="/about_us"><i class="icon-user darkgrey"></i><br>درباره ما</a> </li>
+                    <li class=" @if(Request::is('article*') or Request::is('art_search') or Request::is('category_archive*') or Request::is('beforeArticle*') or Request::is('afterArticle*')) active @endif"><a href="/article"><i class="icon-book darkgrey"></i><br>مقالات</a> </li>
+                    <li class=" @if(Request::is('portfolio*')) active @endif"><a href="/portfolio"><i class="icon-suitcase darkgrey"></i><br>نمونه کار</a> </li>
+                    <li class=" @if(Request::is('/')) active @endif"><a href="/"><i class="icon-home  darkgrey"></i><br>خانه</a> </li>
                     {{--<li class="sub-menu"><a href="javascript:{}"> <i class="icon-book darkgrey"></i><br>Pages</a>
                         <ul>
                             <li><a href="team.html"><span>--</span>The Team</a></li>

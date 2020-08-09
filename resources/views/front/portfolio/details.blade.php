@@ -14,7 +14,7 @@
                 <p class="lead text-right">{!! $portfolio->content !!}</p>
 
                 <h6 class="text-right"><span>ویژگی ها : </span></h6>
-                <ul class="icons">
+                <ul class="icons rtl">
                     <li><i class="icon-globe black"></i> طراحی وب</li>
                     <li><i class=" icon-pencil black"></i> گرافیک دیزاین</li>
                     <li><i class=" icon-laptop black"></i> هاستینگ وب</li>
