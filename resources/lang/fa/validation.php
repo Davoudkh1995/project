@@ -146,6 +146,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'title' => 'عنوان',
+        'picture' => 'تصویر',
+    ],
 
 ];

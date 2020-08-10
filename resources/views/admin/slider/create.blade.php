@@ -111,7 +111,7 @@
                     <div class="form-group">
                         <select class="js-example-basic-single" dir="rtl" name="slider_type" id="slider_type"
                                 onchange="typeSlider()">
-                            <option>انتخاب نوع اسلایدر</option>
+                            <option disabled="disabled">انتخاب نوع اسلایدر</option>
                             <option value="1">تصویری</option>
                             <option value="2">متنی و تصویری</option>
                         </select>

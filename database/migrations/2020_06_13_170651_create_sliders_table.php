@@ -15,12 +15,12 @@ class CreateSlidersTable extends Migration
     {
         Schema::create('sliders', function (Blueprint $table) {
             $table->id();
-            $table->string('picture',300)->nullable(false);
+            $table->string('picture',300);
             $table->string('title',200);
-            $table->string('description',300);
-            $table->string('link',300);
-            $table->boolean('priority');
-            $table->boolean('status');
+            $table->string('description',300)->nullable(true);
+            $table->string('link',300)->nullable(true);
+            $table->boolean('priority')->default(0);
+            $table->boolean('status')->default(0);
             $table->boolean('slider_type');
             $table->unsignedInteger('usersID_FK');
             $table->foreign('usersID_FK')->references('id')->on('users');
