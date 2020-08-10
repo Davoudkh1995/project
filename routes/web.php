@@ -31,6 +31,12 @@ Route::prefix('admin')->namespace('admin')->group(function (){
     Route::post('/getSocialmediaItem','SocialmediaController@getSocialmediaItem');
     Route::post('/saveSocialChange','SocialmediaController@saveSocialChange');
     Route::post('/changeSocialStatus','SocialmediaController@changeSocialStatus');
+    Route::resource('/role', 'RoleController');
+    Route::post('/role/remove_all', 'RoleController@remove_all')->name('multiRemoveRole');
+    Route::resource('/permission', 'PermissionController');
+    Route::post('/permission/remove_all', 'PermissionController@remove_all')->name('multiRemovePermission');
+    Route::resource('/admin', 'UserController');
+    Route::post('/admin/remove_all', 'UserController@remove_all')->name('multiRemoveAdmin');
 });
 /*front routes*/
 Route::namespace('front')->group(function (){

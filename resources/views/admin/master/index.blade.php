@@ -367,6 +367,9 @@
             <li><a class="@if(Request::is('admin/contactus')) active @endif" href="/admin/contactus"><i class="icon ti-agenda"></i> <span>تماس با ما</span> </a></li>
             <li><a class="@if(Request::is('admin/aboutus')) active @endif" href="/admin/aboutus"><i class="icon ti-agenda"></i> <span>درباره ما</span> </a></li>
             <li><a class="@if(Request::is('admin/socialmedia')) active @endif" href="/admin/socialmedia"><i class="icon ti-cloud"></i> <span>فضای مجازی</span> </a></li>
+            <li><a class="@if(Request::is('admin/admin*')) active @endif" href="/admin/admin"><i class="icon ti-stamp"></i> <span>مدیریت کاربران</span> </a></li>
+            <li><a class="@if(Request::is('admin/permission*')) active @endif" href="/admin/permission"><i class="icon ti-lock"></i> <span>مدیریت دسترسی</span> </a></li>
+            <li><a class="@if(Request::is('admin/role*')) active @endif" href="/admin/role"><i class="icon ti-user"></i> <span>مدیریت مشاغل</span> </a></li>
             {{--<li><a href="#"><i class="icon ti-rocket"></i> <span>اپ ها</span> </a>
                 <ul>
                     <li><a href="chat.html">گفتگو </a></li>
