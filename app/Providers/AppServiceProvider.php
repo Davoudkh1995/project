@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Article;
 use App\Contactus;
 use Hekmatinasser\Verta\Verta;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

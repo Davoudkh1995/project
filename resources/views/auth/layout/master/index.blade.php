@@ -20,7 +20,9 @@
 
     <!-- begin::theme color -->
     <meta name="theme-color" content="#3f51b5" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- end::theme color -->
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 
 </head>
 <body class=" h-100-vh p-t-0" style="background: #33080d;">

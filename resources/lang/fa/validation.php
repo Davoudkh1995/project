@@ -133,6 +133,8 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'g-recaptcha-response.recaptcha' => 'امنیت کپچا دچار مشکل شده',
+        'g-recaptcha-response.required' => 'کپچا اجباری است'
     ],
 
     /*

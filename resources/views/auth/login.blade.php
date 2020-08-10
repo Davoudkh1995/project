@@ -13,6 +13,7 @@
             <p></p>
             <form action="{{ route('login') }}" method="post" autocomplete="off">
                 @csrf
+
                 <div class="form-group mb-4">
                     <input id="email" type="email" class="form-control form-control-lg @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="ایمیل یا نام کاربری" required autocomplete="email" autofocus>
                     @error('email')
@@ -56,7 +57,18 @@
                 {{--<div class="text-center">
                     حسابی ندارید؟ <a href="{{route('register')}}" class="text-primary">ایجاد</a>
                 </div>--}}
+                <input type="hidden" name="recaptcha" id="recaptcha">
             </form>
+
+            <script src="https://www.google.com/recaptcha/api.js?render={{config('services.recaptcha.key')}}"></script>
+            <script>
+                var key = "{{config('services.recaptcha.key')}}";
+                grecaptcha.ready(function(){
+                    grecaptcha.execute(key, {action: 'login'}).then(function(token){
+                        document.getElementById('recaptcha').value = token;
+                    })
+                })
+            </script>
         </div>
     </div>
 @endsection
