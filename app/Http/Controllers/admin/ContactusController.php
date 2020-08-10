@@ -71,6 +71,11 @@ class ContactusController extends Controller
      */
     public function update(Request $request, Contactus $contactus)
     {
+        $request->validate([
+            'address' => 'required',
+            'email' => 'required',
+            'mobile' => 'required',
+        ]);
         $item = Contactus::find(1);
         if (isset($item)){
             $item->update([
@@ -94,7 +99,7 @@ class ContactusController extends Controller
                 'tel'=>$request['tel'],
             ]);
         }
-        return back()->with('message','عملیات موفقیت آمیز بود');;
+        return back()->with('message','عملیات موفقیت آمیز بود');
     }
 
     /**

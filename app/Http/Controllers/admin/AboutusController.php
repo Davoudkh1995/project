@@ -71,6 +71,9 @@ class AboutusController extends Controller
      */
     public function update(Request $request, Aboutus $aboutus)
     {
+        $request->validate([
+            'content' => 'required',
+        ]);
         $item = Aboutus::find(1);
         if (isset($item)){
             $item->update([

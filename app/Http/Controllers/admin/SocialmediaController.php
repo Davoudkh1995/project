@@ -51,7 +51,9 @@ class SocialmediaController extends Controller
      */
     public function store(Request $request)
     {
-
+        $request->validate([
+            'type' => 'Integer',
+        ]);
         Socialmedia::create([
             'link'=>$request['link'],
             'type'=>$request['type']

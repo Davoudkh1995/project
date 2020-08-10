@@ -46,6 +46,10 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required',
+            'slug' => 'required',
+        ]);
         $status = 0;
         if (isset($request['status'])){
             $status = 1;
@@ -59,7 +63,7 @@ class MenuController extends Controller
             'title'=>$request['title'],
             'slug'=>$request['slug'],
         ]);
-        return redirect(route('menu.index'))->with('message','عملیات موفقیت آمیز بود');;
+        return redirect(route('menu.index'))->with('message','عملیات موفقیت آمیز بود');
     }
 
     /**
@@ -95,6 +99,10 @@ class MenuController extends Controller
      */
     public function update(Request $request, Menu $menu)
     {
+        $request->validate([
+            'title' => 'required',
+            'slug' => 'required',
+        ]);
         $status = 0;
         if (isset($request['status'])){
             $status = 1;
@@ -107,7 +115,7 @@ class MenuController extends Controller
             'title'=>$request['title'],
             'slug'=>$request['slug'],
         ]);
-        return redirect(route('menu.index'))->with('message','عملیات موفقیت آمیز بود');;
+        return redirect(route('menu.index'))->with('message','عملیات موفقیت آمیز بود');
     }
 
     /**

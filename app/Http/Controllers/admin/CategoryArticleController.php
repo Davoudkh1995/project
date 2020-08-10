@@ -42,6 +42,10 @@ class CategoryArticleController extends MainController
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required',
+            'slug' => 'required',
+        ]);
         $status = 0;
         if (isset($request['status'])){
             $status = 1;
@@ -89,6 +93,10 @@ class CategoryArticleController extends MainController
      */
     public function update(Request $request, CategoryArticle $categoryArticle)
     {
+        $request->validate([
+            'title' => 'required',
+            'slug' => 'required',
+        ]);
         $status = 0;
         if (isset($request['status'])){
             $status = 1;

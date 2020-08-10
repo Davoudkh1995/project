@@ -24,7 +24,21 @@
 @endsection
 
 @section('content')
-
+    <div class="row">
+        <div class="col-12">
+            @if ($errors->any())
+                <h5 style="color: #ffffff;background-color: #f50000;font-size: 12px;border-bottom:1px solid #000;margin-bottom: 0;border-radius: 4px 4px 0 0;padding:10px 10px;">
+                    اطلاعات وارد شده ناقص بوده</h5>
+                <div style="background-color: #3f51b5;border-top:1px solid #000;padding: 10px;border-radius:0 0 4px 4px;">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li style="color: #ffffff;">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
+    </div>
     <div class="card">
         <h5 class="card-header">تماس با ما</h5>
         <div class="card-body">

@@ -56,6 +56,12 @@ class ArticleController extends MainController
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required',
+            'categoryID_FK' => 'Integer',
+            'slug' => 'required',
+            'picture' => 'required|mimes:jpeg,bmp,png',
+        ]);
         $status = 0;
         $popular = 0;
         if (isset($request['status'])) {
@@ -139,6 +145,12 @@ class ArticleController extends MainController
      */
     public function update(Request $request, Article $article)
     {
+        $request->validate([
+            'title' => 'required',
+            'categoryID_FK' => 'Integer',
+            'slug' => 'required',
+            'picture' => 'mimes:jpeg,bmp,png',
+        ]);
         $status = 0;
         if (isset($request['status'])) {
             $status = 1;

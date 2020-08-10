@@ -55,6 +55,12 @@ class ServiceController extends MainController
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required',
+            'categoryID_FK' => 'Integer',
+            'slug' => 'required',
+            'picture' => 'required|mimes:jpeg,bmp,png',
+        ]);
         $mainTarget1 = "/upload/images/service/large/";
         $othersTarget2 = "/upload/images/service/small/";
         $pictures = $request['picture'];
@@ -149,6 +155,12 @@ class ServiceController extends MainController
      */
     public function update(Request $request, Service $service)
     {
+        $request->validate([
+            'title' => 'required',
+            'categoryID_FK' => 'Integer',
+            'slug' => 'required',
+            'mainPicture' => 'mimes:jpeg,bmp,png',
+        ]);
         $status = 0;
         if (!isset($request['categoryID_FK']) or $request['categoryID_FK'] == 0) {
             return back()->with('error', 'دسته بندی انتخاب نشده');

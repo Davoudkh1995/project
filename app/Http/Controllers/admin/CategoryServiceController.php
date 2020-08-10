@@ -51,6 +51,10 @@ class CategoryServiceController extends MainController
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required',
+            'slug' => 'required',
+        ]);
         $status = 0;
         if (isset($request['status'])){
             $status = 1;
@@ -98,6 +102,10 @@ class CategoryServiceController extends MainController
      */
     public function update(Request $request, CategoryService $categoryService)
     {
+        $request->validate([
+            'title' => 'required',
+            'slug' => 'required',
+        ]);
         $status = 0;
         if (isset($request['status'])){
             $status = 1;
