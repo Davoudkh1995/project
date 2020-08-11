@@ -1,27 +1,28 @@
 @extends('admin.master.index')
 @section('style')
     <!-- begin::select2 -->
-    <link rel="stylesheet" href="/role/assets/vendors/select2/css/select2.min.css" type="text/css">
+    <link rel="stylesheet" href="/admin/assets/vendors/select2/css/select2.min.css" type="text/css">
     <!-- end::select2 -->
 @endsection
 @section('script')
     <!-- begin::select2 -->
-    <script src="/role/assets/vendors/select2/js/select2.min.js"></script>
-    <script src="/role/assets/js/examples/select2.js"></script>
+    <script src="/admin/assets/vendors/select2/js/select2.min.js"></script>
+    <script src="/admin/assets/js/examples/select2.js"></script>
     <!-- end::select2 -->
 @endsection
 @section('header')
     <div>
-        <h3>افزودن اطلاعات مشاغل</h3>
+        <h3>ویرایش اطلاعات مشاغل</h3>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active" aria-current="page">سطوح دسترسی</li>
                 <li class="breadcrumb-item"><a href="{{route('role.index')}}">مشاغل</a></li>
-                <li class="breadcrumb-item">افزودن</li>
+                <li class="breadcrumb-item">ویرایش</li>
             </ol>
         </nav>
     </div>
 @endsection
+
 @section('content')
     <div class="row">
         <div class="col-12">
@@ -39,25 +40,26 @@
         </div>
     </div>
     <div class="card">
-        <h5 class="card-header">افزودن</h5>
+        <h5 class="card-header">ویرایش</h5>
         <div class="card-body">
-            <form action="{{route('role.store')}}" method="post" class="needs-validation" novalidate=""
+            <form action="{{route('role.update',$role->id)}}" method="post" class="needs-validation" novalidate="" enctype="multipart/form-data"
                   autocomplete="off">
                 @csrf
+                @method('patch')
                 <div class="mb-4">
                     <div class="row">
                         <div class="form-group col-sm-6">
-                            <label for="validationCustom01">نام به فارسی</label>
-                            <input type="text" class="form-control" id="validationCustom01"
+                            <label for="">نام به فارسی</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1"
                                    aria-describedby="emailHelp"
-                                   placeholder="نام به فارسی" name="name" value="{{old('name')}}">
+                                   placeholder="نام به فارسی" name="name" value="{{$role->name}}">
 
                         </div>
                         <div class="form-group col-sm-6">
-                            <label for="validationCustom01">نام به لاتین</label>
-                            <input type="text" class="form-control" id="validationCustom01"
+                            <label for="">نام به لاتین</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1"
                                    aria-describedby="emailHelp"
-                                   placeholder="نام به لاتین" name="label" value="{{old('label')}}">
+                                   placeholder="نام به لاتین" name="label" value="{{$role->label}}">
 
                         </div>
                     </div>
@@ -66,7 +68,7 @@
                             <label class="control-label ">توضیحات</label>
                             <textarea rows="5" id="body" cols="5" class="form-control"
                                       name="text"
-                                      placeholder="محتوای خود را در این قسمت وارد کنید..."></textarea>
+                                      placeholder="محتوای خود را در این قسمت وارد کنید...">{!! $role->text !!}</textarea>
                         </div>
                     </div>
                     <script>
@@ -76,19 +78,21 @@
                         });
                         CKFinder.setupCKEditor(editor);
                     </script>
-                </div>
-                <div class="row">
-                    @foreach($permissions as $key=>$permission)
-                        <div class="custom-control custom-checkbox custom-control-inline mr-3 mb-2 mt-2">
-                            <input type="checkbox" id="customCheckBoxInline{{$key}}" value="{{$permission->id}}" name="permissions[]" class="custom-control-input">
-                            <label class="custom-control-label" for="customCheckBoxInline{{$key}}">{{$permission->name}}</label>
-                        </div>
-                    @endforeach
+
+                    <div class="row mt-5">
+                        <h3 style="width: 100%;" class="mr-3">دسترسی ها</h3>
+                        @foreach($permissions as $key=>$permission)
+                            <div class="custom-control custom-checkbox custom-control-inline mr-3 mb-2 mt-2">
+                                <input type="checkbox" id="customCheckBoxInline{{$key}}" value="{{$permission->id}}" name="permissions[]" class="custom-control-input" @if(in_array($permission->id,$permission_id_arr)) checked @endif>
+                                <label class="custom-control-label" for="customCheckBoxInline{{$key}}">{{$permission->name}}</label>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
                 <div class="form-row form-group">
                     <div class="custom-control custom-checkbox custom-checkbox-success">
-                        <input type="checkbox" class="custom-control-input" id="customCheck" name="status" checked>
-                        <label class="custom-control-label" for="customCheck">وضعیت نمایش</label>
+                        <input type="checkbox" class="custom-control-input" id="customCheck" name="status" @if($role->status == 1) checked @endif>
+                        <label class="custom-control-label" for="customCheck">وضعیت فعالیت</label>
                     </div>
                 </div>
                 <button class="btn btn-primary" type="submit">ذخیره درخواست</button>

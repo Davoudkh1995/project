@@ -9,6 +9,7 @@ use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -17,80 +18,84 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
-        if ($this->authorize('role management')) {
-            $roles = Role::where('label', '!=', 'super admin')->get();
-            $superAdmin = Role::where('label', '=', 'super admin')->first();
-            $isSuperAdmin = false;
-            foreach ($superAdmin->users as $user) {
-                if (auth()->user()->id == $user->id) {
-                    $isSuperAdmin = true;
-                }
+//        if ($this->authorize('role management')) {
+        $roles = Role::where('label', '!=', 'super admin')->get();
+        $superAdmin = Role::where('label', '=', 'super admin')->first();
+        $isSuperAdmin = false;
+        foreach ($superAdmin->users as $user) {
+            if (auth()->user()->id == $user->id) {
+                $isSuperAdmin = true;
             }
-            $users = User::where('accept_policy', 1)->get();
-            return view('admin.roles.list', compact('roles', 'users', 'isSuperAdmin', 'superAdmin'));
         }
-        abort(403);
+        $users = User::where('accept_policy', 1)->get();
+        return view('admin.roles.index', compact('roles', 'users', 'isSuperAdmin', 'superAdmin'));
+//        }
+//        abort(403);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
 
     public function create()
     {
-        if ($this->authorize('role_create')) {
+
+//        if ($this->authorize('role_create')) {
         $users = User::all();
         $permissions = Permission::all();
         $menus = MenuDynamicTable::all();
 
         return view('admin.roles.create', compact('users', 'permissions', 'menus'));
-        }
-        abort(403);
+//        }
+//        abort(403);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
-    public function store(RoleRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->except('_token');
-        $name = $data['name'];
-        $label = $data['label'];
-        if (isset($data['status'])) {
+        $request->validate([
+            'name' => 'required',
+            'label' => 'required',
+            'text' => 'max:200',
+        ]);
+        $status = 0;
+        if (isset($request['status'])) {
             $status = 1;
-        } else {
-            $status = 0;
         }
-        $role = Role::where('label',$request['label'])->first();
-        if (!isset($role)){
-            Role::create([
-                'name' => $name,
-                'label' => $label,
-                'status' => $status,
-                'text' => $request['text']
-            ]);
-        }else{
-            Alert::warning('تذکر', 'نقشی با این مشخصات موجود است');
-            return redirect()->back();
+        $role = Role::where('label', $request['label'])->first();
+        if (isset($role)) {
+            return back()->with('error', 'نقشی با این مشخصات موجود است');
         }
-        Alert::success('موفقیت', 'نقش جدید ایجاد شد');
-        return redirect()->back();
+        $role = Role::create([
+            'name' => $request['name'],
+            'label' => $request['label'],
+            'status' => $status,
+            'text' => $request['text']
+        ]);
+        if (!is_null($request->input('permissions'))) {
+            $role->permissions()->sync(
+                $request->input('permissions')
+            );
+        }
+        return back()->with('message', 'نقش جدید ایجاد شد');
     }
 
     /**
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -101,7 +106,7 @@ class RoleController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($id)
     {
@@ -111,50 +116,48 @@ class RoleController extends Controller
         foreach ($role->permissions as $permission) {
             array_push($permission_id_arr, $permission->id);
         }
-        return view('admin.roles.edit', compact('permissions', 'role', 'permission_id_arr'));
+        return view('admin.roles.update', compact('permissions', 'role', 'permission_id_arr'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function update(RoleRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $name = $request['name'];
-        $label = $request['label'];
+        $request->validate([
+            'name' => 'required',
+            'label' => 'required',
+            'text' => 'max:200',
+        ]);
+        $role = Role::find($id);
+        $status = $role->status;
         if (isset($request['status'])) {
             $status = 1;
-        } else {
-            $status = 0;
         }
-        $role = Role::find($id);
-        if ($role->label != $request['label']){
-            $other = Role::where('label',$request['label'])->first();
-            if (!isset($other)){
-                $role->update(['name' => $name, 'label' => $label, 'status' => $status, 'text' => $request['text']]);
+        if ($role->label != $request['label']) {
+            $other = Role::where('label', $request['label'])->first();
+            if (isset($other)) {
+                return back()->with('error', 'نقشی با این مشخصات موجود است');
             }
-        }else{
-        $role->update(['name' => $name, 'label' => $label, 'status' => $status, 'text' => $request['text']]);
         }
-
+        $role->update(['name' => $request['name'], 'label' => $request['label'], 'status' => $status, 'text' => $request['text']]);
         if (!is_null($request->input('permissions'))) {
             $role->permissions()->sync(
                 $request->input('permissions')
             );
         }
-
-        Alert::success('موفقیت', 'مورد ویرایش شد');
-        return redirect()->back();
+        return back()->with('message','مورد ویرایش شد');
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
@@ -172,8 +175,7 @@ class RoleController extends Controller
             }
         }
         $item->delete();
-        Alert::success('موفقیت', 'مورد حذف شد');
-        return redirect()->back();
+        return back()->with('message','مورد حذف شد');
     }
 
     public function remove_all(Request $request)
