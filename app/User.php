@@ -2,9 +2,9 @@
 
 namespace App;
 
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'name', 'accept_policy', 'type','nationalCode','signature'
+        'name', 'email', 'password', 'accept_policy', 'type','category_id','nationalCode','signature','picture'
     ];
 
     /**
@@ -36,4 +36,26 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function hasRole($role)
+    {
+        if (is_string($role)) {
+            return $this->roles->contains('name', $role);
+//            return auth()->user()->roles->contains($role);
+        }
+        foreach ($role as $r) {
+            if ($this->hasRole($r->name)) {
+                return true;
+            }
+        }
+        return false;
+//        abort(404);
+        /*return !! $role->intersect($this->roles)->count();*/
+    }
 }
+

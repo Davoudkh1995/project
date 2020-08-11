@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('type');
             $table->string('nationalCode',10);
             $table->string('signature',500);
+            $table->string('picture',500);
             $table->rememberToken();
             $table->timestamps();
         });
