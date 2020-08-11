@@ -14,11 +14,11 @@
 @endsection
 @section('header')
     <div>
-        <h3>مشاغل</h3>
+        <h3>دسترسی</h3>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active" aria-current="page">سطوح دسترسی</li>
-                <li class="breadcrumb-item">مشاغل</li>
+                <li class="breadcrumb-item">دسترسی</li>
             </ol>
         </nav>
     </div>
@@ -28,57 +28,35 @@
             اقدامات
         </button>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <a class="dropdown-item" href="{{route('role.create')}}">افزودن</a>
+            <a class="dropdown-item" href="{{route('permission.create')}}">افزودن</a>
         </div>
     </div>
 @endsection
 
 @section('content')
     <div class="card">
-        <h5 class="card-header">مشاغل</h5>
+        <h5 class="card-header">دسترسی</h5>
         <div class="card-body">
             <table id="example1" style="width: 100%" class="table table-striped table-bordered">
                 <thead>
                 <tr>
                     <th>ردیف</th>
-                    <th>نام نقش</th>
-                    <th>توصیف نقش</th>
-                    <th>ویرایش</th>
+                    <th>نام دسترسی</th>
+                    <th>توصیف دسترسی</th>
+                    <th>ویرایش</th> 
                 </tr>
                 </thead>
                 <tbody>
                 @php
                     $i = 0;
                 @endphp
-                @if($isSuperAdmin)
-                    <tr>
-                        <td><?= $i ?></td>
-                        <td>{{$superAdmin->name}}</td>
-                        <td>{{$superAdmin->label}}</td>
-                        <td>
-                            <div class="btn-group" role="group">
-                                <button id="btnGroupDrop2" type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    اقدامات
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
-                                    <a class="dropdown-item" href="{{route('role.edit',$superAdmin->id)}}"><i class="fa fa-pencil ml-3"></i>ویرایش</a>
-                                    <form action="{{route('role.destroy',$superAdmin->id)}}" method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <a class="dropdown-item" onclick="removeItem(this);" style="cursor: pointer"><i
-                                                    class="fa fa-trash ml-3"></i>حذف</a>
-                                    </form>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                @if(count($roles))
-                    @foreach($roles as $key=>$role)
+               
+                @if(count($permissions))
+                    @foreach($permissions as $key=>$permission)
                         <tr>
                             <td><?= ++$i ?></td>
-                            <td>{{$role->name}}</td>
-                            <td>{{$role->label}}</td>
+                            <td>{{$permission->name}}</td>
+                            <td>{{$permission->label}}</td>
                             <td>
                                 <div class="btn-group" role="group">
                                     <button id="btnGroupDrop2" type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"
@@ -86,8 +64,8 @@
                                         اقدامات
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
-                                        <a class="dropdown-item" href="{{route('role.edit',$role->id)}}"><i class="fa fa-pencil ml-3"></i>ویرایش</a>
-                                        <form action="{{route('role.destroy',$role->id)}}" method="post">
+                                        <a class="dropdown-item" href="{{route('permission.edit',$permission->id)}}"><i class="fa fa-pencil ml-3"></i>ویرایش</a>
+                                        <form action="{{route('permission.destroy',$permission->id)}}" method="post">
                                             @csrf
                                             @method('delete')
                                             <a class="dropdown-item" onclick="removeItem(this);" style="cursor: pointer"><i
@@ -98,13 +76,11 @@
                             </td>
                         </tr>
                     @endforeach
-                @else
                     <tr>
                         <td colspan="4">
                             موردی یافت نشد
                         </td>
                     </tr>
-                @endif
                 @endif
                 </tbody>
             </table>

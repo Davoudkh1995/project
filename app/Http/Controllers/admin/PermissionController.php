@@ -24,11 +24,11 @@ class PermissionController extends Controller
     public function index()
     {
 
-        if ($this->authorize('permission management') != null) {
-            $permissions = Permission::all();
-            return view('admin.permissions.list', compact('permissions'));
-        }
-        abort(403);
+//        if ($this->authorize('permission management') != null) {
+        $permissions = Permission::all();
+        return view('admin.permissions.index', compact('permissions'));
+//        }
+//        abort(403);
 
 
 //        $this->authorize('access_section');
@@ -44,19 +44,19 @@ class PermissionController extends Controller
     public function create()
     {
 
-        if ($this->authorize('permission_create')) {
-            $roles = Role::where('label', '!=', 'super admin')->get();
-            $isSuperAdmin = false;
-            $superAdmin = Role::where('label', '=', 'super admin')->first();
-            foreach ($superAdmin->users as $user) {
-                if (auth()->user()->id == $user->id) {
-                    $isSuperAdmin = true;
-                }
+//        if ($this->authorize('permission_create')) {
+        $roles = Role::where('label', '!=', 'super admin')->get();
+        $isSuperAdmin = false;
+        $superAdmin = Role::where('label', '=', 'super admin')->first();
+        foreach ($superAdmin->users as $user) {
+            if (auth()->user()->id == $user->id) {
+                $isSuperAdmin = true;
             }
-            return view('admin.permissions.create', compact('roles', 'isSuperAdmin', 'superAdmin'));
-        } else {
-            abort(403);
         }
+        return view('admin.permissions.create', compact('roles', 'isSuperAdmin', 'superAdmin'));
+//        } else {
+//            abort(403);
+//        }
 
 
         /* $this->authorize('access_section');
@@ -70,35 +70,30 @@ class PermissionController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PermissionRequest $request)
+    public function store(Request $request)
     {
-        $name = $request['name'];
-        $label = $request['label'];
+        $request->validate([
+            'name' => 'required',
+            'label' => 'required',
+        ]);
+        $status = 0;
         if (isset($request['status'])) {
             $status = 1;
-        } else {
-            $status = 0;
         }
-        $isCreate = true;
         $permissions = Permission::select('label')->get();
         foreach ($permissions as $each) {
-            if ($each->label == $label) {
-                $isCreate = false;
+            if ($each->label == $request['label']) {
+                return back()->with('error', 'فیلد نام به انگلیسی تکراریست یک نام دیگر انتخاب کنید');
             }
         }
-        if ($isCreate) {
-            $permission = Permission::create(['name' => $name, 'label' => $label, 'status' => $status]);
-            MenuDynamicTable::create(['name' => $label, 'permission_id' => $permission->id]);
-            if (!is_null($request->input('role'))) {
-                $permission->roles()->sync(
-                    $request->input('role')
-                );
-            }
-            Alert::success('موفقیت', 'اجازه دسترسی ایجاد شد');
-            return redirect()->back();
+        $permission = Permission::create(['name' => $request['name'], 'label' => $request['label'], 'status' => $status]);
+        MenuDynamicTable::create(['name' => $label, 'permission_id' => $permission->id]);
+        if (!is_null($request->input('role'))) {
+            $permission->roles()->sync(
+                $request->input('role')
+            );
         }
-        Alert::error('ناموفق', 'فیلد نام به انگلیسی تکراریست یک نام دیگر انتخاب کنید');
-        return redirect()->back();
+        return back()->with('message', 'اجازه دسترسی ایجاد شد');
 
     }
 
@@ -137,7 +132,7 @@ class PermissionController extends Controller
         foreach ($permission->roles as $role) {
             array_push($role_id_arr, $role->id);
         }
-        return view('admin.permissions.edit', compact('permission', 'roles', 'role_id_arr', 'superAdmin', 'isSuperAdmin'));
+        return view('admin.permissions.update', compact('permission', 'roles', 'role_id_arr', 'superAdmin', 'isSuperAdmin'));
 
 
         /*$this->authorize('access_section');
@@ -162,40 +157,39 @@ class PermissionController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PermissionRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $data = $request->except('_token');
-        $name = $data['name'];
-        $label = $data['label'];
-        if (isset($data['status'])) {
+        $request->validate([
+            'name' => 'required',
+            'label' => 'required',
+        ]);
+        $permission = Permission::find($id);
+        if (isset($request['status'])) {
             $status = 1;
         } else {
             $status = 0;
         }
-        $permission = Permission::where('id', $id)->first();
-        $isUpdate = true;
         $permissions = Permission::select('label')->get();
         foreach ($permissions as $each) {
-            if ($permission->label != $label) {
-                if ($each->label == $label) {
-                    $isUpdate = false;
+            if ($permission->label != $request['label']) {
+                if ($each->label == $request['label']) {
+                    return back()->with('error', 'فیلد نام به انگلیسی تکراریست یک نام دیگر انتخاب کنید');
                 }
             }
         }
-        if ($isUpdate) {
-            $menuDynamicTable = MenuDynamicTable::where('permission_id', $permission->id)->first();
-            $menuDynamicTable->update(['name' => $label]);
-            $permission->update(['name' => $name, 'label' => $label, 'status' => $status]);
-            if (!is_null($request->input('role'))) {
-                $permission->roles()->sync(
-                    $request->input('role')
-                );
-            }
-            Alert::success('موفقیت', 'اجازه دسترسی ویرایش شد');
-            return redirect()->back();
+        $menuDynamicTable = MenuDynamicTable::where('permission_id', $permission->id)->first();
+        $menuDynamicTable->update(['name' => $request['label']]);
+        $permission->update([
+            'name' => $request['name'],
+            'label' => $request['label'],
+            'status' => $status
+        ]);
+        if (!is_null($request->input('role'))) {
+            $permission->roles()->sync(
+                $request->input('role')
+            );
         }
-        Alert::error('ناموفق', 'فیلد نام به انگلیسی تکراریست یک نام دیگر انتخاب کنید');
-        return redirect()->back();
+        return back()->with('message', 'دسترسی ویرایش شد');
     }
 
     /**
@@ -216,16 +210,14 @@ class PermissionController extends Controller
         $menuDynamicTable = MenuDynamicTable::where('permission_id', $item->id)->first();
         $menuDynamicTable->delete();
         $item->delete();
-        Alert::success('موفقیت', 'دسترسی مورد نظر حذف شد');
-        return redirect()->back();
+        return back()->with('message', 'دسترسی حذف شد');
     }
 
     public function remove_all(Request $request)
     {
         $ids = $request['allCheckedSelect'];
         if (count($ids) == 0) {
-            Alert::error('ناموفق', 'موردی را انتخاب نکردید');
-            return redirect()->back();
+            return back()->with('message', 'موردی را انتخاب نکردید');
         }
         foreach ($ids as $id) {
             $item = Permission::find($id);

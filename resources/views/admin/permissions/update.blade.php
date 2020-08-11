@@ -12,12 +12,12 @@
 @endsection
 @section('header')
     <div>
-        <h3>افزودن اطلاعات مشاغل</h3>
+        <h3>ویرایش اطلاعات دسترسی</h3>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active" aria-current="page">سطوح دسترسی</li>
-                <li class="breadcrumb-item"><a href="{{route('role.index')}}">مشاغل</a></li>
-                <li class="breadcrumb-item">افزودن</li>
+                <li class="breadcrumb-item"><a href="{{route('permission.index')}}">دسترسی</a></li>
+                <li class="breadcrumb-item">ویرایش</li>
             </ol>
         </nav>
     </div>
@@ -41,53 +41,63 @@
     <div class="card">
         <h5 class="card-header">افزودن</h5>
         <div class="card-body">
-            <form action="{{route('role.store')}}" method="post" class="needs-validation" novalidate=""
+            <form action="{{route('permission.update',$permission->id)}}" method="post" class="needs-validation" novalidate=""
                   autocomplete="off">
                 @csrf
+                @method('patch')
                 <div class="mb-4">
                     <div class="row">
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-4">
                             <label for="validationCustom01">نام به فارسی</label>
                             <input type="text" class="form-control" id="validationCustom01"
                                    aria-describedby="emailHelp"
-                                   placeholder="نام به فارسی" name="name" value="{{old('name')}}">
+                                   placeholder="نام به فارسی" name="name" value="{{$permission->name}}">
 
                         </div>
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-4">
                             <label for="validationCustom01">نام به لاتین</label>
                             <input type="text" class="form-control" id="validationCustom01"
                                    aria-describedby="emailHelp"
-                                   placeholder="نام به لاتین" name="label" value="{{old('label')}}">
+                                   placeholder="نام به لاتین" name="label" value="{{$permission->label}}">
 
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="control-label ">توضیحات</label>
-                            <textarea rows="5" id="body" cols="5" class="form-control"
-                                      name="text"
-                                      placeholder="محتوای خود را در این قسمت وارد کنید..."></textarea>
+                        <div class="form-group col-sm-4">
+                            @if(count($roles))
+                                <div class="form-group" style="width: 100%;">
+                                    <label for="" style="display: block;text-align: center">نقش کاربر</label>
+                                    <div class="form-group">
+                                        <select class="js-example-basic-single" multiple dir="rtl" name="role[]">
+                                            @if($isSuperAdmin)
+                                                <option value="{{$superAdmin->id}}" @if(in_array($superAdmin->id,$role_id_arr)) selected @endif>{{$superAdmin->name}}</option>
+                                            @endif
+                                            @foreach($roles as $role)
+                                                @if($role->id != $superAdmin->id)
+                                                    <option value="{{$role->id}}"
+                                                            @if(in_array($role->id,$role_id_arr)) selected @endif>{{$role->name}}</option>
+                                                    {{--@else
+                                                        @if($isSuperAdmin)
+                                                            <option value="{{$role->id}}"
+                                                                    @if(in_array($role->id,$role_id_arr)) selected @endif>{{$role->name}}</option>
+                                                        @endif--}}
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="alert alert-danger" role="alert">
+                                    در این بخش باید یکی از نقش ها انتخاب شود ولی چون هیچ موردی ثبت نشده این مورد برای
+                                    شما
+                                    نمایش داده نشده لطفا یک نقش را در ابتدا ثبت نمایید
+                                </div>
+                            @endif
                         </div>
                     </div>
-                    <script>
-                        var editor = CKEDITOR.replace('text', {
-                            filebrowserBrowseUrl: '/ckeditor/ckfinder/ckfinder.html',
-                            filebrowserUploadUrl: '/ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files'
-                        });
-                        CKFinder.setupCKEditor(editor);
-                    </script>
                 </div>
-                <div class="row">
-                    @foreach($permissions as $key=>$permission)
-                        <div class="custom-control custom-checkbox custom-control-inline mr-3 mb-2 mt-2">
-                            <input type="checkbox" id="customCheckBoxInline{{$key}}" value="{{$permission->id}}" name="permissions[]" class="custom-control-input">
-                            <label class="custom-control-label" for="customCheckBoxInline{{$key}}">{{$permission->name}}</label>
-                        </div>
-                    @endforeach
-                </div>
+
                 <div class="form-row form-group">
                     <div class="custom-control custom-checkbox custom-checkbox-success">
-                        <input type="checkbox" class="custom-control-input" id="customCheck" name="status" checked>
+                        <input type="checkbox" class="custom-control-input" id="customCheck" name="status" @if($permission->status == 1) checked @endif>
                         <label class="custom-control-label" for="customCheck">وضعیت نمایش</label>
                     </div>
                 </div>

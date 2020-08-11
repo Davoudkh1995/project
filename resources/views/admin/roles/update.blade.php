@@ -22,7 +22,6 @@
         </nav>
     </div>
 @endsection
-
 @section('content')
     <div class="row">
         <div class="col-12">
@@ -40,24 +39,24 @@
         </div>
     </div>
     <div class="card">
-        <h5 class="card-header">ویرایش</h5>
+        <h5 class="card-header">افزودن</h5>
         <div class="card-body">
-            <form action="{{route('role.update',$role->id)}}" method="post" class="needs-validation" novalidate="" enctype="multipart/form-data"
+            <form action="{{route('role.update',$role->id)}}" method="post" class="needs-validation" novalidate=""
                   autocomplete="off">
                 @csrf
                 @method('patch')
                 <div class="mb-4">
                     <div class="row">
                         <div class="form-group col-sm-6">
-                            <label for="">نام به فارسی</label>
-                            <input type="text" class="form-control" id="exampleInputEmail1"
+                            <label for="validationCustom01">نام به فارسی</label>
+                            <input type="text" class="form-control" id="validationCustom01"
                                    aria-describedby="emailHelp"
                                    placeholder="نام به فارسی" name="name" value="{{$role->name}}">
 
                         </div>
                         <div class="form-group col-sm-6">
-                            <label for="">نام به لاتین</label>
-                            <input type="text" class="form-control" id="exampleInputEmail1"
+                            <label for="validationCustom01">نام به لاتین</label>
+                            <input type="text" class="form-control" id="validationCustom01"
                                    aria-describedby="emailHelp"
                                    placeholder="نام به لاتین" name="label" value="{{$role->label}}">
 
@@ -78,21 +77,19 @@
                         });
                         CKFinder.setupCKEditor(editor);
                     </script>
-
-                    <div class="row mt-5">
-                        <h3 style="width: 100%;" class="mr-3">دسترسی ها</h3>
-                        @foreach($permissions as $key=>$permission)
-                            <div class="custom-control custom-checkbox custom-control-inline mr-3 mb-2 mt-2">
-                                <input type="checkbox" id="customCheckBoxInline{{$key}}" value="{{$permission->id}}" name="permissions[]" class="custom-control-input" @if(in_array($permission->id,$permission_id_arr)) checked @endif>
-                                <label class="custom-control-label" for="customCheckBoxInline{{$key}}">{{$permission->name}}</label>
-                            </div>
-                        @endforeach
-                    </div>
+                </div>
+                <div class="row">
+                    @foreach($permissions as $key=>$permission)
+                        <div class="custom-control custom-checkbox custom-control-inline mr-3 mb-2 mt-2">
+                            <input type="checkbox" id="customCheckBoxInline{{$key}}" value="{{$permission->id}}" name="permissions[]" class="custom-control-input" @if(in_array($permission->id,$permission_id_arr)) checked @endif>
+                            <label class="custom-control-label" for="customCheckBoxInline{{$key}}">{{$permission->name}}</label>
+                        </div>
+                    @endforeach
                 </div>
                 <div class="form-row form-group">
                     <div class="custom-control custom-checkbox custom-checkbox-success">
-                        <input type="checkbox" class="custom-control-input" id="customCheck" name="status" @if($role->status == 1) checked @endif>
-                        <label class="custom-control-label" for="customCheck">وضعیت فعالیت</label>
+                        <input type="checkbox" class="custom-control-input" id="customCheck" name="status" checked>
+                        <label class="custom-control-label" for="customCheck">وضعیت نمایش</label>
                     </div>
                 </div>
                 <button class="btn btn-primary" type="submit">ذخیره درخواست</button>

@@ -1,19 +1,29 @@
 @extends('admin.master.index')
-@section('content')
-    <!-- begin::page header -->
-    <div class="page-header">
-        <h5>ثبت اطلاعات دسترسی</h5>
-        <hr>
+@section('style')
+    <!-- begin::select2 -->
+    <link rel="stylesheet" href="/admin/assets/vendors/select2/css/select2.min.css" type="text/css">
+    <!-- end::select2 -->
+@endsection
+@section('script')
+    <!-- begin::select2 -->
+    <script src="/admin/assets/vendors/select2/js/select2.min.js"></script>
+    <script src="/admin/assets/js/examples/select2.js"></script>
+    <!-- end::select2 -->
+@endsection
+@section('header')
+    <div>
+        <h3>افزودن اطلاعات دسترسی</h3>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item">سطوح دسترسی</li>
-                <li class="breadcrumb-item"><a href="/admin/permission">دسترسی ها</a></li>
-                <li class="breadcrumb-item">ثبت اطلاعات</li>
+                <li class="breadcrumb-item active" aria-current="page">سطوح دسترسی</li>
+                <li class="breadcrumb-item"><a href="{{route('permission.index')}}">دسترسی</a></li>
+                <li class="breadcrumb-item">افزودن</li>
             </ol>
         </nav>
     </div>
-
-    <div class="row mb-4">
+@endsection
+@section('content')
+    <div class="row">
         <div class="col-12">
             @if ($errors->any())
                 <h5 style="color: #ffffff;background-color: #f50000;font-size: 12px;border-bottom:1px solid #000;margin-bottom: 0;border-radius: 4px 4px 0 0;padding:10px 10px;">
@@ -28,49 +38,28 @@
             @endif
         </div>
     </div>
-    <form autocomplete="off" action="{{route('permission.store')}}" method="post" enctype="multipart/form-data" id="submitForm">
-        {{csrf_field()}}
-        <div class="row">
-            <div class="col-md-9">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="form-group col-sm-6">
-                                <label for="">نام به فارسی</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                       aria-describedby="emailHelp"
-                                       placeholder="نام به فارسی" name="name" value="{{old('name')}}">
+    <div class="card">
+        <h5 class="card-header">افزودن</h5>
+        <div class="card-body">
+            <form action="{{route('permission.store')}}" method="post" class="needs-validation" novalidate=""
+                  autocomplete="off">
+                @csrf
+                <div class="mb-4">
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            <label for="">نام به فارسی</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1"
+                                   aria-describedby="emailHelp"
+                                   placeholder="نام به فارسی" name="name" value="{{old('name')}}">
 
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <label for="">نام به انگلیسی</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                       aria-describedby="emailHelp"
-                                       placeholder="نام به انگلیسی" name="label" value="{{old('label')}}">
-
-                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-title"></div>
-                        <div class="m-auto" style="display: table;">
-                            <a onclick="submitForm()" type="submit" class="btn float-right bg-dark-gradient">ثبت
-                                اطلاعات</a>
+                        <div class="form-group col-sm-4">
+                            <label for="">نام به انگلیسی</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1"
+                                   aria-describedby="emailHelp"
+                                   placeholder="نام به انگلیسی" name="label" value="{{old('label')}}">
                         </div>
-                        <div style="display: table;margin: 30px auto">
-                            <div class="custom-control custom-switch custom-checkbox-dark">
-                                <input type="checkbox" class="custom-control-input display-block" id="customSwitch6_"
-                                       name="status" checked>
-                                <label class="custom-control-label display-block" for="customSwitch6_">وضعیت
-                                    نمایش</label>
-                            </div>
-                        </div>
-
-                        <div style="display: table;margin: 30px auto;width: 100%;">
+                        <div class="form-group col-sm-4">
                             @if(count($roles))
                                 <div class="form-group" style="width: 100%;">
                                     <label for="" style="display: block;text-align: center">نقش کاربر</label>
@@ -78,7 +67,7 @@
                                         <select class="js-example-basic-single" multiple dir="rtl" name="role[]">
                                             @if($isSuperAdmin)
                                                 <option value="{{$superAdmin->id}}">{{$superAdmin->name}}</option>
-                                                @endif
+                                            @endif
                                             @foreach($roles as $role)
                                                 <option value="{{$role->id}}">{{$role->name}}</option>
                                             @endforeach
@@ -95,12 +84,53 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="form-row form-group">
+                    <div class="custom-control custom-checkbox custom-checkbox-success">
+                        <input type="checkbox" class="custom-control-input" id="customCheck" name="status" checked>
+                        <label class="custom-control-label" for="customCheck">وضعیت نمایش</label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">ذخیره درخواست</button>
+            </form>
         </div>
-    </form>
+    </div>
+
     <script>
-        function submitForm() {
-            $('#submitForm').submit();
-        }
+                @if(session('error'))
+        var error = "{{session('error')}}";
+        Swal.fire({
+            icon: 'error',
+            title: 'ناموفق',
+            text: error,
+        });
+                @elseif(session('message'))
+        var message = "{{session('message')}}";
+        Swal.fire({
+            icon: 'success',
+            title: 'موفقیت',
+            text: message,
+        });
+        @endif
+    </script>
+    <script>
+        //  Form Validation
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+            forms.submit();
+        }, false);
+        $(document).ready(function () {
+            $('.parents').select2();
+        });
     </script>
 @endsection
