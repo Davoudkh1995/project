@@ -7,6 +7,7 @@ use App\ImageModel;
 use App\Portfolio;
 use App\Vw_CategoryPortfolio;
 use App\Vw_Portfolio;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 
@@ -19,6 +20,14 @@ class PortfolioController extends MainController
      */
     public function index()
     {
+        try {
+            if (!$this->authorize('portfolio')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $items = Vw_Portfolio::orderbyDesc('created_at')->get();
         /*$obj = $items[0]->picture;
         $decode = \GuzzleHttp\json_decode($obj);
@@ -32,7 +41,14 @@ class PortfolioController extends MainController
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {try {
+        if (!$this->authorize('portfolio')) {
+            abort(403);
+        }
+    } catch (AuthorizationException $e) {
+        abort(403);
+    }
+
         $categories = Vw_CategoryPortfolio::where(['status' => 1])->get();
         $priority_arr = Vw_Portfolio::where('priority', '!=', 0)->select(['priority'])->get();
         $priorities = [1, 2, 3];
@@ -58,6 +74,14 @@ class PortfolioController extends MainController
      */
     public function store(Request $request)
     {
+        try {
+            if (!$this->authorize('portfolio')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required',
             'categoryID_FK' => 'Integer',
@@ -127,6 +151,14 @@ class PortfolioController extends MainController
      */
     public function edit(Portfolio $portfolio)
     {
+        try {
+            if (!$this->authorize('portfolio')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $categories = Vw_CategoryPortfolio::where(['status' => 1])->get();
         $priority_arr = Vw_Portfolio::where('priority', '!=', 0)->select(['priority'])->get();
         $otherImages = ImageModel::where('symbol', 'like', 'portfolio_%')->where(['model_id' => $portfolio->id])->get();
@@ -154,6 +186,14 @@ class PortfolioController extends MainController
      */
     public function update(Request $request, Portfolio $portfolio)
     {
+        try {
+            if (!$this->authorize('portfolio')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required',
             'categoryID_FK' => 'Integer',
@@ -244,6 +284,14 @@ class PortfolioController extends MainController
      */
     public function destroy(Portfolio $portfolio)
     {
+        try {
+            if (!$this->authorize('portfolio')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $this->removeImageOfObject($portfolio);
         $portfolio->delete();
         return redirect(route('portfolio.index'))->with('message', 'عملیات موفقیت آمیز بود');

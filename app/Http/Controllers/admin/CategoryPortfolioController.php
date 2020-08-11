@@ -6,6 +6,7 @@ use App\CategoryPortfolio;
 use App\Http\Controllers\Controller;
 use App\Portfolio;
 use App\Vw_CategoryPortfolio;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 
 class CategoryPortfolioController extends MainController
@@ -17,6 +18,15 @@ class CategoryPortfolioController extends MainController
      */
     public function index()
     {
+
+        try {
+            if (!$this->authorize('portfolio')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $items = Vw_CategoryPortfolio::all();
         return view('admin.portfolio.category.index', compact('items'));
     }
@@ -28,6 +38,14 @@ class CategoryPortfolioController extends MainController
      */
     public function create()
     {
+        try {
+            if (!$this->authorize('portfolio')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $category_portfolio = Vw_CategoryPortfolio::all();
 //        dd($category_services);
 //        $parents = Vw_CategoryServices::where('status',1)->select(['title','id'])->where('parent_id',0)->orderbyDesc('parent_id')->get();
@@ -51,6 +69,14 @@ class CategoryPortfolioController extends MainController
      */
     public function store(Request $request)
     {
+        try {
+            if (!$this->authorize('portfolio')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required',
             'slug' => 'required',
@@ -89,6 +115,14 @@ class CategoryPortfolioController extends MainController
      */
     public function edit(CategoryPortfolio $categoryPortfolio)
     {
+        try {
+            if (!$this->authorize('portfolio')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $category_portfolios = Vw_CategoryPortfolio::where(['status' => 1])->where('parent_id', '!=', $categoryPortfolio->id)->select(['title', 'id'])->orderbyDesc('parent_id')->get();
         return view('admin.portfolio.category.update', compact('category_portfolios', 'categoryPortfolio'));
     }
@@ -102,6 +136,14 @@ class CategoryPortfolioController extends MainController
      */
     public function update(Request $request, CategoryPortfolio $categoryPortfolio)
     {
+        try {
+            if (!$this->authorize('portfolio')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required',
             'slug' => 'required',
@@ -128,6 +170,14 @@ class CategoryPortfolioController extends MainController
      */
     public function destroy(CategoryPortfolio $categoryPortfolio)
     {
+        try {
+            if (!$this->authorize('portfolio')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $subcategories = CategoryPortfolio::where('parent_id', $categoryPortfolio->id)->get();
         if (count($subcategories)) {
             foreach ($subcategories as $category) {
@@ -139,8 +189,6 @@ class CategoryPortfolioController extends MainController
         $categoryPortfolio->delete();
         return back()->with('message', 'عملیات موفقیت آمیز بود');
     }
-
-
 
 
     public function destroy_all(Request $request)

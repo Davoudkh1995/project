@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Aboutus;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 
 class AboutusController extends Controller
@@ -15,6 +16,15 @@ class AboutusController extends Controller
      */
     public function index()
     {
+
+        try {
+            if (!$this->authorize('about')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $aboutus = Aboutus::first();
         return view('admin.aboutus.create',compact('aboutus'));
     }
@@ -71,6 +81,14 @@ class AboutusController extends Controller
      */
     public function update(Request $request, Aboutus $aboutus)
     {
+        try {
+            if (!$this->authorize('about')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'content' => 'required',
         ]);

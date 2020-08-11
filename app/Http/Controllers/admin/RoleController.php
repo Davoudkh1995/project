@@ -7,6 +7,7 @@ use App\MenuDynamicTable;
 use App\Permission;
 use App\Role;
 use App\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
@@ -22,13 +23,23 @@ class RoleController extends Controller
      */
     public function index()
     {
+        try {
+            if (!$this->authorize('role')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
 //        if ($this->authorize('role management')) {
-        $roles = Role::where('label', '!=', 'super admin')->get();
-        $superAdmin = Role::where('label', '=', 'super admin')->first();
+        $roles = Role::where('label', '!=', 'superadmin')->get();
+        $superAdmin = Role::where('label', '=', 'superadmin')->first();
         $isSuperAdmin = false;
-        foreach ($superAdmin->users as $user) {
-            if (auth()->user()->id == $user->id) {
-                $isSuperAdmin = true;
+        if (isset($superAdmin)){
+            foreach ($superAdmin->users as $user) {
+                if (auth()->user()->id == $user->id) {
+                    $isSuperAdmin = true;
+                }
             }
         }
         $users = User::where('accept_policy', 1)->get();
@@ -45,6 +56,13 @@ class RoleController extends Controller
 
     public function create()
     {
+        try {
+            if (!$this->authorize('role')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
 
 //        if ($this->authorize('role_create')) {
         $users = User::all();
@@ -64,6 +82,14 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        try {
+            if (!$this->authorize('role')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'name' => 'required',
             'label' => 'required',
@@ -110,6 +136,14 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
+        try {
+            if (!$this->authorize('role')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $permissions = Permission::all();
         $role = Role::find($id);
         $permission_id_arr = [];
@@ -128,6 +162,14 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        try {
+            if (!$this->authorize('role')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'name' => 'required',
             'label' => 'required',
@@ -161,6 +203,14 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
+        try {
+            if (!$this->authorize('role')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $item = Role::find($id);
         $permissions = $item->permissions->all();
         $users = $item->users->all();

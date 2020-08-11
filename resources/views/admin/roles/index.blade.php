@@ -73,6 +73,7 @@
                             </div>
                         </td>
                     </tr>
+                @endif
                 @if(count($roles))
                     @foreach($roles as $key=>$role)
                         <tr>
@@ -104,7 +105,6 @@
                             موردی یافت نشد
                         </td>
                     </tr>
-                @endif
                 @endif
                 </tbody>
             </table>

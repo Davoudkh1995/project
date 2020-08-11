@@ -7,6 +7,7 @@ use App\ImageModel;
 use App\Service;
 use App\Vw_CategoryServices;
 use App\Vw_Services;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 
@@ -19,6 +20,14 @@ class ServiceController extends MainController
      */
     public function index()
     {
+        try {
+            if (!$this->authorize('service')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $items = Vw_Services::orderbyDesc('created_at')->get();
         return view('admin.service.index', compact('items'));
     }
@@ -30,6 +39,14 @@ class ServiceController extends MainController
      */
     public function create()
     {
+        try {
+            if (!$this->authorize('service')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $categories = Vw_CategoryServices::where(['status' => 1])->get();
         $priority_arr = Vw_Services::where('priority', '!=', 0)->select(['priority'])->get();
         $priorities = [1, 2, 3];
@@ -55,6 +72,14 @@ class ServiceController extends MainController
      */
     public function store(Request $request)
     {
+        try {
+            if (!$this->authorize('service')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required',
             'categoryID_FK' => 'Integer',
@@ -128,6 +153,14 @@ class ServiceController extends MainController
      */
     public function edit(Service $service)
     {
+        try {
+            if (!$this->authorize('service')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $categories = Vw_CategoryServices::where(['status' => 1])->get();
         $priority_arr = Vw_Services::where('priority', '!=', 0)->select(['priority'])->get();
         $otherImages = ImageModel::where('symbol','like','service_%')->where(['model_id'=>$service->id])->get();
@@ -155,6 +188,14 @@ class ServiceController extends MainController
      */
     public function update(Request $request, Service $service)
     {
+        try {
+            if (!$this->authorize('service')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required',
             'categoryID_FK' => 'Integer',
@@ -244,6 +285,14 @@ class ServiceController extends MainController
      */
     public function destroy(Service $service)
     {
+        try {
+            if (!$this->authorize('service')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $this->removeImageOfObject($service);
         $service->delete();
         return redirect(route('service.index'))->with('message','عملیات موفقیت آمیز بود');;

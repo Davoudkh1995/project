@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Socialmedia;
 use App\Vw_Socialmedia;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 
 class SocialmediaController extends Controller
@@ -16,6 +17,14 @@ class SocialmediaController extends Controller
      */
     public function index()
     {
+        try {
+            if (!$this->authorize('socialmedia')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $type_arr = Vw_Socialmedia::where('type','!=',0)->select(['type'])->get();
         $types = [1,2,3,4,5,6,7,8];
         $types_ids = [];
@@ -51,6 +60,14 @@ class SocialmediaController extends Controller
      */
     public function store(Request $request)
     {
+        try {
+            if (!$this->authorize('socialmedia')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'type' => 'Integer',
         ]);
@@ -108,12 +125,28 @@ class SocialmediaController extends Controller
 
     public function getSocialmediaItem(Request $request)
     {
+        try {
+            if (!$this->authorize('socialmedia')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $item = Socialmedia::find($request['id']);
         return response()->json(['link'=>$item->link,'id'=>$item->id]);
     }
 
     public function saveSocialChange(Request $request)
     {
+        try {
+            if (!$this->authorize('socialmedia')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $item = Socialmedia::find($request['item_id']);
         $item->update([
            'link'=>$request['link']
@@ -123,6 +156,14 @@ class SocialmediaController extends Controller
 
     public function changeSocialStatus(Request $request)
     {
+        try {
+            if (!$this->authorize('socialmedia')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $item = Socialmedia::find($request['id']);
 
         $item->update([

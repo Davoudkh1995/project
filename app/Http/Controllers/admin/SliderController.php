@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Slider;
 use App\Vw_Sliders;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use MicrosoftAzure\Storage\File\Models\File;
 
@@ -17,6 +18,14 @@ class SliderController extends MainController
      */
     public function index()
     {
+        try {
+            if (!$this->authorize('slider')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
 //        $items = Slider::orderByDesc('created_at')->get();
         $items = Vw_Sliders::orderbyDesc('created_at')->get();
 //        $items = \DB::select('select * from vw_sliders v order by created_at desc');
@@ -30,6 +39,14 @@ class SliderController extends MainController
      */
     public function create()
     {
+        try {
+            if (!$this->authorize('slider')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $priority_arr = Vw_Sliders::where('priority', '!=', 0)->select(['priority'])->get();
 //        $priority_arr = \DB::select('select v.priority from vw_sliders v where  priority!=0');
 //        $priority_arr = Slider::where('priority','!=',0)->select(['priority'])->get();
@@ -56,6 +73,14 @@ class SliderController extends MainController
      */
     public function store(Request $request)
     {
+        try {
+            if (!$this->authorize('slider')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required',
             'picture' => 'required|mimes:jpeg,bmp,png',
@@ -101,6 +126,14 @@ class SliderController extends MainController
      */
     public function edit(Slider $slider)
     {
+        try {
+            if (!$this->authorize('slider')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
 //        $priority_arr = \DB::select('select v.priority from vw_sliders v where  priority!=0');
         $priority_arr = Vw_Sliders::where('priority', '!=', 0)->select(['priority'])->get();
 //        $priority_arr = Slider::where('priority','!=',0)->select(['priority'])->get();
@@ -122,6 +155,14 @@ class SliderController extends MainController
      */
     public function update(Request $request, Slider $slider)
     {
+        try {
+            if (!$this->authorize('slider')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required',
             'picture' => 'mimes:jpeg,bmp,png',
@@ -165,9 +206,17 @@ class SliderController extends MainController
      */
     public function destroy(Slider $slider)
     {
+        try {
+            if (!$this->authorize('slider')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $this->removeFile($slider->picture);
         $slider->delete();
-        return redirect(route('slider.index'))->with('message', 'عملیات موفقیت آمیز بود');;
+        return redirect(route('slider.index'))->with('message', 'عملیات موفقیت آمیز بود');
     }
 
     /*public function file_upload(Request $request)

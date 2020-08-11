@@ -157,6 +157,7 @@ return [
         'email' => 'رایانامه',
         'mobile' => 'موبایل',
         'content' => 'محتوا',
+        'nationalcode' => 'کدملی',
     ],
 
 ];

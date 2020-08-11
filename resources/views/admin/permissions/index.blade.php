@@ -50,7 +50,6 @@
                 @php
                     $i = 0;
                 @endphp
-               
                 @if(count($permissions))
                     @foreach($permissions as $key=>$permission)
                         <tr>
@@ -76,6 +75,7 @@
                             </td>
                         </tr>
                     @endforeach
+                    @else
                     <tr>
                         <td colspan="4">
                             موردی یافت نشد

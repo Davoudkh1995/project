@@ -79,6 +79,7 @@
                             </div>
                         </td>
                     </tr>
+                @endif
                 @if(count($admins))
                     @foreach($admins as $key=>$admin)
                         <tr>
@@ -109,14 +110,16 @@
                             </td>
                         </tr>
                     @endforeach
-                @else
-                    <tr>
-                        <td colspan="5">
-                            موردی یافت نشد
-                        </td>
-                    </tr>
+                    @if(!$isSuperAdmin && !count($admins))
+                        <tr>
+                            <td colspan="5">
+                                موردی یافت نشد
+                            </td>
+                        </tr>
+                    @endif
                 @endif
-                @endif
+
+
                 </tbody>
             </table>
         </div>

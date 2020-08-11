@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Contactus;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 
 class ContactusController extends Controller
@@ -15,6 +16,15 @@ class ContactusController extends Controller
      */
     public function index()
     {
+
+        try {
+            if (!$this->authorize('contact')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $contactus = Contactus::first();
         return view('admin.contactus.create',compact('contactus'));
     }
@@ -71,6 +81,14 @@ class ContactusController extends Controller
      */
     public function update(Request $request, Contactus $contactus)
     {
+        try {
+            if (!$this->authorize('contact')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'address' => 'required',
             'email' => 'required',

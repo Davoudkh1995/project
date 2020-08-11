@@ -7,6 +7,7 @@ use App\MenuDynamicTable;
 use App\Permission;
 use App\Role;
 use function Couchbase\defaultDecoder;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,14 @@ class PermissionController extends Controller
      */
     public function index()
     {
+
+        try {
+            if (!$this->authorize('permission')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
 
 //        if ($this->authorize('permission management') != null) {
         $permissions = Permission::all();
@@ -43,11 +52,18 @@ class PermissionController extends Controller
      */
     public function create()
     {
+        try {
+            if (!$this->authorize('permission')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
 
 //        if ($this->authorize('permission_create')) {
-        $roles = Role::where('label', '!=', 'super admin')->get();
+        $roles = Role::where('label', '!=', 'superadmin')->get();
         $isSuperAdmin = false;
-        $superAdmin = Role::where('label', '=', 'super admin')->first();
+        $superAdmin = Role::where('label', '=', 'superadmin')->first();
         foreach ($superAdmin->users as $user) {
             if (auth()->user()->id == $user->id) {
                 $isSuperAdmin = true;
@@ -72,6 +88,14 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
+        try {
+            if (!$this->authorize('permission')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'name' => 'required',
             'label' => 'required',
@@ -87,7 +111,7 @@ class PermissionController extends Controller
             }
         }
         $permission = Permission::create(['name' => $request['name'], 'label' => $request['label'], 'status' => $status]);
-        MenuDynamicTable::create(['name' => $label, 'permission_id' => $permission->id]);
+        MenuDynamicTable::create(['name' => $request['label'], 'permission_id' => $permission->id]);
         if (!is_null($request->input('role'))) {
             $permission->roles()->sync(
                 $request->input('role')
@@ -117,11 +141,19 @@ class PermissionController extends Controller
     public function edit($id)
     {
 
+        try {
+            if (!$this->authorize('permission')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
 //        if ($this->authorize('access_section') != null) {
 //            $this->authorize('access_section');
-        $roles = Role::where('label', '!=', 'super admin')->get();
+        $roles = Role::where('label', '!=', 'superadmin')->get();
         $permission = Permission::find($id);
-        $superAdmin = Role::where('label', '=', 'super admin')->first();
+        $superAdmin = Role::where('label', '=', 'superadmin')->first();
         $isSuperAdmin = false;
         foreach ($superAdmin->users as $user) {
             if (auth()->user()->id == $user->id) {
@@ -159,6 +191,14 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        try {
+            if (!$this->authorize('permission')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'name' => 'required',
             'label' => 'required',
@@ -200,6 +240,14 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
+        try {
+            if (!$this->authorize('permission')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $item = Permission::find($id);
         $roles = $item->roles->all();
         if (count($roles) > 0) {

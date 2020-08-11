@@ -7,6 +7,7 @@ use App\CategoryService;
 use App\Http\Controllers\Controller;
 use App\Vw_CategoryArticles;
 use foo\bar;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -19,6 +20,15 @@ class CategoryArticleController extends MainController
      */
     public function index()
     {
+
+        try {
+            if (!$this->authorize('article')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $items =  Vw_CategoryArticles::all();
         return view('admin.article.category.index',compact('items'));
     }
@@ -30,6 +40,14 @@ class CategoryArticleController extends MainController
      */
     public function create()
     {
+        try {
+            if (!$this->authorize('article')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $category_articles = Vw_CategoryArticles::where('status',1)->select(['title','id'])->orderbyDesc('parent_id')->get();
         return view('admin.article.category.create',compact('category_articles'));
     }
@@ -42,6 +60,14 @@ class CategoryArticleController extends MainController
      */
     public function store(Request $request)
     {
+        try {
+            if (!$this->authorize('article')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required',
             'slug' => 'required',
@@ -80,6 +106,14 @@ class CategoryArticleController extends MainController
      */
     public function edit(CategoryArticle $categoryArticle)
     {
+        try {
+            if (!$this->authorize('article')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $category_articles = Vw_CategoryArticles::where('status',1)->select(['title','id'])->orderbyDesc('parent_id')->get();
         return view('admin.article.category.update',compact('category_articles','categoryArticle'));
     }
@@ -93,6 +127,14 @@ class CategoryArticleController extends MainController
      */
     public function update(Request $request, CategoryArticle $categoryArticle)
     {
+        try {
+            if (!$this->authorize('article')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required',
             'slug' => 'required',
@@ -119,6 +161,14 @@ class CategoryArticleController extends MainController
      */
     public function destroy(CategoryArticle $categoryArticle)
     {
+        try {
+            if (!$this->authorize('article')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $subcategories = CategoryArticle::where('parent_id', $categoryArticle->id)->get();
         if (count($subcategories)) {
             foreach ($subcategories as $category) {

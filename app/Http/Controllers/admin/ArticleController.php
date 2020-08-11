@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Message;
 use App\Vw_articles;
 use App\Vw_CategoryArticles;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use function Sodium\add;
 
@@ -20,6 +21,14 @@ class ArticleController extends MainController
      */
     public function index()
     {
+        try {
+            if (!$this->authorize('article')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $items = Vw_articles::orderbyDesc('created_at')->get();
         return view('admin.article.index', compact('items'));
     }
@@ -31,6 +40,14 @@ class ArticleController extends MainController
      */
     public function create()
     {
+        try {
+            if (!$this->authorize('article')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $categories = Vw_CategoryArticles::where(['status' => 1])->get();
         $priority_arr = Vw_articles::where('priority', '!=', 0)->select(['priority'])->get();
         $priorities = [1, 2, 3];
@@ -56,6 +73,14 @@ class ArticleController extends MainController
      */
     public function store(Request $request)
     {
+        try {
+            if (!$this->authorize('article')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required',
             'categoryID_FK' => 'Integer',
@@ -112,6 +137,14 @@ class ArticleController extends MainController
      */
     public function edit(Article $article)
     {
+        try {
+            if (!$this->authorize('article')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $categories = Vw_CategoryArticles::where(['status' => 1])->get();
         $priority_arr = Vw_articles::where('priority', '!=', 0)->select(['priority'])->get();
         $priorities = [1, 2, 3];
@@ -145,6 +178,14 @@ class ArticleController extends MainController
      */
     public function update(Request $request, Article $article)
     {
+        try {
+            if (!$this->authorize('article')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required',
             'categoryID_FK' => 'Integer',
@@ -200,6 +241,14 @@ class ArticleController extends MainController
      */
     public function destroy(Article $article)
     {
+        try {
+            if (!$this->authorize('article')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $this->removeImageOfObject($article);
         $article->delete();
         return redirect(route('article.index'))->with('message','عملیات موفقیت آمیز بود');

@@ -7,6 +7,7 @@ use App\Http\Requests\UserRequest;
 use App\Reception;
 use App\Role;
 use App\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -23,27 +24,32 @@ class UserController extends MainController
      */
     public function index()
     {
-//        if ($this->authorize('user management')){
-            $admins = User::orderBy('id', 'asc')->get();
-            $status = false;
-            $isSuperAdmin = false;
-            foreach ($admins as $key => $admin) {
-                foreach ($admin->roles as $role)
-                    if ($role->label == "super admin") {
-                        $status = true;
-                    }
-                if ($status) {
-                    if (auth()->user()->id == $admin->id) {
-                        $isSuperAdmin = true;
-                    }
-                    $super_admin = $admin;
-                    $admins->forget($key);
-                    $status = false;
-                }
+        try {
+            if (!$this->authorize('user')) {
+                abort(403);
             }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
+        $admins = User::orderBy('id', 'asc')->get();
+        $status = false;
+        $isSuperAdmin = false;
+        foreach ($admins as $key => $admin) {
+            foreach ($admin->roles as $role)
+                if ($role->label == "superadmin") {
+                    $status = true;
+                }
+            if ($status) {
+                if (auth()->user()->id == $admin->id) {
+                    $isSuperAdmin = true;
+                }
+                $super_admin = $admin;
+                $admins->forget($key);
+                $status = false;
+            }
+        }
         return view('admin.users.index', compact('admins', 'super_admin', 'isSuperAdmin'));
-//        }
-//        abort(403);
 
     }
 
@@ -55,21 +61,26 @@ class UserController extends MainController
      */
     public function create()
     {
-//        if ($this->authorize('user_create')) {
-            $user = auth()->user();
-            $role = $user->roles()->get()->first();
-            $roleName = $role['name'];
-            $roles = Role::where('label', '!=', 'super admin')->get();
-            $superAdmin = Role::where('label', '=', 'super admin')->first();
-            $isSuperAdmin = false;
-            foreach ($superAdmin->users as $user) {
-                if (auth()->user()->id == $user->id) {
-                    $isSuperAdmin = true;
-                }
+        try {
+            if (!$this->authorize('user')) {
+                abort(403);
             }
-            return view('admin.users.create', compact('roles', 'roleName', 'isSuperAdmin', 'superAdmin'));
-//        }
-//        abort(403);
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
+        $user = auth()->user();
+        $role = $user->roles()->get()->first();
+        $roleName = $role['name'];
+        $roles = Role::where('label', '!=', 'superadmin')->get();
+        $superAdmin = Role::where('label', '=', 'superadmin')->first();
+        $isSuperAdmin = false;
+        foreach ($superAdmin->users as $user) {
+            if (auth()->user()->id == $user->id) {
+                $isSuperAdmin = true;
+            }
+        }
+        return view('admin.users.create', compact('roles', 'roleName', 'isSuperAdmin', 'superAdmin'));
     }
 
     /**
@@ -80,6 +91,14 @@ class UserController extends MainController
      */
     public function store(Request $request)
     {
+        try {
+            if (!$this->authorize('user')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'name' => 'required',
             'nationalCode' => 'required',
@@ -87,10 +106,10 @@ class UserController extends MainController
             'signature' => 'mimes:jpeg,bmp,png',
         ]);
         if ($request['roleId'] == 0) {
-            return back()->with('error','هیچ نقشی انتخاب نشده!');
+            return back()->with('error', 'هیچ نقشی انتخاب نشده!');
         }
         if (!isset($request['password']) and !isset($request['confirm'])) {
-            return back()->with('message','رمز و تکرار آن وارد نشده');
+            return back()->with('message', 'رمز و تکرار آن وارد نشده');
         }
         if (isset($request['accept_policy'])) {
             $status = 1;
@@ -98,49 +117,49 @@ class UserController extends MainController
             $status = 0;
         }
         if ($request['password'] != $request['confirm']) {
-            return back()->with('error','رمز یا تکرار آن یکسان نیستند');
+            return back()->with('error', 'رمز یا تکرار آن یکسان نیستند');
         }
         $existedUser = User::where('nationalCode', $request['nationalCode'])->first();
         if (isset($existedUser)) {
-            return back()->with('message','نام کاربری تکراری میباشد!');
+            return back()->with('message', 'نام کاربری تکراری میباشد!');
         }
         $targetPic = "/upload/images/admin/picture/";
         $targetSig = "/upload/images/admin/signature/";
         $signature = $request->file('signature');
         $picture = $request->file('picture');
-        if (isset($signature)){
+        if (isset($signature)) {
             $signature = $this->uploadFile($signature, $targetSig);
-        }else{
+        } else {
             $signature = null;
         }
-        if (isset($picture)){
+        if (isset($picture)) {
             $picture = $this->uploadFile($picture, $targetPic);
-        }else{
+        } else {
             $picture = null;
         }
-        $user_current_email = User::where('email',$request['email'])->first();
-        $user_current_nationalCode = User::where('nationalCode',$request['nationalCode'])->first();
-        if (isset($user_current_email) or isset($user_current_nationalCode)){
-            return back()->with('error','پست الکترونیکی یا نام کاربری تکراری است');
+        $user_current_email = User::where('email', $request['email'])->first();
+        $user_current_nationalCode = User::where('nationalCode', $request['nationalCode'])->first();
+        if (isset($user_current_email) or isset($user_current_nationalCode)) {
+            return back()->with('error', 'پست الکترونیکی یا نام کاربری تکراری است');
         }
         $password = bcrypt($request['password']);
-            $user = User::create([
-                'picture' => $picture,
-                'signature' => $signature,
-                'name' => $request['name'],
-                'password' => $password,
-                'nationalCode' => $request['nationalCode'],
-                'username' => $request['nationalCode'],
-                'email' => $request['email'],
-                'type' => $request['type'],
-                'accept_policy' => $status
-            ]);
-            if (!is_null($request->input('roleId'))) {
-                $user->roles()->sync(
-                    $request->input('roleId')
-                );
-            }
-            return redirect(route('admin.edit',$user->id))->with('message','مورد ایجاد شد');
+        $user = User::create([
+            'picture' => $picture,
+            'signature' => $signature,
+            'name' => $request['name'],
+            'password' => $password,
+            'nationalCode' => $request['nationalCode'],
+            'username' => $request['nationalCode'],
+            'email' => $request['email'],
+            'type' => $request['type'],
+            'accept_policy' => $status
+        ]);
+        if (!is_null($request->input('roleId'))) {
+            $user->roles()->sync(
+                $request->input('roleId')
+            );
+        }
+        return redirect(route('admin.edit', $user->id))->with('message', 'مورد ایجاد شد');
     }
 
     /**
@@ -162,9 +181,16 @@ class UserController extends MainController
      */
     public function edit($id)
     {
+        try {
+            if (!$this->authorize('user')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
         $admin = User::find($id);
-        $roles = Role::where('label', '!=', 'super admin')->get();
-        $superAdmin = Role::where('label', '=', 'super admin')->first();
+        $roles = Role::where('label', '!=', 'superadmin')->get();
+        $superAdmin = Role::where('label', '=', 'superadmin')->first();
         $isSuperAdmin = false;
         foreach ($superAdmin->users as $user) {
             if (auth()->user()->id == $user->id) {
@@ -187,6 +213,14 @@ class UserController extends MainController
      */
     public function update(Request $request, $id)
     {
+        try {
+            if (!$this->authorize('user')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'name' => 'required',
             'nationalCode' => 'required',
@@ -194,7 +228,7 @@ class UserController extends MainController
             'signature' => 'mimes:jpeg,bmp,png',
         ]);
         if ($request['roleId'] == 0) {
-            return back()->with('error','هیچ نقشی انتخاب نشده!');
+            return back()->with('error', 'هیچ نقشی انتخاب نشده!');
         }
         if (isset($request['accept_policy'])) {
             $status = 1;
@@ -204,11 +238,11 @@ class UserController extends MainController
         $existedUser = User::where('nationalCode', $request['nationalCode'])->first();
         $currentUser = User::find($id);
         if (($currentUser->nationalCode != $request['nationalCode']) and isset($existedUser)) {
-            return back()->with('message','نام کاربری تکراری میباشد!');
+            return back()->with('message', 'نام کاربری تکراری میباشد!');
         }
         if ($request['password'] != null) {
             if ($request['password'] != $request['confirm']) {
-                return back()->with('error','رمز یا تکرار آن یکسان نیستند');
+                return back()->with('error', 'رمز یا تکرار آن یکسان نیستند');
             }
             User::find($id)->update([
                 'password' => bcrypt($request['password'])
@@ -218,18 +252,18 @@ class UserController extends MainController
         $picture = $request->file('picture');
         $targetPic = "/upload/images/admin/picture/";
         $targetSig = "/upload/images/admin/signature/";
-        if (isset($signature)){
+        if (isset($signature)) {
             $this->removeFile($currentUser->signature);
             $signature = $this->uploadFile($signature, $targetSig);
             $currentUser->update([
-                'signature'=>$signature,
+                'signature' => $signature,
             ]);
         }
-        if (isset($picture)){
+        if (isset($picture)) {
             $this->removeFile($currentUser->picture);
             $picture = $this->uploadFile($picture, $targetPic);
             $currentUser->update([
-                'picture'=>$picture,
+                'picture' => $picture,
             ]);
         }
         $currentUser->update([
@@ -243,7 +277,7 @@ class UserController extends MainController
         $currentUser->roles()->sync(
             $request->input('roleId')
         );
-        return back()->with('message','مورد ویرایش شد');
+        return back()->with('message', 'مورد ویرایش شد');
     }
 
     /**
@@ -254,6 +288,13 @@ class UserController extends MainController
      */
     public function destroy($id)
     {
+        try {
+            if (!$this->authorize('user')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
         $item = User::find($id);
         $roles = $item->roles->all();
         if (count($roles) > 0) {
@@ -262,14 +303,14 @@ class UserController extends MainController
             }
         }
         $item->delete();
-        back()->with('message','مورد حذف شد');
+        return back()->with('message', 'مورد حذف شد');
     }
 
     public function remove_all(Request $request)
     {
         $ids = $request['allCheckedSelect'];
         if (count($ids) == 0) {
-            back()->with('message','موردی را انتخاب نکردید');
+            back()->with('message', 'موردی را انتخاب نکردید');
         }
         foreach ($ids as $id) {
             $item = User::find($id);

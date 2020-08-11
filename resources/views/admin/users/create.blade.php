@@ -119,9 +119,9 @@
                                 <div class="form-group">
                                     <select class="js-example-basic-single" multiple dir="rtl" name="roleId[]">
                                         <option>انتخاب کنید</option>
-                                        @if($isSuperAdmin)
+                                        {{--@if($isSuperAdmin)
                                             <option value="{{$superAdmin->id}}">{{$superAdmin->name}}</option>
-                                        @endif
+                                        @endif--}}
                                         @foreach($roles as $role)
                                             @if($role->name != 'super admin')
                                                 <option value="{{$role->id}}">{{$role->name}}</option>

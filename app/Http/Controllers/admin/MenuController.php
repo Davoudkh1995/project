@@ -7,6 +7,7 @@ use App\Menu;
 use App\Page;
 use App\Vw_Menus;
 use foo\bar;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,13 @@ class MenuController extends Controller
      */
     public function index()
     {
+        try {
+            if (!$this->authorize('menu')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
 
         $items = Vw_Menus::orderbyDesc('created_at')->get();
 //        $items = \DB::select('select * from vw_menus');
@@ -33,6 +41,14 @@ class MenuController extends Controller
      */
     public function create()
     {
+        try {
+            if (!$this->authorize('menu')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $menus = Vw_Menus::where('status',1)->select(['title','id'])->get();
 //        $menus = \DB::select('select * from vw_menus');
         return view('admin.menu.create',compact('menus'));
@@ -46,6 +62,14 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
+        try {
+            if (!$this->authorize('menu')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required',
             'slug' => 'required',
@@ -85,6 +109,14 @@ class MenuController extends Controller
      */
     public function edit(Menu $menu)
     {
+        try {
+            if (!$this->authorize('menu')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $menus = Vw_Menus::where('status',1)->select(['title','id'])->get();
 //        $menus = \DB::select('select * from vw_menus');
         return view('admin.menu.update',compact('menus','menu'));
@@ -99,6 +131,14 @@ class MenuController extends Controller
      */
     public function update(Request $request, Menu $menu)
     {
+        try {
+            if (!$this->authorize('menu')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required',
             'slug' => 'required',
@@ -126,6 +166,14 @@ class MenuController extends Controller
      */
     public function destroy(Menu $menu)
     {
+        try {
+            if (!$this->authorize('menu')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $submenus = Menu::select(['id'])->where(['parent_id'=>$menu->id])->get();
         if (count($submenus)) {
             foreach ($submenus as $submenu) {
@@ -144,6 +192,14 @@ class MenuController extends Controller
 
     public function pageCreator(Request $request)
     {
+        try {
+            if (!$this->authorize('menu')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
         $page = Page::where(['menu_id'=>$request['menu_id']])->first();
         if ($page){
             $page->update([
