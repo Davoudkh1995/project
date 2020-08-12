@@ -79,12 +79,10 @@ class ArticleController extends MainController
         } catch (AuthorizationException $e) {
             abort(403);
         }
-
         $request->validate([
             'title' => 'required',
             'categoryID_FK' => 'Integer',
             'slug' => 'required',
-            'picture' => 'required|mimes:jpeg,bmp,png',
         ]);
         $status = 0;
         $popular = 0;
@@ -115,7 +113,7 @@ class ArticleController extends MainController
             'categoryID_FK' => $request['categoryID_FK'],
             'usersID_FK' => auth()->user()->id,
         ]);
-        return redirect(route('article.index'))->with('message','عملیات موفقیت آمیز بود');;
+        return redirect(route('article.index'))->with('message','عملیات موفقیت آمیز بود');
     }
 
     /**
@@ -190,7 +188,6 @@ class ArticleController extends MainController
             'title' => 'required',
             'categoryID_FK' => 'Integer',
             'slug' => 'required',
-            'picture' => 'mimes:jpeg,bmp,png',
         ]);
         $status = 0;
         if (isset($request['status'])) {

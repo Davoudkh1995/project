@@ -81,12 +81,10 @@ class PortfolioController extends MainController
         } catch (AuthorizationException $e) {
             abort(403);
         }
-
         $request->validate([
             'title' => 'required',
             'categoryID_FK' => 'Integer',
             'slug' => 'required',
-            'picture' => 'mimes:jpeg,bmp,png',
         ]);
         $mainTarget1 = "/upload/images/portfolio/large/";
         $othersTarget2 = "/upload/images/portfolio/small/";
@@ -130,7 +128,7 @@ class PortfolioController extends MainController
                 ]);
             }
         }
-        return redirect()->route('portfolio.index')->with('message', 'عملیات موفقیت آمیز بود');;
+        return redirect()->route('portfolio.index')->with('message', 'عملیات موفقیت آمیز بود');
     }
 
     /**
@@ -199,8 +197,8 @@ class PortfolioController extends MainController
             'title' => 'required',
             'categoryID_FK' => 'Integer',
             'slug' => 'required',
-            'mainPicture' => 'mimes:jpeg,bmp,png',
         ]);
+
         $status = 0;
         if (!isset($request['categoryID_FK']) or $request['categoryID_FK'] == 0) {
             return back()->with('error', 'دسته بندی انتخاب نشده');

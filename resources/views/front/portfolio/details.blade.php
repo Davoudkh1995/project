@@ -1,23 +1,25 @@
 @extends('front.master.index')
 @section('content')
-    <div class="breadcrumbs"><a href="/">خانه</a> <i class="icon-double-angle-left"></i>جزئیات نمونه کار</div>
-
+    <div class="breadcrumbs"><a href="/">{{__('messages.home')}}</a> <i class="@if(app()->getLocale() == "fa") icon-double-angle-left @else icon-double-angle-right @endif"></i>{{__('messages.portfolios.detail.title')}}</div>
     <div class="inner_content">
-        <h1 class="title">جزئیات نمونه کار</h1>
-        <h1>{{$portfolio->title}}</h1>
+        <h1 class="title">{{__('messages.portfolios.detail.title')}}</h1>
+        <h2>{{$portfolio->title}}</h2>
 
         <div class="pad30"></div>
         <div class="row">
             <div class="span4">
 
-                <h5><span>توضیحات نمونه کار</span></h5>
-                <p class="lead text-right">{!! $portfolio->content !!}</p>
+                <h5><span>{{__('messages.portfolios.detail.description')}}</span></h5>
+                <p class="lead @if(app()->getLocale() == "fa") text-right @endif">{!! $portfolio->content !!}</p>
 
-                <h6 class="text-right"><span>ویژگی ها : </span></h6>
-                <ul class="icons rtl">
-                    <li><i class="icon-globe black"></i> طراحی وب</li>
-                    <li><i class=" icon-pencil black"></i> گرافیک دیزاین</li>
-                    <li><i class=" icon-laptop black"></i> هاستینگ وب</li>
+                <h6 class=" @if(app()->getLocale() == "fa") text-right @endif"><span>{{__('messages.portfolios.detail.tags')}} : </span></h6>
+                <ul class="icons  @if(app()->getLocale() == "fa") rtl @endif">
+                    @foreach($portfolio->tags as $tag)
+                        <li><i class=" @if(app()->getLocale() == "fa") icon-arrow-left @else icon-arrow-right @endif black"></i>{{$tag}}</li>
+                        @endforeach
+{{--                    <li><i class="icon-globe black"></i> طراحی وب</li>--}}
+{{--                    <li><i class=" icon-pencil black"></i> گرافیک دیزاین</li>--}}
+{{--                    <li><i class=" icon-laptop black"></i> هاستینگ وب</li>--}}
                 </ul>
 
                 <div class="pad25"></div>
@@ -52,7 +54,7 @@
             <div class="span12 pad45">
 
                 <div class="col_full">
-                    <h3 class="title-divider span12"><strong>نمونه کارهای</strong>  مرتبط<span></span></h3>
+                    <h3 class="title-divider span12"><strong>{{__('messages.portfolios.detail.related_portfolios')}}</strong><span></span></h3>
                     <div id="slider_related">
 
                         @foreach($relatedPortfolios as $relatedPortfolio)

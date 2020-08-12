@@ -1,9 +1,9 @@
 @extends('front.master.index')
 @section('content')
-    <div class="breadcrumbs"><a href="/">خانه</a> <i class="icon-double-angle-left"></i> {{$article->title}}</div>
+    <div class="breadcrumbs"><a href="/">{{__('messages.home')}}</a> <i class="@if(app()->getLocale() == "fa") icon-double-angle-left @else icon-double-angle-right @endif"></i>{{__('messages.article_page.detail.title')}}</div>
 
     <div class="inner_content">
-        <h1 class="title">مقالات رونیکا</h1>
+        <h1 class="title">{{__('messages.article_page.detail.title')}}</h1>
         <h1>{{$article->title}}</h1>
         <div class="pad30"></div>
         <div class="row">
@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="span9">
                             <div class="date-post">
-                                <span class="day hue">{{$article->date}}</span><span class="month"></span>
+                                @if(app()->getLocale() == "fa") {{$article->date}} @else {{substr($article->created_at,0,9)}} @endif<span class="month"></span>
                             </div>
 
                             <a href="{{json_decode($article->picture)->main}}" data-rel="prettyPhoto">
@@ -25,10 +25,13 @@
 
                             <div class="post-meta">
                                 <ul>
-                                    <li> نوشته شده توسط {{$article->user}} <span class="muted">/</span></li>
-                                    <li><i class="icon-calendar normal muted"></i> {{$article->date}} /</li>
-                                    <li><i class="icon-bullhorn normal muted"></i> <a href="">{{$article->tags}}</a> /</li>
-                                    <li><i class="icon-comment-alt muted"></i><a href="">16 comments</a></li>
+                                    <li>({{__('messages.article_page.detail.authorText')}} {{$article->user}}) <span class="muted">*/*</span></li>
+                                    <li><i class="icon-calendar normal muted"></i> @if(app()->getLocale() == "fa") ({{$article->date}}) @else {{'('.substr($article->created_at,0,9).')'}} @endif  */*</li>
+                                    <li><i class="icon-bullhorn normal muted"></i>
+                                        ({{$article->tags}})
+                                        {{--                                        <a href="">web</a>, <a href="">art</a>--}}
+                                        */*</li>
+                                    <li><i class="icon-comment-alt muted"></i><a href="javascript:void(0)">{{$article->message_count}} comments</a></li>
                                 </ul>
                             </div><!--end meta-->
 
@@ -71,7 +74,7 @@
                 <div class="pad5"></div>
                 <!--prev/next-->
                 <hr>
-                &larr; @if($beforeBool)<a href="/beforeArticle/{{$beforeSlug}}" class="pointer"> مقاله قبلی</a> @else <a disabled="" class="pointer" > مقاله قبلی</a> @endif :: @if($afterBool) <a href="/afterArticle/{{$afterSlug}}" class="pointer">مقاله بعدی </a> @else <a disabled="" class="pointer">مقاله بعدی </a>@endif &rarr;
+                &larr; @if($beforeBool)<a href="/beforeArticle/{{$beforeSlug}}" class="pointer">{{__('messages.article_page.detail.beforeArticle')}}</a> @else <a disabled="" class="pointer" >{{__('messages.article_page.detail.beforeArticle')}}</a> @endif :: @if($afterBool) <a href="/afterArticle/{{$afterSlug}}" class="pointer">{{__('messages.article_page.detail.afterArticle')}} </a> @else <a disabled="" class="pointer">{{__('messages.article_page.detail.afterArticle')}} </a>@endif &rarr;
                 <hr>
                 <div class="pad5"></div>
 
@@ -160,10 +163,14 @@
                 <form action="/art_search/" method="post" id="searchItem">
                     @csrf
                     <div class="input-append">
-                        <input class="span2" type="text" placeholder="جستجو" name="slug">
-                        <span class="add-on">
-				<a onclick="searchItem()" class="pointer"><i class="icon-search"></i></a>
-				</span>
+                        @if(app()->getLocale() == "fa")
+                            <input class="span2" type="text" placeholder="{{__('messages.search')}}" name="slug">
+                            <span class="add-on"><a onclick="searchItem()" class="pointer"><i class="icon-search"></i></a></span>
+                        @else
+                            <input class="span2" type="text" placeholder="{{__('messages.search').'...'}}"
+                                   name="slug">
+                            <span class="add-on"><a onclick="searchItem()" class="pointer"><i class="icon-search"></i></a></span>
+                        @endif
                     </div>
                 </form>
                 <script>
@@ -173,8 +180,9 @@
                 </script>
 
                 <div class="pad15 "></div>
-                <h6 class="title-divider span3"><strong>فضای</strong>  مجازی<span></span></h6>
-                <p>شما میتوانید مقالات را در فضای مجازی منتشر کنید.</p>
+                <h6 class="title-divider span3">
+                    <strong>{{__('messages.article_page.detail.socialmedia.title')}}</strong><span></span></h6>
+                <p>{{__('messages.article_page.detail.socialmedia.text')}}</p>
                 <p>
                     <a href="http://twitter.com/share?url={{Request::url()}}&text=Simple Share Buttons&hashtags=simplesharebuttons" class="zocial icon twitter"></a>
                     <a href="http://www.facebook.com/sharer.php?u={{Request::url()}}" class="zocial icon facebook"></a>
@@ -186,7 +194,8 @@
 
                 <div class="pad15"></div>
 
-                <h6 class="title-divider span3"><strong>دسته بندی</strong> مقالات<span></span></h6>
+                <h6 class="title-divider span3"><strong>{{__('messages.article_page.archive.articles')}}</strong>
+                    <span></span></h6>
                 <div class="clear"></div>
                 <ul class="icons ">
                     @foreach($categories as $category)
@@ -195,7 +204,7 @@
                 </ul>
 
                 <div class="pad30"></div>
-                <h6 class="title-divider span3"><strong>Video</strong>  Widget<span></span></h6>
+                <h6 class="title-divider span3"><strong>{{__('messages.article_page.detail.video_widget')}}</strong> <span></span></h6>
                 <div class="clear"></div>
                 <!--video-->
                 <div class="vendor">
@@ -206,9 +215,9 @@
                 <div class="tabbable tabs-top">
                     <ul id="myTab" class="nav nav-tabs">
                         {{--                        <li><a href="#tab3" data-toggle="tab">برچسب</a></li>--}}
-                        <li class="active"><a href="#tab1" data-toggle="tab">اخیر</a></li>
-                        <li><a href="#tab2" data-toggle="tab">معروف</a></li>
-                        <li><a href="#tab3" data-toggle="tab">برچسب</a></li>
+                        <li class="active"><a href="#tab1" data-toggle="tab">{{__('messages.article_page.archive.latest')}}</a></li>
+                        <li><a href="#tab2" data-toggle="tab">{{__('messages.article_page.archive.popular')}}</a></li>
+                        <li><a href="#tab3" data-toggle="tab">{{__('messages.article_page.archive.tags')}}</a></li>
                     </ul>
                     <div id="myTabContent" class="tab-content">
 
@@ -216,10 +225,14 @@
                             <ul class="media-list">
                                 @foreach($latestArticles as $latestArticle)
                                     <li class="media">
-                                        <img class=" pull-left" src="{{json_decode($latestArticle->picture)->others[1]}}" alt="{{$latestArticle->title}}" width="40" height="40"/>
+                                        <img class=" pull-left"
+                                             src="{{json_decode($latestArticle->picture)->others[1]}}"
+                                             alt="{{$latestArticle->title}}" width="40" height="40"/>
                                         <div class="media-body">
-                                            <small>{{$latestArticle->date}}</small><br>
-                                            <a href="/article/{{$latestArticle->slug}}">{{$latestArticle->title}}</a></div>
+                                            <small>@if(app()->getLocale() == "fa") {{$latestArticle->date}} @else {{substr($latestArticle->created_at,0,9)}} @endif</small>
+                                            <br>
+                                            <a href="/article/{{$latestArticle->slug}}">{{$latestArticle->title}}</a>
+                                        </div>
                                     </li>
                                 @endforeach
                             </ul>
@@ -232,7 +245,7 @@
                                     <li class="media">
                                         <img class=" pull-left" src="{{json_decode($popularArticle->picture)->others[1]}}" alt="{{$popularArticle->title}}" width="60" height="60"/>
                                         <div class="media-body">
-                                            <small>{{$popularArticle->date}}</small><br>
+                                            <small>@if(app()->getLocale() == "fa") ({{$popularArticle->date}}) @else {{'('.substr($popularArticle->created_at,0,9).')'}} @endif</small><br>
                                             <a href="/article/{{$popularArticle->slug}}">{{$popularArticle->title}}</a></div>
                                     </li>
                                 @endforeach

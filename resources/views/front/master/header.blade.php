@@ -2,22 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>طراحی سایت و نرم افزار رونیکا</title>
+    <title>{{__('messages.siteTitle')}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="راه اندازی نرم افزار ها تحت وب و طراحی سایت">
+    <meta name="description" content="{{__('messages.siteDescription')}}">
     <meta name="author" content="Davoud Khoshkar">
 
 {{--    <link href='http://fonts.googleapis.com/css?family=Arvo:400|Open+Sans:400,700,300' rel='stylesheet' type='text/css'>--}}
-    <!--[if IE]>
+<!--[if IE]>
     <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">-->
-{{--<!--    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet" type="text/css">-->--}}
-{{--    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">--}}
-{{--    <link href="http://fonts.googleapis.com/css?family=Open+Sans:700" rel="stylesheet" type="text/css">--}}
-{{--    <![endif]-->--}}
+    {{--<!--    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet" type="text/css">-->--}}
+    {{--    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">--}}
+    {{--    <link href="http://fonts.googleapis.com/css?family=Open+Sans:700" rel="stylesheet" type="text/css">--}}
+    {{--    <![endif]-->--}}
     <link rel="preload" href="/front/font/aviny-700.woff" as="font" type="font/woff" crossorigin>
     <link href="/front/css/bootstrap.css" rel="stylesheet">
     <link href="/front/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/front/css/theme.css" rel="stylesheet">
+    @if(app()->getLocale() == 'fa')
+        <link href="/front/css/theme.css" rel="stylesheet">
+    @endif
+    @if(app()->getLocale() == 'en')
+        <link href="/front/css/themeEn.css" rel="stylesheet">
+    @endif
+
+
     <link href="/front/css/prettyPhoto.css" rel="stylesheet" type="text/css"/>
     <link href="/front/css/zocial.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="/admin/assets/sweetalert2/sweetalert2.css">
@@ -39,17 +46,40 @@
     <!--logo-->
     <div class="container">
         <div class="logo">
-            <a href="/"><img src="/front/img/logo.png" alt="رونیکا" /></a>
+            <a href="/"><img src="/front/img/logo.png" alt="رونیکا"/></a>
         </div>
         <!--menu-->
         <nav id="main_menu">
             <div class="menu_wrap">
                 <ul class="nav sf-menu">
-                    <li class=" @if(Request::is('contact_us')) active @endif"><a href="/contact_us"><i class="icon-phone-sign darkgrey"></i><br>تماس</a> </li>
-                    <li class=" @if(Request::is('about_us')) active @endif"><a href="/about_us"><i class="icon-user darkgrey"></i><br>درباره ما</a> </li>
-                    <li class=" @if(Request::is('article*') or Request::is('art_search') or Request::is('category_archive*') or Request::is('beforeArticle*') or Request::is('afterArticle*')) active @endif"><a href="/article"><i class="icon-book darkgrey"></i><br>مقالات</a> </li>
-                    <li class=" @if(Request::is('portfolio*')) active @endif"><a href="/portfolio"><i class="icon-suitcase darkgrey"></i><br>نمونه کار</a> </li>
-                    <li class=" @if(Request::is('/')) active @endif"><a href="/"><i class="icon-home  darkgrey"></i><br>خانه</a> </li>
+                    @if(app()->getLocale() == "fa")
+                        <li class=" @if(Request::is('contact_us')) active @endif"><a href="/contact_us"><i
+                                        class="icon-phone-sign darkgrey"></i><br>{{__('messages.contact')}}</a></li>
+                        <li class=" @if(Request::is('about_us')) active @endif"><a href="/about_us"><i
+                                        class="icon-user darkgrey"></i><br>{{__('messages.about')}}</a></li>
+                        <li class=" @if(Request::is('article*') or Request::is('art_search') or Request::is('category_archive*') or Request::is('beforeArticle*') or Request::is('afterArticle*')) active @endif">
+                            <a href="/article"><i class="icon-book darkgrey"></i><br>{{__('messages.articles')}}</a>
+                        </li>
+                        <li class=" @if(Request::is('portfolio*')) active @endif"><a href="/portfolio"><i
+                                        class="icon-suitcase darkgrey"></i><br>{{__('messages.portfolio')}}</a></li>
+                        <li class=" @if(Request::is('/')) active @endif"><a href="/"><i class="icon-home  darkgrey"></i><br>{{__('messages.home')}}
+                            </a></li>
+                    @endif
+
+                    @if(app()->getLocale() == "en")
+                        <li class=" @if(Request::is('/')) active @endif"><a href="/"><i class="icon-home  darkgrey"></i><br>{{__('messages.home')}}
+                            </a></li>
+                        <li class=" @if(Request::is('portfolio*')) active @endif"><a href="/portfolio"><i
+                                        class="icon-suitcase darkgrey"></i><br>{{__('messages.portfolio')}}</a></li>
+                        <li class=" @if(Request::is('article*') or Request::is('art_search') or Request::is('category_archive*') or Request::is('beforeArticle*') or Request::is('afterArticle*')) active @endif">
+                            <a href="/article"><i class="icon-book darkgrey"></i><br>{{__('messages.articles')}}</a>
+                        </li>
+                        <li class=" @if(Request::is('about_us')) active @endif"><a href="/about_us"><i
+                                        class="icon-user darkgrey"></i><br>{{__('messages.about')}}</a></li>
+                        <li class=" @if(Request::is('contact_us')) active @endif"><a href="/contact_us"><i
+                                        class="icon-phone-sign darkgrey"></i><br>{{__('messages.contact')}}</a></li>
+                    @endif
+
                     {{--<li class="sub-menu"><a href="javascript:{}"> <i class="icon-book darkgrey"></i><br>Pages</a>
                         <ul>
                             <li><a href="team.html"><span>--</span>The Team</a></li>
@@ -111,7 +141,7 @@
                             <li><a href="blog_post2.html"><span>--</span>Post Variation</a></li>
                         </ul>
                     </li>--}}
-{{--                    <li class="last"><a href="contact.html"><i class="icon-pencil darkgrey"></i><br>Contact</a></li>--}}
+                    {{--                    <li class="last"><a href="contact.html"><i class="icon-pencil darkgrey"></i><br>Contact</a></li>--}}
                 </ul>
             </div>
         </nav>

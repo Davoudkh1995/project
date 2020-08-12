@@ -28,16 +28,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->composer('front.master.index', function ($view) {
-
-            $contact = Contactus::first();
-            $articles = Article::where('status',1)->orderBy('priority','asc')->take(3)->get();
-            foreach ($articles as $article){
+            $locale = app()->getLocale();
+            $contact = Contactus::where('lang', $locale)->first();
+            $articles = Article::where('lang', $locale)->where('status', 1)->orderBy('priority', 'asc')->take(3)->get();
+            foreach ($articles as $article) {
                 $time = new Verta($article->created_at);
                 $article['date'] = $time->format('Y/n/j');
             }
-            $latestBlog = Article::where(['status'=>1])->orderByDesc('id')->first();
-//            dd($latestBlog);
-            $view->with(compact('contact','articles','latestBlog'));
+            $latestBlog = Article::where('lang', $locale)->where(['status' => 1])->orderByDesc('id')->first();
+            $view->with(compact('contact', 'articles', 'latestBlog'));
         });
     }
 }

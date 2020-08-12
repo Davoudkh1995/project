@@ -1,15 +1,15 @@
 @extends('front.master.index')
 @section('content')
-    <div class="breadcrumbs"><a href="/">خانه</a> <i class="icon-double-angle-left"></i> نمونه کارها</div>
+    <div class="breadcrumbs"><a href="/">{{__('messages.home')}}</a> <i class="@if(app()->getLocale() == "fa") icon-double-angle-left @else icon-double-angle-right @endif"></i>{{__('messages.portfolio')}}</div>
 
     <div class="inner_content rtl">
-        <h1 class="title">نمونه کارهای گروه رونیکا</h1>
-        <h1>در این بخش شما شاهد نمونه کارهای گروه رونیکا میباشید.</h1>
+        <h1 class="title">{{__('messages.portfolios.archive.title')}}</h1>
+        <h1>{{__('messages.portfolios.archive.subTitle')}}</h1>
 
         <div class="pad30"></div>
         <div id="options">
             <ul id="filters" class="option-set" data-option-key="filter">
-                <li><a href="#filter" data-option-value="*" class=" selected">همه</a></li>
+                <li><a href="#filter" data-option-value="*" class=" selected">@if(app()->getLocale() == "fa")  همه @else All @endif</a></li>
                 @foreach($categories as $category)
                     <li><a href="#filter" data-option-value=".category{{$category->id}}">{{$category->title}}</a></li>
                     @endforeach
@@ -25,14 +25,14 @@
                 @foreach($categories as $category)
                     @if(count($category->portfolios))
                     @foreach($category->portfolios as $portfolio)
-                        <div class="span3 element category{{$category->id}}" data-category="category{{$category->id}}" dir="rtl">
+                        <div class="span3 element category{{$category->id}}" data-category="category{{$category->id}}" @if(app()->getLocale() == "fa") dir="rtl" @endif>
                             <div class="hover_img">
                                 <img src="{{json_decode($portfolio->picture)->others[0]}}" alt="{{$portfolio->title}}" class="height250 width100"/>
                                 <span class="portfolio_zoom"><a href="{{json_decode($portfolio->picture)->others[0]}}" data-rel="prettyPhoto[portfolio1]"></a></span>
                                 <span class="portfolio_link"><a href="/portfolio/{{$portfolio->slug}}">مشاهده</a></span>
                             </div>
                             <div class="item_description">
-                                <a href="/portfolio/{{$portfolio->slug}}" class="text-right"><span>{{$portfolio->title}}</span></a><br/>
+                                <a href="/portfolio/{{$portfolio->slug}}" class="@if(app()->getLocale() == "fa") text-right @endif"><span>{{$portfolio->title}}</span></a><br/>
                                 {!! \Illuminate\Support\Str::limit($portfolio->content,50) !!}
                             </div>
                         </div>

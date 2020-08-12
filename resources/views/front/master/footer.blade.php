@@ -4,36 +4,44 @@
         <div class="row">
             <!--column 1-->
             <div class="span3">
-                <h6>اطلاعات سریع</h6>
+                <h6>{{__('messages.footer.rapid_info.title')}}</h6>
                 <ul>
                     <li>
-                        <p class="text-right"><span class="dropcap2">رونیکا</span>
-                            این سایت به عنوان معرفی کننده گروه برنامه نویسی رونیکا است. این گروه مفتخر به انجام چندین
-                            پروژه در حوزه سایت و نرم افزارهای تحت وب میباشد. بهترینها رو برای شما اجرا میکنیم به ما
-                            اطمینان کنید</p>
+                        @if(app()->getLocale() == "fa")
+                        <p class=" text-right"><span class="dropcap2">{{__('messages.footer.rapid_info.subTitle')}}</span>
+                            {{__('messages.footer.rapid_info.description')}}
+                        </p>
                         <address class="text-right">
                             {!! $contact->address !!}
                         </address>
-
+                            @else
+                            <p><span class="dropcap2">{{__('messages.footer.rapid_info.subTitle')}}</span>
+                                {{__('messages.footer.rapid_info.description')}}
+                            </p>
+                            <address>
+                                {!! $contact->address !!}
+                            </address>
+                        @endif
                         <p><i class="icon-envelope hue"></i>
                             <a href="mailto:{{$contact->address}}">{{$contact->email}}</a><br/>
                             <i class="icon-phone hue"></i>
                             <a href="mailto:{{$contact->mobile}}">{{$contact->mobile}}</a>
                         </p>
+
                     </li>
                 </ul>
             </div>
             <!--column 2-->
             <div class="span3">
-                <h6>مهمترین مقالات</h6>
+                <h6>{{__('messages.footer.articles.title')}} </h6>
                 <ul class="media-list">
                     @foreach($articles as $article)
                         <li class="media">
-                            <img class="drop pull-right" src="{{$article->picture['others'][1]}}"
+                            <img class="drop @if(app()->getLocale() == "fa") pull-right @else pull-left @endif" src="{{$article->picture['others'][1]}}"
                                  alt="{{$article->title}}" height="42" width="42">
-                            <div class="media-body text-right">
+                            <div class="media-body  @if(app()->getLocale() == "fa") text-right @endif">
                                 <a href="/article/{{$article->slug}}" dir="rtl">{{\Illuminate\Support\Str::limit($article->title,100)}}</a>
-                                <br/>{{$article->date}}<i class="icon-time hue"></i></div>
+                                <br/>@if(app()->getLocale() == "fa"){{$article->date}} @else {{substr($article->created_at,0,9)}} @endif<i class="icon-time hue"></i></div>
                         </li>
                     @endforeach
 
@@ -64,20 +72,20 @@
             </div>
             <!--column 3-->
             <div class="span3">
-                <h6>آخرین مقاله</h6>
+                <h6>{{__('messages.footer.important_article.title')}}</h6>
                 <img src="{{$latestBlog->picture['others'][1]}}" alt="{{$latestBlog->title}}"/>
                 <h5><a href="/portfolio/{{$latestBlog->slug}}">{{\Illuminate\Support\Str::limit($article->title,150)}}</a></h5>
-                <p class="text-right">
+                <p class="@if(app()->getLocale() == "fa") text-right @endif">
                     {!! \Illuminate\Support\Str::limit($article->title,150) !!}
                 </p>
                 <p>
-                    <a href="/article/{{$latestBlog->slug}}" class="more-link">ادامه مطلب &rarr;</a>
+                    <a href="/article/{{$latestBlog->slug}}" class="more-link">{{__('messages.footer.important_article.button')}} &rarr;</a>
                 </p>
             </div>
             <!--column 4-->
             <div class="span3">
                 <!--flickr-->
-                <h6>فضای مجازی</h6>
+                <h6>{{__('messages.footer.socialmedia.title')}} </h6>
                 <div class="flickrs">
                     <div class="FlickrImages">
                         <ul>
@@ -87,7 +95,7 @@
                     </div>
                 </div>
 
-                <h5>ممنون که سایت خودتونو مشاهده کردید</h5>
+                <h5>{{__('messages.footer.socialmedia.subTitle')}} </h5>
                 <div class="follow_us">
                     <a href="#" class="zocial twitter"></a>
                     <a href="#" class="zocial facebook"></a>
@@ -95,14 +103,14 @@
                     <a href="#" class="zocial googleplus"></a>
                     <a href="#" class="zocial vimeo"></a>
                 </div>
-                <div class="copyright text-right">
+                <div class="copyright @if(app()->getLocale() == "fa") text-right @endif">
                     &copy;
                     <script type="text/javascript">
                         var d = new Date();
                         document.write(d.getFullYear())
                     </script>
-                    - حقوق کپی رایت<br/>
-                    این سایت تماماّ متعلق به <a href="http://spiralpixel.com">گروه برنامه نویسی رونیکا</a> است
+                    - {{__('messages.footer.socialmedia.privacy')}}<br/>
+                    {{__('messages.footer.socialmedia.policy')}} <a href="http://spiralpixel.com">{{__('messages.footer.socialmedia.author')}}</a> {{__('messages.footer.socialmedia.endStatement')}}
                 </div>
             </div>
         </div>

@@ -68,6 +68,7 @@ class MainController extends Controller
                 unset($relatedPortfolios[$key]);
             }
         }
+        $portfolio['tags'] = explode(',',$portfolio->tags);
         return view('front.portfolio.details', compact('portfolio', 'portfolioImages', 'relatedPortfolios'));
     }
 
@@ -76,6 +77,9 @@ class MainController extends Controller
         $this->locale = app()->getLocale();
         $categories = Vw_CategoryArticles::where('lang',$this->locale)->where('status', 1)->orderByDesc('id')->get();
         $articles = Vw_articles::where('lang',$this->locale)->where(['status' => 1])->orderByDesc('id')->paginate(3);
+        foreach ($articles as $article){
+            $article['message_count'] = Message::where('article_id',$article->id)->get()->count();
+        }
         $articles = $this->handleDateAndUserForArray($articles);
         $latestArticles = Vw_articles::where('lang',$this->locale)->where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
         $latestArticles = $this->handleDateAndUserForArray($latestArticles);
@@ -113,6 +117,7 @@ class MainController extends Controller
             $v = new Verta($message->created_at);
             $message['date'] = $v->format('Y/n/j');
         }
+        $article['message_count'] = Message::where('article_id',$article->id)->get()->count();
         return view('front.article.details', compact('article','popularArticles','latestArticles','categories','tags','messages','afterBool','beforeBool','afterSlug','beforeSlug'));
     }
 
