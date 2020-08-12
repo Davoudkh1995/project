@@ -3,7 +3,7 @@
     <div class="breadcrumbs"><a href="#">خانه</a> <i class="icon-double-angle-left grey marginL10"></i>ارتباط با من</div>
 
     <div class="inner_content">
-        <h1 class="title">ارتباط با من</h1>
+        <h1 class="title">ارتباط با ما</h1>
 
         {{--<h1>It's art if it can't be explained. It's <span>fashion</span> if no one asks for an <span>explanation.</span>
             It's <span class="hue">design</span> if it doesn't need explanation. - Wouter Stokkel</h1>--}}

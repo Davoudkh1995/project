@@ -47,7 +47,6 @@ class ArticleController extends MainController
         } catch (AuthorizationException $e) {
             abort(403);
         }
-
         $categories = Vw_CategoryArticles::where(['status' => 1])->get();
         $priority_arr = Vw_articles::where('priority', '!=', 0)->select(['priority'])->get();
         $priorities = [1, 2, 3];

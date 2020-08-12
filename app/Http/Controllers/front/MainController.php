@@ -21,32 +21,37 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
+    private $locale;
 
     public function index()
     {
-        $sliders = Slider::where(['status' => 1])->select(['picture', 'title'])->orderBy('priority', 'asc')->take(5)->get();
-        $portfolios = Portfolio::orderbyDesc('priority')->take(7)->get();
+        $this->locale = app()->getLocale();
+        $sliders = Slider::where('lang',$this->locale)->where(['status' => 1])->select(['picture', 'title'])->orderBy('priority', 'asc')->take(5)->get();
+        $portfolios = Portfolio::where('lang',$this->locale)->orderbyDesc('priority')->take(7)->get();
 
         return view('front.index', compact('sliders', 'portfolios'));
     }
 
     public function contact()
     {
-        $data = Contactus::first();
+        $this->locale = app()->getLocale();
+        $data = Contactus::where('lang',$this->locale)->first();
         return view('front.contact', compact('data'));
     }
 
     public function about()
     {
-        $about = Aboutus::first();
+        $this->locale = app()->getLocale();
+        $about = Aboutus::where('lang',$this->locale)->first();
         return view('front.about', compact('about'));
     }
 
     public function portfolios()
     {
-        $categories = Vw_CategoryPortfolio::where('status', 1)->orderByDesc('id')->get();
+        $this->locale = app()->getLocale();
+        $categories = Vw_CategoryPortfolio::where('lang',$this->locale)->where('status', 1)->orderByDesc('id')->get();
         foreach ($categories as $category) {
-            $portfolios = Vw_Portfolio::where(['status' => 1, 'categoryID_FK' => $category->id])->get();
+            $portfolios = Vw_Portfolio::where('lang',$this->locale)->where(['status' => 1, 'categoryID_FK' => $category->id])->get();
             $category['portfolios'] = $portfolios;
         }
         return view('front.portfolio.archive', compact('categories'));
@@ -54,9 +59,10 @@ class MainController extends Controller
 
     public function portfolioDetails($slug)
     {
-        $portfolio = Vw_Portfolio::where(['slug' => $slug])->first();
+        $this->locale = app()->getLocale();
+        $portfolio = Vw_Portfolio::where('lang',$this->locale)->where(['slug' => $slug])->first();
         $portfolioImages = ImageModel::where('symbol', 'like', 'portfolio_%')->where('model_id', $portfolio->id)->get();
-        $relatedPortfolios = Vw_Portfolio::where(['categoryID_FK' => $portfolio->categoryID_FK])->get();
+        $relatedPortfolios = Vw_Portfolio::where('lang',$this->locale)->where(['categoryID_FK' => $portfolio->categoryID_FK])->get();
         foreach ($relatedPortfolios as $key => $relatedPortfolio) {
             if ($relatedPortfolio->id == $portfolio->id) {
                 unset($relatedPortfolios[$key]);
@@ -67,29 +73,31 @@ class MainController extends Controller
 
     public function articles()
     {
-        $categories = Vw_CategoryArticles::where('status', 1)->orderByDesc('id')->get();
-        $articles = Vw_articles::where(['status' => 1])->orderByDesc('id')->paginate(3);
+        $this->locale = app()->getLocale();
+        $categories = Vw_CategoryArticles::where('lang',$this->locale)->where('status', 1)->orderByDesc('id')->get();
+        $articles = Vw_articles::where('lang',$this->locale)->where(['status' => 1])->orderByDesc('id')->paginate(3);
         $articles = $this->handleDateAndUserForArray($articles);
-        $latestArticles = Vw_articles::where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
+        $latestArticles = Vw_articles::where('lang',$this->locale)->where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
         $latestArticles = $this->handleDateAndUserForArray($latestArticles);
-        $popularArticles = Vw_articles::where(['status' => 1, 'popular' => 1])->orderByDesc('created_at')->take(3)->get();
+        $popularArticles = Vw_articles::where('lang',$this->locale)->where(['status' => 1, 'popular' => 1])->orderByDesc('created_at')->take(3)->get();
         $popularArticles = $this->handleDateAndUserForArray($popularArticles);
         return view('front.article.archive', compact('categories', 'articles', 'latestArticles', 'popularArticles'));
     }
 
     public function articleDetails($slug)
     {
-        $article = Vw_articles::where(['slug' => $slug])->first();
+        $this->locale = app()->getLocale();
+        $article = Vw_articles::where('lang',$this->locale)->where(['slug' => $slug])->first();
         $result = $this->handleBeforeAfterArticle($article->id);
         $beforeBool = $result[0];
         $afterBool = $result[1];
         $beforeSlug = $result[2];
         $afterSlug = $result[3];
         $article = $this->handleDateAndUserForObject($article);
-        $categories = Vw_CategoryArticles::where('status', 1)->orderByDesc('id')->get();
-        $latestArticles = Vw_articles::where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
+        $categories = Vw_CategoryArticles::where('lang',$this->locale)->where('status', 1)->orderByDesc('id')->get();
+        $latestArticles = Vw_articles::where('lang',$this->locale)->where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
         $latestArticles = $this->handleDateAndUserForArray($latestArticles);
-        $popularArticles = Vw_articles::where(['status' => 1, 'popular' => 1])->orderByDesc('created_at')->take(3)->get();
+        $popularArticles = Vw_articles::where('lang',$this->locale)->where(['status' => 1, 'popular' => 1])->orderByDesc('created_at')->take(3)->get();
         $popularArticles = $this->handleDateAndUserForArray($popularArticles);
         $tags = $article->tags;
         if (strlen($tags)){
@@ -110,17 +118,18 @@ class MainController extends Controller
 
     public function beforeArticle($slug)
     {
-        $article = Vw_articles::where('slug',$slug)->first();
+        $this->locale = app()->getLocale();
+        $article = Vw_articles::where('lang',$this->locale)->where('slug',$slug)->first();
         $result = $this->handleBeforeAfterArticle($article->id);
         $beforeBool = $result[0];
         $afterBool = $result[1];
         $beforeSlug = $result[2];
         $afterSlug = $result[3];
         $article = $this->handleDateAndUserForObject($article);
-        $categories = Vw_CategoryArticles::where('status', 1)->orderByDesc('id')->get();
-        $latestArticles = Vw_articles::where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
+        $categories = Vw_CategoryArticles::where('lang',$this->locale)->where('status', 1)->orderByDesc('id')->get();
+        $latestArticles = Vw_articles::where('lang',$this->locale)->where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
         $latestArticles = $this->handleDateAndUserForArray($latestArticles);
-        $popularArticles = Vw_articles::where(['status' => 1, 'popular' => 1])->orderByDesc('created_at')->take(3)->get();
+        $popularArticles = Vw_articles::where('lang',$this->locale)->where(['status' => 1, 'popular' => 1])->orderByDesc('created_at')->take(3)->get();
         $popularArticles = $this->handleDateAndUserForArray($popularArticles);
         $tags = $article->tags;
         if (strlen($tags)){
@@ -141,17 +150,18 @@ class MainController extends Controller
 
     public function afterArticle($slug)
     {
-        $article = Vw_articles::where('slug',$slug)->first();
+        $this->locale = app()->getLocale();
+        $article = Vw_articles::where('lang',$this->locale)->where('slug',$slug)->first();
         $result = $this->handleBeforeAfterArticle($article->id);
         $beforeBool = $result[0];
         $afterBool = $result[1];
         $beforeSlug = $result[2];
         $afterSlug = $result[3];
         $article = $this->handleDateAndUserForObject($article);
-        $categories = Vw_CategoryArticles::where('status', 1)->orderByDesc('id')->get();
-        $latestArticles = Vw_articles::where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
+        $categories = Vw_CategoryArticles::where('lang',$this->locale)->where('status', 1)->orderByDesc('id')->get();
+        $latestArticles = Vw_articles::where('lang',$this->locale)->where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
         $latestArticles = $this->handleDateAndUserForArray($latestArticles);
-        $popularArticles = Vw_articles::where(['status' => 1, 'popular' => 1])->orderByDesc('created_at')->take(3)->get();
+        $popularArticles = Vw_articles::where('lang',$this->locale)->where(['status' => 1, 'popular' => 1])->orderByDesc('created_at')->take(3)->get();
         $popularArticles = $this->handleDateAndUserForArray($popularArticles);
         $tags = $article->tags;
         if (strlen($tags)){
@@ -172,8 +182,9 @@ class MainController extends Controller
 
     public function handleBeforeAfterArticle($articleID)
     {
-        $before = Vw_articles::where('id','<',$articleID)->orderByDesc('id')->first();
-        $after = Vw_articles::where('id','>',$articleID)->orderBy('id','asc')->first();
+        $this->locale = app()->getLocale();
+        $before = Vw_articles::where('lang',$this->locale)->where('id','<',$articleID)->orderByDesc('id')->first();
+        $after = Vw_articles::where('lang',$this->locale)->where('id','>',$articleID)->orderBy('id','asc')->first();
         $afterBool = false;
         $afterSlug = '';
         $beforeBool = false;
@@ -191,12 +202,13 @@ class MainController extends Controller
 
     public function articleCategoryArchive($slug)
     {
-        $category = Vw_CategoryArticles::where('title',$slug )->first();
-        $articles = Vw_articles::where(['categoryID_FK' => $category->id])->paginate(5);
-        $categories = Vw_CategoryArticles::where('status', 1)->orderByDesc('id')->get();
-        $latestArticles = Vw_articles::where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
+        $this->locale = app()->getLocale();
+        $category = Vw_CategoryArticles::where('lang',$this->locale)->where('title',$slug )->first();
+        $articles = Vw_articles::where('lang',$this->locale)->where(['categoryID_FK' => $category->id])->paginate(5);
+        $categories = Vw_CategoryArticles::where('lang',$this->locale)->where('status', 1)->orderByDesc('id')->get();
+        $latestArticles = Vw_articles::where('lang',$this->locale)->where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
         $latestArticles = $this->handleDateAndUserForArray($latestArticles);
-        $popularArticles = Vw_articles::where(['status' => 1, 'popular' => 1])->orderByDesc('created_at')->take(3)->get();
+        $popularArticles = Vw_articles::where('lang',$this->locale)->where(['status' => 1, 'popular' => 1])->orderByDesc('created_at')->take(3)->get();
         $popularArticles = $this->handleDateAndUserForArray($popularArticles);
         $tags = explode(',',$category->tags);
         return view('front.article.archive', compact('articles','popularArticles','latestArticles','categories','tags'));
@@ -204,15 +216,16 @@ class MainController extends Controller
 
     public function articlesSearch(Request $request)
     {
+        $this->locale = app()->getLocale();
         if (empty($request['slug'])) {
             return redirect()->to('/article')->with('error', 'هیچ موردی نوشته نشد');
         }
-        $articles = Vw_articles::where('title', 'like', '%' . $request['slug'] . '%')->paginate(5);
+        $articles = Vw_articles::where('lang',$this->locale)->where('title', 'like', '%' . $request['slug'] . '%')->paginate(5);
         $articles = $this->handleDateAndUserForArray($articles);
-        $categories = Vw_CategoryArticles::where('status', 1)->orderByDesc('id')->get();
-        $latestArticles = Vw_articles::where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
+        $categories = Vw_CategoryArticles::where('lang',$this->locale)->where('status', 1)->orderByDesc('id')->get();
+        $latestArticles = Vw_articles::where('lang',$this->locale)->where(['status' => 1])->orderByDesc('created_at')->take(3)->get();
         $latestArticles = $this->handleDateAndUserForArray($latestArticles);
-        $popularArticles = Vw_articles::where(['status' => 1, 'popular' => 1])->orderByDesc('created_at')->take(3)->get();
+        $popularArticles = Vw_articles::where('lang',$this->locale)->where(['status' => 1, 'popular' => 1])->orderByDesc('created_at')->take(3)->get();
         $popularArticles = $this->handleDateAndUserForArray($popularArticles);
         return view('front.article.archive', compact('categories', 'articles', 'latestArticles', 'popularArticles'));
     }
