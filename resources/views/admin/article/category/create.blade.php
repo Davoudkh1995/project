@@ -81,6 +81,15 @@
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
+                        <div class="form-group">
+                            <label for="validationCustom03">زبان</label>
+                            <select class="form-control js-example-basic-single" dir="rtl" name="lang">
+                                <option selected value="fa">فارسی</option>
+                                <option value="en">انگلیسی</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
                         <label for="validationCustom02">برچسب</label>
                         <input type="text" class="form-control tagsinput" placeholder="" value="" name="tags">
                         <div class="valid-feedback">

@@ -76,17 +76,26 @@
                             </script>
                         </div>
                         <div class="row">
-                            <div class="form-group col-sm-6">
+                            <div class="form-group col-sm-4">
                                 <label for="">عنوان</label>
                                 <input type="text" class="form-control" id="title"
                                        name="title" value="{{$slider->title}}">
                             </div>
-                            <div class="form-group col-sm-6">
+                            <div class="form-group col-sm-4">
                                 <label for="">لینک</label>
                                 <input type="text" class="form-control" id="link"
                                        name="link" value="{{$slider->link}}">
                             </div>
-                            <div class="form-group col-sm-6">
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label for="validationCustom03">زبان</label>
+                                    <select class="form-control js-example-basic-single" dir="rtl" name="lang">
+                                        <option @if($slider->lang == "fa") selected @endif value="fa">فارسی</option>
+                                        <option @if($slider->lang == "en") selected @endif value="en">انگلیسی</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-12">
                                 <label for="">توضیحات</label>
                                 <textarea class="form-control" id="description" rows="3" name="description">
                                     {{$slider->description}}</textarea>
@@ -121,10 +130,11 @@
                                 <option value="2" @if($slider->slider_type == 2) selected @endif>متنی و تصویری</option>
                             </select>
                         </div>
+{{--                        {{dd($priorities)}}--}}
                         <div class="form-group">
-                            <select class="form-control" dir="rtl" name="priority" id="priority">
+                            <select class="form-control js-example-basic-single" dir="rtl" name="priority" id="priority">
                                 <option value="0" selected>انتخاب کنید</option>
-                                <option value="{{$slider->priority}}" disabled selected>@if($slider->priority == 0) بدون جایگاه @else {{$slider->priority}} @endif</option>
+                                <option value="{{$slider->priority}}"selected disabled>@if($slider->priority == 0) بدون جایگاه @else {{$slider->priority}} @endif</option>
                                 @foreach($priorities as $priority)
                                     <option value="{{$priority}}">{{$priority}}</option>
                                 @endforeach

@@ -81,10 +81,11 @@ class CategoryArticleController extends MainController
             'tags'=>$request['tags'],
             'parent_id'=>$request['parent_id'],
             'status'=>$status,
+            'lang' => $request['lang'],
             'slug'=>$request['slug'],
             'usersID_FK'=>auth()->user()->id
         ]);
-        return redirect(route('category_article.index'))->with('message','عملیات موفقیت آمیز بود');;
+        return redirect(route('category_article.index'))->with('message','عملیات موفقیت آمیز بود');
     }
 
     /**
@@ -146,6 +147,7 @@ class CategoryArticleController extends MainController
         $categoryArticle->update([
             'title'=>$request['title'],
             'tags'=>$request['tags'],
+            'lang' => $request['lang'],
             'parent_id'=>$request['parent_id'],
             'slug'=>$request['slug'],
             'status'=>$status,

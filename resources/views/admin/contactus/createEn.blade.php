@@ -1,15 +1,15 @@
 @extends('admin.master.index')
 @section('style')
     <!-- begin::tagsinput -->
-    <link rel="stylesheet" href="/admin/assets/vendors/tagsinput/bootstrap-tagsinput.css" type="text/css">
+        <link rel="stylesheet" href="/admin/assets/vendors/tagsinput/bootstrap-tagsinput.css" type="text/css">
     <!-- end::tagsinput -->
     <script src="/admin/assets/ckeditor/ckeditor.js"></script>
 @endsection
 @section('script')
     <!-- begin::input mask -->
-    <script src="/admin/assets/vendors/tagsinput/bootstrap-tagsinput.js"></script>
-    <script src="/admin/assets/js/examples/tagsinput.js"></script>
-    {{--    <!-- end::input mask -->--}}
+        <script src="/admin/assets/vendors/tagsinput/bootstrap-tagsinput.js"></script>
+        <script src="/admin/assets/js/examples/tagsinput.js"></script>
+{{--    <!-- end::input mask -->--}}
 @endsection
 @section('header')
     <div>
@@ -42,25 +42,19 @@
     <div class="card">
         <h5 class="card-header">تماس با ما</h5>
         <div class="card-body">
-            <div class="mb-4">
-                <a href="/admin/updateContactEn" class="btn btn-primary" style="margin: auto;display: table;">تماس با ما( انگلیسی )</a>
-            </div>
-            <form action="{{route('contactus.update',1)}}" method="post" class="needs-validation"
+            <form action="/admin/updateContactEn" method="post" class="needs-validation"
                   novalidate="" enctype="multipart/form-data"
                   autocomplete="off">
                 @csrf
-                @method('patch')
                 <div class="form-row mb-4">
-                    <div class="col-md-6 phones">
-                        <label for="">تلفن</label>
-                        <input type="text" class="form-control tagsinput" name="tel"
-                               value="@if(isset($contactus)) {{$contactus->tel}} @endif">
-                    </div>
-                    <div class="col-md-6 emails">
-                        <label for="">پست الکترونیکی</label>
-                        <input type="text" class="form-control tagsinput" name="email"
-                               value="@if(isset($contactus)) {{$contactus->email}} @endif">
-                    </div>
+                        <div class="col-md-6 phones">
+                            <label for="">تلفن</label>
+                            <input type="text" class="form-control tagsinput" name="tel" value="@if(isset($contactus)) {{$contactus->tel}} @endif">
+                        </div>
+                        <div class="col-md-6 emails">
+                            <label for="">پست الکترونیکی</label>
+                            <input type="text" class="form-control tagsinput" name="email" value="@if(isset($contactus)) {{$contactus->email}} @endif">
+                        </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-6 mb-3">

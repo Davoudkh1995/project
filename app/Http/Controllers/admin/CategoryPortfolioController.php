@@ -90,10 +90,11 @@ class CategoryPortfolioController extends MainController
             'tags' => $request['tags'],
             'slug' => $request['slug'],
             'parent_id' => $request['parent_id'],
+            'lang' => $request['lang'],
             'status' => $status,
             'usersID_FK' => auth()->user()->id
         ]);
-        return redirect(route('category_portfolio.index'))->with('message', 'عملیات موفقیت آمیز بود');;
+        return redirect(route('category_portfolio.index'))->with('message', 'عملیات موفقیت آمیز بود');
     }
 
     /**
@@ -156,6 +157,7 @@ class CategoryPortfolioController extends MainController
             'title' => $request['title'],
             'tags' => $request['tags'],
             'parent_id' => $request['parent_id'],
+            'lang' => $request['lang'],
             'slug' => $request['slug'],
             'status' => $status,
         ]);

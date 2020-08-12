@@ -67,7 +67,7 @@ class ServiceController extends MainController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -112,32 +112,30 @@ class ServiceController extends MainController
             'tags' => $request['tags'],
             'content' => $request['content'],
             'priority' => $request['priority'],
+            'lang' => $request['lang'],
             'categoryID_FK' => $request['categoryID_FK'],
             'usersID_FK' => auth()->user()->id,
         ]);
-        if (count($pictures) > 1){
+        if (count($pictures) > 1) {
             array_shift($pictures);
             $otherPictures = $this->
             handleArrayFiles($pictures, $othersTarget2);
-            foreach ($otherPictures as $key=>$item){
+            foreach ($otherPictures as $key => $item) {
                 ImageModel::create([
-                    'picture'=>$item,
-                    'symbol'=>'service_'.$key,
-                    'model_id'=>$service->id
+                    'picture' => $item,
+                    'symbol' => 'service_' . $key,
+                    'model_id' => $service->id
                 ]);
             }
         }
-        return redirect()->route('service.index')->with('message','عملیات موفقیت آمیز بود');;
+        return redirect()->route('service.index')->with('message', 'عملیات موفقیت آمیز بود');;
     }
-
-
-
 
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Service  $service
+     * @param \App\Service $service
      * @return \Illuminate\Http\Response
      */
     public function show(Service $service)
@@ -148,7 +146,7 @@ class ServiceController extends MainController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Service  $service
+     * @param \App\Service $service
      * @return \Illuminate\Http\Response
      */
     public function edit(Service $service)
@@ -163,7 +161,7 @@ class ServiceController extends MainController
 
         $categories = Vw_CategoryServices::where(['status' => 1])->get();
         $priority_arr = Vw_Services::where('priority', '!=', 0)->select(['priority'])->get();
-        $otherImages = ImageModel::where('symbol','like','service_%')->where(['model_id'=>$service->id])->get();
+        $otherImages = ImageModel::where('symbol', 'like', 'service_%')->where(['model_id' => $service->id])->get();
         $priorities = [1, 2, 3];
         $priority_ids = [];
         foreach ($priority_arr as $p) {
@@ -176,14 +174,14 @@ class ServiceController extends MainController
                 }
             }
         }
-        return view('admin.service.update', compact('categories', 'service', 'priorities','otherImages'));
+        return view('admin.service.update', compact('categories', 'service', 'priorities', 'otherImages'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Service  $service
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Service $service
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Service $service)
@@ -214,11 +212,11 @@ class ServiceController extends MainController
             $priority = $request['priority'];
         }
         $mainPicture = $request->file('mainPicture');
-        if (isset($mainPicture)){
+        if (isset($mainPicture)) {
             $mainTarget1 = "/upload/images/service/large/";
             $main = $service->picture;
             $this->removeImage($main['main']);
-            foreach ($main['others'] as $other){
+            foreach ($main['others'] as $other) {
                 $this->removeImage($other);
             }
             $mainPicture = $this->
@@ -228,39 +226,39 @@ class ServiceController extends MainController
             ]);
         }
         $othersTarget2 = "/upload/images/service/small/";
-        $otherImages = ImageModel::where('symbol','like','service_%')->where(['model_id'=>$service->id])->get();
-        foreach ($otherImages as $key=>$otherImage){
+        $otherImages = ImageModel::where('symbol', 'like', 'service_%')->where(['model_id' => $service->id])->get();
+        foreach ($otherImages as $key => $otherImage) {
             $picture = $request->file($otherImage->symbol);
-            if (isset($picture)){
-                $address = $this->handleOneImage($picture,$othersTarget2);
+            if (isset($picture)) {
+                $address = $this->handleOneImage($picture, $othersTarget2);
                 $this->removeImage($otherImage->picture);
                 $otherImage->update([
-                    'picture'=>$address
+                    'picture' => $address
                 ]);
-            }else{
-                if (!isset($request['text_'.$otherImage->symbol])){
+            } else {
+                if (!isset($request['text_' . $otherImage->symbol])) {
                     $this->removeImage($otherImage->picture);
                     $otherImage->delete();
                 }
             }
         }
         $pictures = $request['picture'];
-        if (isset($pictures)){
+        if (isset($pictures)) {
             $otherPictures = $this->
             handleArrayFiles($pictures, $othersTarget2);
-            $imageModels = ImageModel::where('symbol','like','service_%')->where(['model_id'=>$service->id])->orderBy('symbol','desc')->first();
-            if (isset($imageModels)){
-                $imageModelsItems = explode('_',$imageModels->symbol);
+            $imageModels = ImageModel::where('symbol', 'like', 'service_%')->where(['model_id' => $service->id])->orderBy('symbol', 'desc')->first();
+            if (isset($imageModels)) {
+                $imageModelsItems = explode('_', $imageModels->symbol);
                 $count = $imageModelsItems[1];
-            }else{
+            } else {
                 $count = 0;
             }
-            foreach ($otherPictures as $item){
+            foreach ($otherPictures as $item) {
                 $count += 1;
                 ImageModel::create([
-                    'picture'=>$item,
-                    'symbol'=>'service_'.$count,
-                    'model_id'=>$service->id
+                    'picture' => $item,
+                    'symbol' => 'service_' . $count,
+                    'model_id' => $service->id
                 ]);
             }
         }
@@ -270,17 +268,18 @@ class ServiceController extends MainController
             'slug' => $request['slug'],
             'tags' => $request['tags'],
             'content' => $request['content'],
-            'priority' =>$priority ,
+            'priority' => $priority,
+            'lang' => $request['lang'],
             'categoryID_FK' => $request['categoryID_FK'],
             'usersID_FK' => auth()->user()->id,
         ]);
-        return redirect()->route('service.index')->with('message','عملیات موفقیت آمیز بود');;
+        return redirect()->route('service.index')->with('message', 'عملیات موفقیت آمیز بود');;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Service  $service
+     * @param \App\Service $service
      * @return \Illuminate\Http\Response
      */
     public function destroy(Service $service)
@@ -295,6 +294,6 @@ class ServiceController extends MainController
 
         $this->removeImageOfObject($service);
         $service->delete();
-        return redirect(route('service.index'))->with('message','عملیات موفقیت آمیز بود');;
+        return redirect(route('service.index'))->with('message', 'عملیات موفقیت آمیز بود');;
     }
 }

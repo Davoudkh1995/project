@@ -70,17 +70,26 @@
                         </script>
                     </div>
                     <div class="row">
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-4">
                             <label for="">عنوان</label>
                             <input type="text" class="form-control" id="title"
                                    name="title" value="{{old('title')}}">
                         </div>
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-4">
                             <label for="">لینک</label>
                             <input type="text" class="form-control" id="link"
                                    name="link" value="{{old('link')}}">
                         </div>
-                        <div class="form-group col-sm-6">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="validationCustom03">زبان</label>
+                                <select class="form-control js-example-basic-single" dir="rtl" name="lang">
+                                    <option selected value="fa">فارسی</option>
+                                    <option value="en">انگلیسی</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-12">
                             <label for="">توضیحات</label>
                             <textarea class="form-control" id="description" rows="3" name="description"
                                       >{{old('description')}}</textarea>
@@ -117,7 +126,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <select class="form-control" dir="rtl" name="priority" id="priority">
+                        <select class="form-control js-example-basic-single" dir="rtl" name="priority" id="priority">
                             <option value="0" selected>انتخاب کنید</option>
                             @foreach($priorities as $priority)
                                 <option value="{{$priority}}">{{$priority}}</option>

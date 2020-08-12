@@ -52,14 +52,14 @@
                             صحیح است!
                         </div>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
                         <label for="validationCustom02">/{{\Illuminate\Support\Facades\App::make('url')->to('/site')}}</label>
                         <input type="text" class="form-control" id="validationCustom02" placeholder="نامک" required="" name="slug">
                         <div class="valid-feedback">
                             صحیح است!
                         </div>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
                         <div class="form-group">
                             <label for="validationCustom03">زیردسته</label>
                             <select class="form-control js-example-basic-single" dir="rtl" name="parent_id">
@@ -67,6 +67,15 @@
                                 @foreach($menus as $menu)
                                     <option value="{{$menu->id}}">{{$menu->title}}</option>
                                     @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <div class="form-group">
+                            <label for="validationCustom03">زبان</label>
+                            <select class="form-control js-example-basic-single" dir="rtl" name="lang">
+                                <option selected value="fa">فارسی</option>
+                                <option value="en">انگلیسی</option>
                             </select>
                         </div>
                     </div>

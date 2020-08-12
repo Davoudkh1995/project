@@ -80,12 +80,13 @@ class MenuController extends Controller
         }
         $address = \Illuminate\Support\Facades\App::make('url')->to('/site').'/'.$request['slug'];
         Menu::create([
-            'usersID_FK'=>auth()->user()->id,
-            'parent_id'=>$request['parent_id'],
-            'status'=>$status,
-            'url'=>$address,
-            'title'=>$request['title'],
-            'slug'=>$request['slug'],
+            'usersID_FK' => auth()->user()->id,
+            'parent_id' => $request['parent_id'],
+            'status' => $status,
+            'lang' => $request['lang'],
+            'url' => $address,
+            'title' => $request['title'],
+            'slug' => $request['slug'],
         ]);
         return redirect(route('menu.index'))->with('message','عملیات موفقیت آمیز بود');
     }
@@ -151,6 +152,7 @@ class MenuController extends Controller
         $menu->update([
             'parent_id'=>$request['parent_id'],
             'status'=>$status,
+            'lang' => $request['lang'],
             'url'=>$address,
             'title'=>$request['title'],
             'slug'=>$request['slug'],
@@ -173,7 +175,6 @@ class MenuController extends Controller
         } catch (AuthorizationException $e) {
             abort(403);
         }
-
         $submenus = Menu::select(['id'])->where(['parent_id'=>$menu->id])->get();
         if (count($submenus)) {
             foreach ($submenus as $submenu) {
@@ -204,10 +205,12 @@ class MenuController extends Controller
         if ($page){
             $page->update([
                 'content'=>$request['content'],
+                'lang' => $request['lang']
             ]);
         }else{
             $page = Page::create([
                 'content'=>$request['content'],
+                'lang' => $request['lang']
             ]);
         }
         $menu = Menu::find($request['menu_id']);

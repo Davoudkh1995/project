@@ -21,7 +21,11 @@ Route::prefix('admin')->namespace('admin')->group(function (){
     Route::resource('/service','ServiceController');
     Route::resource('/portfolio','PortfolioController');
     Route::resource('/contactus','ContactusController');
+    Route::get('/updateContactEn','ContactusController@showUpdateContactEn');
+    Route::post('/updateContactEn','ContactusController@updateContactEn');
     Route::resource('/aboutus','AboutusController');
+    Route::get('/updateAboutEn','AboutusController@showUpdateAboutEn');
+    Route::post('/updateAboutEn','AboutusController@updateAboutEn');
     Route::resource('/socialmedia','SocialmediaController');
     Route::resource('/category_article','CategoryArticleController');
     Route::resource('/category_service','CategoryServiceController');

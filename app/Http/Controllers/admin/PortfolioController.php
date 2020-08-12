@@ -112,6 +112,7 @@ class PortfolioController extends MainController
             'title' => $request['title'],
             'slug' => $request['slug'],
             'tags' => $request['tags'],
+            'lang' => $request['lang'],
             'content' => $request['content'],
             'priority' => $request['priority'],
             'categoryID_FK' => $request['categoryID_FK'],
@@ -269,6 +270,7 @@ class PortfolioController extends MainController
             'tags' => $request['tags'],
             'content' => $request['content'],
             'priority' => $priority,
+            'lang' => $request['lang'],
             'categoryID_FK' => $request['categoryID_FK'],
             'usersID_FK' => auth()->user()->id,
         ]);

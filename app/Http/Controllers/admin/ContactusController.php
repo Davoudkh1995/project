@@ -25,7 +25,7 @@ class ContactusController extends Controller
             abort(403);
         }
 
-        $contactus = Contactus::first();
+        $contactus = Contactus::where('lang','fa')->first();
         return view('admin.contactus.create',compact('contactus'));
     }
 
@@ -94,7 +94,63 @@ class ContactusController extends Controller
             'email' => 'required',
             'mobile' => 'required',
         ]);
-        $item = Contactus::find(1);
+        $item = Contactus::where('lang','fa')->first();
+        if (isset($item)){
+            $item->update([
+                'google_map'=>$request['google_map'],
+                'address'=>$request['address'],
+                'postal_code'=>$request['postal_code'],
+                'fax'=>$request['fax'],
+                'lang' => $request['lang'],
+                'mobile'=>$request['mobile'],
+                'email'=>$request['email'],
+                'tel'=>$request['tel'],
+            ]);
+        }else{
+            Contactus::create([
+                'usersID_FK'=>auth()->user()->id,
+                'google_map'=>$request['google_map'],
+                'address'=>$request['address'],
+                'postal_code'=>$request['postal_code'],
+                'fax'=>$request['fax'],
+                'mobile'=>$request['mobile'],
+                'email'=>$request['email'],
+                'tel'=>$request['tel'],
+            ]);
+        }
+        return back()->with('message','عملیات موفقیت آمیز بود');
+    }
+
+    public function showUpdateContactEn()
+    {
+        try {
+            if (!$this->authorize('contact')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
+        $contactus = Contactus::where('lang','en')->first();
+        return view('admin.contactus.createEn',compact('contactus'));
+    }
+
+    public function updateContactEn(Request $request, Contactus $contactus)
+    {
+        try {
+            if (!$this->authorize('contact')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
+        $request->validate([
+            'address' => 'required',
+            'email' => 'required',
+            'mobile' => 'required',
+        ]);
+        $item = Contactus::where('lang','en')->first();
         if (isset($item)){
             $item->update([
                 'google_map'=>$request['google_map'],
@@ -112,6 +168,7 @@ class ContactusController extends Controller
                 'address'=>$request['address'],
                 'postal_code'=>$request['postal_code'],
                 'fax'=>$request['fax'],
+                'lang' => 'en',
                 'mobile'=>$request['mobile'],
                 'email'=>$request['email'],
                 'tel'=>$request['tel'],

@@ -82,7 +82,7 @@
                     <a href="#" class="list-group-item d-flex align-items-center p-l-r-0">
                         <div>
                             <figure class="avatar avatar-sm m-l-15">
-                                <img src="/admin/assets/media/image/avatar.jpg" class="rounded-circle" alt="image">
+                                <img src="/admin/assets/media/image/profile_image.png" class="rounded-circle" alt="image">
                             </figure>
                         </div>
                         <div>
@@ -376,10 +376,10 @@
             </li>
             @endcan
             @can('contact')
-            <li><a class="@if(Request::is('admin/contactus')) active @endif" href="/admin/contactus"><i class="icon ti-agenda"></i> <span>تماس با ما</span> </a></li>
+            <li><a class="@if(Request::is('admin/contactus') or Request::is('admin/updateContactEn')) active @endif" href="/admin/contactus"><i class="icon ti-agenda"></i> <span>تماس با ما</span> </a></li>
             @endcan
             @can('about')
-            <li><a class="@if(Request::is('admin/aboutus')) active @endif" href="/admin/aboutus"><i class="icon ti-agenda"></i> <span>درباره ما</span> </a></li>
+            <li><a class="@if(Request::is('admin/aboutus') or Request::is('admin/updateAboutEn')) active @endif" href="/admin/aboutus"><i class="icon ti-agenda"></i> <span>درباره ما</span> </a></li>
             @endcan
             @can('socialmedia')
             <li><a class="@if(Request::is('admin/socialmedia')) active @endif" href="/admin/socialmedia"><i class="icon ti-cloud"></i> <span>فضای مجازی</span> </a></li>
@@ -492,7 +492,7 @@
                 <li class="nav-item dropdown">
                     <a href="#" data-toggle="dropdown">
                         <figure class="avatar avatar-sm avatar-state-success">
-                            <img class="rounded-circle" src="/admin/assets/media/image/avatar.jpg" alt="...">
+                            <img class="rounded-circle" src="/admin/assets/media/image/profile_image.png" alt="...">
                         </figure>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">

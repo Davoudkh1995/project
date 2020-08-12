@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CategoryPortfolio extends Model
 {
-    protected $fillable = ['slug','title','tags','status','parent_id','usersID_FK'];
+    protected $fillable = ['slug','title','tags','status','parent_id','usersID_FK','lang'];
 
     public function portfolio()
     {

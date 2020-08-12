@@ -104,6 +104,15 @@
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 mb-3">
+                        <div class="form-group">
+                            <label for="validationCustom03">زبان</label>
+                            <select class="form-control js-example-basic-single" dir="rtl" name="lang">
+                                <option @if($article->lang == "fa") selected @endif value="fa">فارسی</option>
+                                <option @if($article->lang == "en") selected @endif value="en">انگلیسی</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
                         <label for="validationCustom03">برچسب</label>
                         <input type="text" id="validationCustom03" class="form-control tagsinput" placeholder=""
                                value="{{$article->tags}}" name="tags">

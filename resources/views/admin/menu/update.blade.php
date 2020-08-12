@@ -67,7 +67,7 @@
                             صحیح است!
                         </div>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
                         <label for="validationCustom02">/{{\Illuminate\Support\Facades\App::make('url')->to('/site')}}</label>
                         <input type="text" class="form-control" id="validationCustom02" placeholder="نامک" required=""
                                name="slug" value="{{$menu->slug}}">
@@ -75,7 +75,7 @@
                             صحیح است!
                         </div>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
                         <div class="form-group">
                             <label for="validationCustom03">زیردسته</label>
                             <select class="form-control js-example-basic-single" dir="rtl" name="parent_id">
@@ -86,6 +86,15 @@
                                             @if($menu->parent_id == $m->id) selected @endif>{{$m->title}}</option>
                                     @endif
                                 @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <div class="form-group">
+                            <label for="validationCustom03">زبان</label>
+                            <select class="form-control js-example-basic-single" dir="rtl" name="lang">
+                                <option @if($menu->lang == "fa") selected @endif value="fa">فارسی</option>
+                                <option @if($menu->lang == "en") selected @endif value="en">انگلیسی</option>
                             </select>
                         </div>
                     </div>
@@ -118,6 +127,15 @@
                 <div class="row">
                     <div class="col-12">
                         <button class="btn btn-success mt-2 float-right">{{$btn_text}}</button>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <div class="form-group">
+                            <label for="validationCustom03">زبان</label>
+                            <select class="form-control js-example-basic-single" dir="rtl" name="lang">
+                                <option @if(isset($menu->page)) @if($menu->page->lang == "fa") selected @endif @endif value="fa">فارسی</option>
+                                <option @if(isset($menu->page)) @if($menu->page->lang == "en") selected @endif @endif value="en">انگلیسی</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="col-md-12">
                         <label class="control-label ">محتوای صفحه</label>

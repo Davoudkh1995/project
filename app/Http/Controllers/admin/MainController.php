@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Vw_CategoryArticles;
 use App\Vw_CategoryPortfolio;
 use App\Vw_CategoryServices;
+use App\Vw_Sliders;
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
@@ -46,7 +47,23 @@ class MainController extends Controller
         return false;
     }
 
-
+    public function handleSliderPriorities()
+    {
+        $priority_arr = Vw_Sliders::where('priority', '!=', 0)->select(['priority'])->get();
+        $priorities = [1, 2, 3, 4, 5];
+        $priority_ids = [];
+        foreach ($priority_arr as $p) {
+            array_push($priority_ids, $p->priority);
+        }
+        foreach ($priority_ids as $priority) {
+            foreach ($priorities as $key => $p) {
+                if ($priority == $p) {
+                    unset($priorities[$key]);
+                }
+            }
+        }
+        return $priorities;
+    }
 
     protected function imageUploader($file, $target)
     {

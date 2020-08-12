@@ -89,6 +89,7 @@ class CategoryServiceController extends MainController
             'title' => $request['title'],
             'tags' => $request['tags'],
             'slug' => $request['slug'],
+            'lang' => $request['lang'],
             'parent_id' => $request['parent_id'],
             'status' => $status,
             'usersID_FK' => auth()->user()->id
@@ -156,6 +157,7 @@ class CategoryServiceController extends MainController
             'title' => $request['title'],
             'tags' => $request['tags'],
             'slug' => $request['slug'],
+            'lang' => $request['lang'],
             'parent_id' => $request['parent_id'],
             'status' => $status,
         ]);

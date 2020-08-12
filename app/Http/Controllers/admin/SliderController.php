@@ -25,10 +25,7 @@ class SliderController extends MainController
         } catch (AuthorizationException $e) {
             abort(403);
         }
-
-//        $items = Slider::orderByDesc('created_at')->get();
         $items = Vw_Sliders::orderbyDesc('created_at')->get();
-//        $items = \DB::select('select * from vw_sliders v order by created_at desc');
         return view('admin.slider.index', compact('items'));
     }
 
@@ -47,21 +44,7 @@ class SliderController extends MainController
             abort(403);
         }
 
-        $priority_arr = Vw_Sliders::where('priority', '!=', 0)->select(['priority'])->get();
-//        $priority_arr = \DB::select('select v.priority from vw_sliders v where  priority!=0');
-//        $priority_arr = Slider::where('priority','!=',0)->select(['priority'])->get();
-        $priorities = [1, 2, 3, 4, 5];
-        $priority_ids = [];
-        foreach ($priority_arr as $p) {
-            array_push($priority_ids, $p->priority);
-        }
-        foreach ($priority_ids as $priority) {
-            foreach ($priorities as $key => $p) {
-                if ($priority == $p) {
-                    unset($priorities[$key]);
-                }
-            }
-        }
+        $priorities = $this->handleSliderPriorities();
         return view('admin.slider.create', compact('priorities'));
     }
 
@@ -98,13 +81,16 @@ class SliderController extends MainController
                 'usersID_FK' => auth()->user()->id,
                 'slider_type' => $request['slider_type'],
                 'title' => $request['title'],
+                'lang' => $request['lang'],
                 'link' => $request['link'],
                 'description' => $request['description'],
                 'priority' => $request['priority'],
                 'status' => $status,
             ]);
+        }else{
+            return redirect(route('slider.index'))->with('error', 'تعداد اسلایدر ها بیش از 5 است');
         }
-        return redirect(route('slider.index'))->with('message', 'عملیات موفقیت آمیز بود');;
+        return redirect(route('slider.index'))->with('message', 'عملیات موفقیت آمیز بود');
     }
 
     /**
@@ -133,16 +119,7 @@ class SliderController extends MainController
         } catch (AuthorizationException $e) {
             abort(403);
         }
-
-//        $priority_arr = \DB::select('select v.priority from vw_sliders v where  priority!=0');
-        $priority_arr = Vw_Sliders::where('priority', '!=', 0)->select(['priority'])->get();
-//        $priority_arr = Slider::where('priority','!=',0)->select(['priority'])->get();
-        $priorities = [1, 2, 3, 4, 5];
-        foreach ($priority_arr as $priority) {
-            if (($key = array_search($priority->priority, $priorities))) {
-                unset($priorities[$key]);
-            }
-        }
+        $priorities = $this->handleSliderPriorities();
         return view('admin.slider.update', compact('slider', 'priorities'));
     }
 
@@ -189,13 +166,16 @@ class SliderController extends MainController
             $slider->update([
                 'slider_type' => $request['slider_type'],
                 'title' => $request['title'],
+                'lang' => $request['lang'],
                 'link' => $request['link'],
                 'description' => $request['description'],
                 'priority' => $priority,
                 'status' => $status,
             ]);
+        }else{
+            return redirect(route('slider.index'))->with('error', 'تعداد اسلایدر ها بیش از 5 است');
         }
-        return redirect(route('slider.index'))->with('message', 'عملیات موفقیت آمیز بود');;
+        return redirect(route('slider.index'))->with('message', 'عملیات موفقیت آمیز بود');
     }
 
     /**

@@ -25,9 +25,11 @@ class AboutusController extends Controller
             abort(403);
         }
 
-        $aboutus = Aboutus::first();
+        $aboutus = Aboutus::where('lang','fa')->first();
         return view('admin.aboutus.create',compact('aboutus'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -92,7 +94,7 @@ class AboutusController extends Controller
         $request->validate([
             'content' => 'required',
         ]);
-        $item = Aboutus::find(1);
+        $item = Aboutus::where('lang','fa')->first();
         if (isset($item)){
             $item->update([
                 'content'=>$request['content'],
@@ -100,6 +102,49 @@ class AboutusController extends Controller
         }else{
             Aboutus::create([
                 'usersID_FK'=>auth()->user()->id,
+                'content'=>$request['content'],
+            ]);
+        }
+        return back()->with('message','عملیات موفقیت آمیز بود');
+    }
+
+    public function showUpdateAboutEn()
+    {
+        try {
+            if (!$this->authorize('about')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
+        $aboutus = Aboutus::where('lang','en')->first();
+        return view('admin.aboutus.createEn',compact('aboutus'));
+    }
+
+    public function updateAboutEn(Request $request, Aboutus $aboutus)
+    {
+        try {
+            if (!$this->authorize('about')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+
+        $request->validate([
+            'content' => 'required',
+        ]);
+        $item = Aboutus::where('lang','en')->first();
+        if (isset($item)){
+            $item->update([
+                'content'=>$request['content'],
+                'lang' => 'en',
+            ]);
+        }else{
+            Aboutus::create([
+                'usersID_FK'=>auth()->user()->id,
+                'lang' => 'en',
                 'content'=>$request['content'],
             ]);
         }
