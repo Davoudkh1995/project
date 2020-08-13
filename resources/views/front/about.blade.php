@@ -1,50 +1,55 @@
 @extends('front.master.index')
 @section('content')
-    <div class="breadcrumbs"><a href="#">خانه</a> <i class="icon-double-angle-left grey"></i> درباره ما</div>
+    <div class="breadcrumbs"><a href="/">{{__('messages.home')}}</a> <i
+                class="@if(app()->getLocale() == "fa") icon-double-angle-left @else icon-double-angle-right @endif grey"></i>{{__('messages.about_us.title')}}
+    </div>
 
     <div class="inner_content">
-        <h1 class="title">درباره ما</h1>
+        <h1 class="title">{{__('messages.about_us.title')}}</h1>
 
-        <h1>این سایت به عنوان معرفی کننده گروه برنامه نویسی رونیکا است. این گروه مفتخر به انجام چندین پروژه در حوزه سایت و نرم افزارهای تحت وب میباشد. بهترینها رو برای شما اجرا میکنیم به ما اطمینان کنید<span> &#1748; </span></h1>
+        <h1>{{__('messages.about_us.subTitle')}}<span> &#1748; </span></h1>
 
         <div class="pad30"></div>
         <div class="row">
-            <div class="span4 text-right">
+            <div class="span4 @if(app()->getLocale() == "fa") text-right @endif">
                 <!--skill bars-->
-                <h4 class="title-divider span4">مهارت های <strong>رونیکا</strong><span></span></h4>
-                <p class="text-right">گروه برنامه نویسی رونیکا به نحوی برنامه نویسی میکنه که کارکرد محصول برای مشتریان سهل و آسان باشه و به نحوی شفاف کد نویسی بشه که براحتی قابل توسعه باشه<span> &#1748; </span></p>
-                <span class="text-right">طراحی با تکنولوژی روز</span>
+                <h4 class="title-divider span4"><strong>{{__('messages.about_us.skills.title')}}</strong><span></span>
+                </h4>
+                <p class="@if(app()->getLocale() == "fa") text-right @endif">{{__('messages.about_us.skills.text')}}<span> &#1748; </span></p>
+                <span class="@if(app()->getLocale() == "fa") text-right @endif ">{{__('messages.about_us.skills.design')}}</span>
                 <div class="progress progress-striped progress-inverse">
-                    <div class="bar f-right" style="width: 98%;float: right;">
+                    <div class="bar @if(app()->getLocale() == "fa") f-right @endif " style="width: 98%;float: right;">
                     </div>
                 </div>
 
-                <span>طراحی رسپانسیو و وانکش گرا</span>
+                <span>{{__('messages.about_us.skills.responsive')}}</span>
                 <div class="progress progress-striped progress-inverse">
                     <div class="bar f-right" style="width: 98%;float: right;"></div>
                 </div>
 
-                <span>تولید محتوای کاربردی</span>
+                <span>{{__('messages.about_us.skills.content')}}</span>
                 <div class="progress progress-striped progress-inverse">
-                    <div class="bar f-right" style="width: 98%;float: right;"></div>
+                    <div class="bar @if(app()->getLocale() == "fa") f-right @endif " style="width: 98%;float: right;"></div>
                 </div>
             </div>
             <div class="span4">
-                <h4 class="title-divider span4">ماموریت <strong>رونیکا</strong><span></span></h4>
-                <p class="text-right">ماموریت گروه رونیکا اجرا و پیاده سازی پروژه ها در ابعاد بزرگ و کوچک به بهترین و بروزترین امکانات و تکنولوژی های روز دنیاست<span> &#1748; </span><br>وب سایت های موبایل بیس و مالتی پلتفرم مطابق با نسخه های جدید و قدیمی مرورگر<span> &#1748; </span></p>
+                <h4 class="title-divider span4"><strong>{{__('messages.about_us.mission.title')}}</strong><span></span>
+                </h4>
+                <p class="@if(app()->getLocale() == "fa") text-right @endif">{{__('messages.about_us.mission.text1')}}
+                    <span> &#1748; </span></p>
 
-                <ul class="icons text-right rtl" >
-                    <li><i class="icon-ok hue"></i> طراحی موبایل بیس و رسپانسیو</li>
-                    <li><i class="icon-ok hue"></i>کارکرد آسان</li>
-                    <li><i class="icon-ok hue"></i>مالتی دیواس و پشتیبانی از تمامی مروگرها</li>
-                    <li><i class="icon-ok hue"></i>بکار بردن بروزترین تکنولوژی های روز دنیا</li>
+                <ul class="icons @if(app()->getLocale() == "fa") text-right rtl @endif">
+                    <li><i class="icon-ok hue"></i>{{__('messages.about_us.mission.prop1')}}</li>
+                    <li><i class="icon-ok hue"></i>{{__('messages.about_us.mission.prop2')}}</li>
+                    <li><i class="icon-ok hue"></i>{{__('messages.about_us.mission.prop3')}}</li>
+                    <li><i class="icon-ok hue"></i>{{__('messages.about_us.mission.prop4')}}</li>
                 </ul>
                 <div class="pad15"></div>
             </div>
             <div class="span4">
-                <h4 class="title-divider span4">شیوه کاری <strong>رونیکا</strong><span></span></h4>
+                <h4 class="title-divider span4"><strong>{{__('messages.about_us.method')}}</strong><span></span></h4>
                 <p class="lead">
-                    {!! $about->content.'.' !!}
+                    {!! $about->content !!}
                 </p>
                 <div class="pad15"></div>
             </div>
@@ -348,4 +353,4 @@
             </div>
         </div>
     </div>--}}
-    @endsection
+@endsection

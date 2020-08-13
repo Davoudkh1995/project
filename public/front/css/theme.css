@@ -1616,3 +1616,25 @@ input{
 .pointer {
     cursor: pointer;
 }
+.fa {
+    padding: 7px;
+    border: none;
+    background: #857d50;
+    color: #313131;
+    cursor: pointer;
+    border-radius:  4px 0 0 4px;
+    height: 35px;
+}
+.fa:hover,.en:hover{
+    color: #000;
+    height: 35px;
+}
+.en {
+    border: none;
+    padding: 7px;
+    background: #313131;
+    color: #857d50;
+    cursor: pointer;
+    height: 35px;
+    border-radius: 0 4px 4px 0;
+}

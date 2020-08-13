@@ -7,7 +7,7 @@
         <h1>{{$article->title}}</h1>
         <div class="pad30"></div>
         <div class="row">
-            <div class="span9 fRight">
+            <div class="span9 @if(app()->getLocale() == "fa") fRight @else fLeft @endif">
                 <div class="post">
 
                     <div class="row">
@@ -81,23 +81,23 @@
                 @if(count($messages))
                     @foreach($messages as $message)
                 <!-- Comments -->
-                <h6><span>{{count($messages)}} پیام</span></h6>
+                <h6><span>{{count($messages)}} {{__('messages.article_page.detail.comment')}}</span></h6>
                 <!--Comment 1-->
                 <div class="media">
-                    <a class="pull-right" href="javascript:void(0)">
+                    <a class=" @if(app()->getLocale() == "fa") pull-right @endif " href="javascript:void(0)">
                         <img src="/front/img/image/customer1.png" alt="" class="avatar img-circle" width="40" height="40"/></a>
-                    <div class="media-body rtl">
+                    <div class="media-body @if(app()->getLocale() == "fa") rtl @endif ">
                         <p class="media-heading">
                             <a href="javascript:void(0)">{{$message->customer}}</a> &raquo; {{$message->date}}</p>
                        {{$message->content}}
                         <!--Comment 2-->
                         @if(isset($message->admin))
                             <div class="media">
-                            <a class="pull-right" href="javascript:void(0)">
+                            <a class=" @if(app()->getLocale() == "fa") pull-right @endif " href="javascript:void(0)">
                                 <img src="/front/img/image/user.png" alt="" class="avatar img-circle" width="50" height="40"/></a>
                             <div class="media-body">
                                 <p class="media-heading">
-                                    <a href="javascript:void(0)">ادمین( {{$message->admin}} )</a></p>
+                                    <a href="javascript:void(0)">{{__('messages.article_page.detail.contact.admin')}}( {{$message->admin}} )</a></p>
                                 <p>
                                     {{$message->answer}}
                                 </p>
@@ -114,26 +114,26 @@
                 <div class="pad25"></div>
 
                 <div class="pad25"></div>
-                <div class="span7">
+                <div class="span7 @if(app()->getLocale() == "en") fLeft @endif ">
                     <div class="row">
                         <!-- Comment form -->
-                        <h3>میخواهید پیامی بگذارید؟!</h3>
+                        <h3>{{__('messages.article_page.detail.contact.title')}}</h3>
                         <div class="contact_form well">
                             <form action="{{route('message.store')}}" method="post">
                                 @csrf
                                 <input type="hidden" name="comment" value="{{password_hash(1,PASSWORD_BCRYPT)}}">
                                 <input type="hidden" name="article_id" value="{{$article->id}}">
-                                <p class="form_info">نام <span class="required">*</span></p>
+                                <p class="form_info">{{__('messages.article_page.detail.contact.name')}} <span class="required">*</span></p>
                                 <input class="span5" type="text" name="name" value="" />
-                                <p class="form_info">رایانامه <span class="required">*</span></p>
+                                <p class="form_info">{{__('messages.article_page.detail.contact.email')}} <span class="required">*</span></p>
                                 <input class="span5" type="text" name="email" value=""  />
 
-                                <p class="form_info">متن پیام</p>
+                                <p class="form_info">{{__('messages.article_page.detail.contact.message')}}</p>
                                 <textarea name="content" id="message" class="span6" ></textarea>
                                 <div class="clear"></div>
 
-                                <input type="submit" class="btn btn-large btn-inverse btn-form" value="ارسال پیام" />
-                                <input type="reset"  class="btn btn-large btn-inverse btn-form" value="حذف محتوا" />
+                                <input type="submit" class="btn btn-large btn-inverse btn-form" value="{{__('messages.article_page.detail.contact.send')}}" />
+                                <input type="reset"  class="btn btn-large btn-inverse btn-form" value="{{__('messages.article_page.detail.contact.clear')}}" />
                                 <div class="clear"></div>
                             </form>
                         </div>
@@ -144,21 +144,21 @@
                     var error = "{{session('error')}}";
                     Swal.fire({
                         icon: 'error',
-                        title: 'ناموفق',
-                        text: error,
+                        title: "{{__('messages.article_page.detail.contact.errorAlert')}}",
+                        text: "{{__('messages.article_page.detail.contact.error')}}",
                     });
                             @elseif(session('message'))
                     var message = "{{session('message')}}";
                     Swal.fire({
                         icon: 'success',
-                        title: 'موفقیت',
-                        text: message,
+                        title: "{{__('messages.article_page.detail.contact.successAlert')}}",
+                        text: "{{__('messages.article_page.detail.contact.success')}}",
                     });
                     @endif
                 </script>
             </div>
             <!--sidebar-->
-            <div class="span3 rtl">
+            <div class="span3  @if(app()->getLocale() == "fa") rtl @endif">
                 <!--search-->
                 <form action="/art_search/" method="post" id="searchItem">
                     @csrf

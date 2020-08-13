@@ -39,6 +39,7 @@
     <link rel="stylesheet" href="/front/css/font-awesome-ie7.min.css">
     <![endif]-->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Domine:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 <!--header-->
@@ -46,9 +47,20 @@
     <!--logo-->
     <div class="container">
         <div class="logo">
+            @if(Request::is('/'))
+                <div style="display: inline-block;float: left;margin-right: 20px;" class="btn-group">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class=" fa">fa</button>
+                        <button type="button" class=" en">en</button>
+                    </div>
+                </div>
+            @endif
             <a href="/"><img src="/front/img/logo.png" alt="رونیکا"/></a>
+
         </div>
-        <!--menu-->
+
+
+    <!--menu-->
         <nav id="main_menu">
             <div class="menu_wrap">
                 <ul class="nav sf-menu">

@@ -123,7 +123,7 @@
                                 <div class="slider-title">
                                     <h3 class="@if(app()->getLocale() == "fa") text-right @endif"><a href="/portfolio/{{$portfolio->slug}}">{{$portfolio->title}}</a></h3>
                                     <p class="@if(app()->getLocale() == "fa") text-right @endif">{!! Illuminate\Support\Str::limit($portfolio->title,50) !!}</p>
-                                    <p><a href="/portfolio/{{$portfolio->slug}}"><span class="read_more">{{__('details')}} &rarr;</span></a></p>
+                                    <p><a href="/portfolio/{{$portfolio->slug}}"><span class="read_more">{{__('messages.details')}} &rarr;</span></a></p>
                                 </div>
                             </div>
                         @endforeach

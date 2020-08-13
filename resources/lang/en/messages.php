@@ -12,24 +12,24 @@ return [
     'property' => [
         'index' => [
             'design' => [
-                'title' => 'طراحی و دیزاین',
-                'subTitle' => 'بر اساس نیاز شما',
-                'description' => 'نرم افزار ها و سایت های مورد نیاز شما با بروزترین امکانات تعبیه و طراحی میشوند ',
+                'title' => 'Website design',
+                'subTitle' => 'Based on your needs',
+                'description' => 'The software and sites you need are embedded and designed with the latest features',
             ],
             'technology' => [
-                'title' => 'تکنولوژی',
-                'subTitle' => 'بروزترین ها',
-                'description' => 'استفاده از جدیدترین تکنولوژی ها براساس نوع و ساختار پروژه شما',
+                'title' => 'Technology',
+                'subTitle' => 'up-to-date',
+                'description' => 'Use the latest technologies based on the type and structure of your project',
             ],
             'protection' => [
-                'title' => 'حمایت',
-                'subTitle' => 'حقوق مشتری',
-                'description' => 'برای انجام پروژه با شما قراردادی بسته میشه که از سلامت روند کاری اطمینان حاصل کنید',
+                'title' => 'Protection',
+                'subTitle' => 'Customer rights',
+                'description' => 'A contract will be signed with you to carry out the project to ensure the health of the work process',
             ],
             'support' => [
-                'title' => 'پشتیبانی',
-                'subTitle' => '18 ساعته',
-                'description' => 'در زمانی که پشتیبانی سایت و نرم افزار شما در اختیار تیم رونیکا باشه تا 18 ساعت در روز پاسخگوی شما هستیم',
+                'title' => 'Support',
+                'subTitle' => '18 hours',
+                'description' => 'When your site and software support is available to the Ronica team, we will respond to you up to 18 hours a day',
             ]
         ]
     ],
@@ -44,6 +44,7 @@ return [
         'button' => 'show portfolios',
         'details' => 'details',
     ],
+    'details' => 'details',
     'footer' => [
         'rapid_info' => [
             'title' => 'Site Information',
@@ -108,10 +109,66 @@ return [
             'popular' => 'popular',
             'beforeArticle' => 'Previous article',
             'afterArticle' => 'Next article',
-
+            'contact' => [
+                'title' => 'Do you want to leave a message ?!',
+                'name' => 'name',
+                'email' => 'email',
+                'message' => 'message',
+                'send' => 'send',
+                'clear' => 'clear',
+            ],
+            'comment' => 'comments',
+            'admin' => 'admin',
+            'success' => 'Your message has been sent',
+            'error' => 'You have already sent an unanswered message',
+            'successAlert' => 'successful!',
+            'errorAlert' => 'Unsuccessful!',
         ],
     ],
     'more' => 'more',
     'search' => 'search',
-
+    'about_us' =>[
+        'title' => 'About-Us',
+        'subTitle' => 'This site introduces the Ronika programming group. This group is proud to carry out several projects in the field of web site and software. We perform the best for you, trust us',
+        'method' => 'Ronica - method',
+        'mission' => [
+            'title' => 'Ronica - Mission',
+            'text1' => 'The mission of Ronica Group is to implement and implement projects in large and small dimensions with the best and most up-to-date facilities and technologies in the world',
+            'text2' => 'Mobile bass and multi-platform websites according to new and old versions of the browser',
+            'prop1' => 'Mobile base and responsive design',
+            'prop2' => 'Easy to operate',
+            'prop3' => 'Multi-device and support for all browsers',
+            'prop4' => 'Using the latest technologies in the world',
+        ],
+        'skills' => [
+            'title' => 'Ronica - skills',
+            'text' => 'Ronica programming team programs in a way that the product is easy for customers to operate and in a transparent way the coding is easy to develop',
+            'design' => 'Design with modern technologies',
+            'responsive' => 'Responsive design',
+            'content' => 'Producing applicable content',
+        ]
+    ],
+    'contactUs' => [
+        'title' => 'Contact-Us',
+        'form' => [
+            'name' => 'name',
+            'email' => 'email',
+            'subject' => 'subject',
+            'message' => 'message',
+            'send' => 'send',
+            'clear' => 'clear',
+        ],
+        'rightBlock' => [
+            'title' => 'The desired specifications',
+            'question1' => 'Do you need an efficient website?',
+            'question2' => 'Do you have questions about web technical issues?',
+            'solution' => 'Email me or send me your message via the contact form, I will finally reply to you within the next 24 hours',
+            'email' => 'email',
+            'contact' => 'mobile phone number',
+        ],
+        'success' => 'Your message has been sent',
+        'error' => 'You have already sent an unanswered message',
+        'successAlert' => 'successful!',
+        'errorAlert' => 'Unsuccessful!',
+    ]
 ];

@@ -1,9 +1,9 @@
 @extends('front.master.index')
 @section('content')
-    <div class="breadcrumbs"><a href="#">خانه</a> <i class="icon-double-angle-left grey marginL10"></i>ارتباط با من</div>
+    <div class="breadcrumbs"><a href="/">{{__('messages.home')}}</a> <i class="@if(app()->getLocale() == "fa") icon-double-angle-left @else icon-double-angle-right marginL10 @endif grey "></i>{{__('messages.contactUs.title')}}</div>
 
     <div class="inner_content">
-        <h1 class="title">ارتباط با ما</h1>
+        <h1 class="title">{{__('messages.contactUs.title')}}</h1>
 
         {{--<h1>It's art if it can't be explained. It's <span>fashion</span> if no one asks for an <span>explanation.</span>
             It's <span class="hue">design</span> if it doesn't need explanation. - Wouter Stokkel</h1>--}}
@@ -17,18 +17,18 @@
                 <img src="/front/img/shadow3.png" class="map-shadow" alt="" />
             </div>
 
-            <div class="span4 pad15 text-right">
-                <h3 class="title-divider span4">مشخصات<strong>مورد نظر</strong><span></span></h3>
-                <p class="text-right">آیا نیاز به یک وبسایت کارآمد دارید؟<br>آیا سوالی در مورد مباحث فنی وب دارید؟<br>به من ایمیل بزنید یا از طریق فرم ارتباط با من پیام خودتونو ارسال کنید، من نهایتاً تا 24 ساعت آینده به شما جواب میدم  </p>
+            <div class="span4 pad15 @if(app()->getLocale() == "fa") text-right @endif">
+                <h3 class="title-divider span4"><strong>{{__('messages.contactUs.rightBlock.title')}}</strong><span></span></h3>
+                <p class="@if(app()->getLocale() == "fa") text-right @endif">{{__('messages.contactUs.rightBlock.question1')}}<br>{{__('messages.contactUs.rightBlock.question2')}}<br>{{__('messages.contactUs.rightBlock.solution')}}</p>
 
-                <address class="text-right">
+                <address class="@if(app()->getLocale() == "fa") text-right @endif">
                     {!! $data->address !!}
                 </address>
 
-                <address class="text-right">
-                    <span class="black">رایانامه</span><br>
+                <address class="@if(app()->getLocale() == "fa") text-right @endif">
+                    <span class="black">{{__('messages.contactUs.rightBlock.email')}}</span><br>
                     <a href="mailto:{{$data->email}}">{{$data->email}}</a><br>
-                    <span class="black">شماره تماس</span><br>
+                    <span class="black">{{__('messages.contactUs.rightBlock.contact')}}</span><br>
                     <a href="tel:{{$data->mobile}}">{{$data->mobile}}</a><br>
                 </address>
 
@@ -50,18 +50,18 @@
                         <form action="{{route('message.store')}}" method="post">
                             @csrf
                             <input type="hidden" name="contact" value="{{password_hash(1,PASSWORD_BCRYPT)}}">
-                            <p class="form_info"><span class="required">*</span>نام و نام خانوادگی </p>
+                            <p class="form_info"><span class="required">*</span>{{__('messages.contactUs.form.name')}}</p>
                             <input class="span5" type="text" name="name" value="" />
-                            <p class="form_info"><span class="required">*</span>رایانامه </p>
+                            <p class="form_info"><span class="required">*</span>{{__('messages.contactUs.form.email')}} </p>
                             <input class="span5" type="text" name="email" value=""  />
-                            <p class="form_info">موضوع</p>
+                            <p class="form_info">{{__('messages.contactUs.form.subject')}}</p>
                             <input class="span5" type="text" name="subject" value="" /><br>
-                            <p class="form_info">پیام</p>
+                            <p class="form_info">{{__('messages.contactUs.form.message')}}</p>
                             <textarea name="content" id="message" class="span7" ></textarea>
                             <div class="clear"></div>
 
-                            <input type="submit"  class="btn btn-large btn-inverse btn-form" value="ارسال" />
-                            <input type="reset"  class="btn btn-large btn-inverse btn-form" value="حذف محتوا" />
+                            <input type="submit"  class="btn btn-large btn-inverse btn-form" value="{{__('messages.contactUs.form.send')}}" />
+                            <input type="reset"  class="btn btn-large btn-inverse btn-form" value="{{__('messages.contactUs.form.clear')}}" />
                             <div class="clear"></div>
                         </form>
                     </div>
@@ -72,18 +72,18 @@
     <script>
                 @if(session('error'))
         var error = "{{session('error')}}";
-                Swal.fire({
-                    icon: 'error',
-                    title: 'ناموفق',
-                    text: error,
-                });
+        Swal.fire({
+            icon: 'error',
+            title: "{{__('messages.contactUs.errorAlert')}}",
+            text: "{{__('messages.contactUs.error')}}",
+        });
                 @elseif(session('message'))
         var message = "{{session('message')}}";
-                Swal.fire({
-                    icon: 'success',
-                    title: 'موفقیت',
-                    text: message,
-                });
+        Swal.fire({
+            icon: 'success',
+            title: "{{__('messages.contactUs.successAlert')}}",
+            text: "{{__('messages.contactUs.success')}}",
+        });
         @endif
     </script>
     @endsection
