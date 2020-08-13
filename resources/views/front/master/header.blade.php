@@ -30,8 +30,6 @@
     <link rel="stylesheet" href="/admin/assets/sweetalert2/sweetalert2.css">
     <script type="text/javascript" src="/admin/assets/sweetalert2/sweetalert2.js"></script>
 
-    {{--    <link href="/front/css/bootstrap_rtl/css/bootstrap-rtl.css" rel="stylesheet" type="text/css"/>--}}
-
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -47,16 +45,23 @@
     <!--logo-->
     <div class="container">
         <div class="logo">
-            @if(Request::is('/'))
+            @if(Request::is(''.app()->getLocale()))
                 <div style="display: inline-block;float: left;margin-right: 20px;" class="btn-group">
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class=" fa">fa</button>
-                        <button type="button" class=" en">en</button>
+                        <button type="button" class=" fa" id="fa">fa</button>
+                        <button type="button" class=" en" id="en">en</button>
                     </div>
                 </div>
             @endif
-            <a href="/"><img src="/front/img/logo.png" alt="رونیکا"/></a>
-
+            <a href="/{{app()->getLocale()}}"><img src="/front/img/logo.png" alt="رونیکا"/></a>
+                <script>
+                    $("#fa").click(function () {
+                        window.location.href = "{{app()->getLocale()}}/changeLanguage/fa";
+                    });
+                    $("#en").click(function () {
+                        window.location.href = "{{app()->getLocale()}}/changeLanguage/en";
+                    });
+                </script>
         </div>
 
 
@@ -65,30 +70,30 @@
             <div class="menu_wrap">
                 <ul class="nav sf-menu">
                     @if(app()->getLocale() == "fa")
-                        <li class=" @if(Request::is('contact_us')) active @endif"><a href="/contact_us"><i
+                        <li class=" @if(Request::is(app()->getLocale().'/contact_us')) active @endif"><a href="{{'/'.app()->getLocale()}}/contact_us"><i
                                         class="icon-phone-sign darkgrey"></i><br>{{__('messages.contact')}}</a></li>
-                        <li class=" @if(Request::is('about_us')) active @endif"><a href="/about_us"><i
+                        <li class=" @if(Request::is(app()->getLocale().'/about_us')) active @endif"><a href="{{'/'.app()->getLocale()}}/about_us"><i
                                         class="icon-user darkgrey"></i><br>{{__('messages.about')}}</a></li>
-                        <li class=" @if(Request::is('article*') or Request::is('art_search') or Request::is('category_archive*') or Request::is('beforeArticle*') or Request::is('afterArticle*')) active @endif">
-                            <a href="/article"><i class="icon-book darkgrey"></i><br>{{__('messages.articles')}}</a>
+                        <li class=" @if(Request::is(app()->getLocale().'/article*') or Request::is(app()->getLocale().'/art_search') or Request::is(app()->getLocale().'/category_archive*') or Request::is(app()->getLocale().'/beforeArticle*') or Request::is(app()->getLocale().'/afterArticle*')) active @endif">
+                            <a href="{{'/'.app()->getLocale()}}/article"><i class="icon-book darkgrey"></i><br>{{__('messages.articles')}}</a>
                         </li>
-                        <li class=" @if(Request::is('portfolio*')) active @endif"><a href="/portfolio"><i
+                        <li class=" @if(Request::is(app()->getLocale().'/portfolio*')) active @endif"><a href="{{'/'.app()->getLocale()}}/portfolio"><i
                                         class="icon-suitcase darkgrey"></i><br>{{__('messages.portfolio')}}</a></li>
-                        <li class=" @if(Request::is('/')) active @endif"><a href="/"><i class="icon-home  darkgrey"></i><br>{{__('messages.home')}}
+                        <li class=" @if(Request::is(''.app()->getLocale())) active @endif"><a href="/{{app()->getLocale()}}"><i class="icon-home  darkgrey"></i><br>{{__('messages.home')}}
                             </a></li>
                     @endif
 
                     @if(app()->getLocale() == "en")
-                        <li class=" @if(Request::is('/')) active @endif"><a href="/"><i class="icon-home  darkgrey"></i><br>{{__('messages.home')}}
+                        <li class=" @if(Request::is(''.app()->getLocale())) active @endif"><a href="/{{app()->getLocale()}}"><i class="icon-home  darkgrey"></i><br>{{__('messages.home')}}
                             </a></li>
-                        <li class=" @if(Request::is('portfolio*')) active @endif"><a href="/portfolio"><i
+                        <li class=" @if(Request::is(app()->getLocale().'/portfolio*')) active @endif"><a href="/{{app()->getLocale()}}/portfolio"><i
                                         class="icon-suitcase darkgrey"></i><br>{{__('messages.portfolio')}}</a></li>
-                        <li class=" @if(Request::is('article*') or Request::is('art_search') or Request::is('category_archive*') or Request::is('beforeArticle*') or Request::is('afterArticle*')) active @endif">
-                            <a href="/article"><i class="icon-book darkgrey"></i><br>{{__('messages.articles')}}</a>
+                        <li class=" @if(Request::is(app()->getLocale().'/article*') or Request::is(app()->getLocale().'/art_search') or Request::is(app()->getLocale().'/category_archive*') or Request::is(app()->getLocale().'/beforeArticle*') or Request::is(app()->getLocale().'/afterArticle*')) active @endif">
+                            <a href="/{{app()->getLocale()}}/article"><i class="icon-book darkgrey"></i><br>{{__('messages.articles')}}</a>
                         </li>
-                        <li class=" @if(Request::is('about_us')) active @endif"><a href="/about_us"><i
+                        <li class=" @if(Request::is(app()->getLocale().'/about_us')) active @endif"><a href="{{'/'.app()->getLocale()}}/about_us"><i
                                         class="icon-user darkgrey"></i><br>{{__('messages.about')}}</a></li>
-                        <li class=" @if(Request::is('contact_us')) active @endif"><a href="/contact_us"><i
+                        <li class=" @if(Request::is(app()->getLocale().'/contact_us')) active @endif"><a href="{{'/'.app()->getLocale()}}/contact_us"><i
                                         class="icon-phone-sign darkgrey"></i><br>{{__('messages.contact')}}</a></li>
                     @endif
 

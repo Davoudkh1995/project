@@ -42,7 +42,7 @@
     <div class="card">
         <h5 class="card-header">درباره ما</h5>
         <div class="card-body">
-            <form action="/admin/updateAboutEn" method="post" class="needs-validation"
+            <form action="/{{app()->getLocale()}}/admin/updateAboutEn" method="post" class="needs-validation"
                   novalidate="" enctype="multipart/form-data"
                   autocomplete="off">
                 @csrf

@@ -18,6 +18,8 @@ use App\Vw_CategoryPortfolio;
 use App\Vw_Portfolio;
 use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 class MainController extends Controller
 {
@@ -253,5 +255,22 @@ class MainController extends Controller
         return $objects;
     }
 
+    public function changeLanguage($lang)
+    {
+        /*$locale = request()->segment(1);
+        if (!array_key_exists($locale, config('app.locales'))){
+            $segments = request()->segments();
+            $segments[0] =  config('app.fallback_locale');
+            return redirect(implode('/',$segments));
+        }*/
+        $segment = \request()->segment(count(\request()->segments()));
+        if (array_key_exists($segment, config('app.locales'))){
+            if ($segment == 'en'){
+                app()->setLocale('en');
+                return redirect('/'.'en');
+            }
+        }
+        return redirect('/');
+    }
 
 }

@@ -1,6 +1,6 @@
 @extends('front.master.index')
 @section('content')
-    <div class="breadcrumbs"><a href="/">{{__('messages.home')}}</a> <i class="@if(app()->getLocale() == "fa") icon-double-angle-left @else icon-double-angle-right @endif"></i>{{__('messages.portfolios.detail.title')}}</div>
+    <div class="breadcrumbs"><a href="/{{app()->getLocale()}}">{{__('messages.home')}}</a> <i class="@if(app()->getLocale() == "fa") icon-double-angle-left @else icon-double-angle-right @endif"></i>{{__('messages.portfolios.detail.title')}}</div>
     <div class="inner_content">
         <h1 class="title">{{__('messages.portfolios.detail.title')}}</h1>
         <h2>{{$portfolio->title}}</h2>
@@ -63,93 +63,12 @@
                                     <div class="hover_img">
                                         <img src="{{json_decode($relatedPortfolio->picture)->others[0]}}" alt="{{$relatedPortfolio->title}}"/>
                                         <span class="portfolio_zoom"><a href="{{json_decode($relatedPortfolio->picture)->others[0]}}" data-rel="prettyPhoto[portfolio1]"></a></span>
-                                        <span class="portfolio_link"><a href="/portfolio/{{$relatedPortfolio->slug}}">{{$relatedPortfolio->title}}</a></span>
+                                        <span class="portfolio_link"><a href="/{{app()->getLocale()}}/portfolio/{{$relatedPortfolio->slug}}">{{$relatedPortfolio->title}}</a></span>
                                     </div>
                                 </div>
                             </div>
 
                             @endforeach
-
-                        {{--<div class="slider-item">
-                            <div class="slider-image">
-                                <div class="hover_img">
-                                    <img src="/front/img/small/s1.jpg" alt=""/>
-                                    <span class="portfolio_zoom"><a href="/front/img/large/s1.jpg" data-rel="prettyPhoto[portfolio1]"></a></span>
-                                    <span class="portfolio_link"><a href="single_portfolio.html">View item</a></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="slider-item">
-                            <div class="slider-image">
-                                <div class="hover_img">
-                                    <img src="/front/img/small/s2.jpg" alt="" />
-                                    <span class="portfolio_zoom"><a href="/front/img/large/s2.jpg" data-rel="prettyPhoto[portfolio1]"></a></span>
-                                    <span class="portfolio_link"><a href="single_portfolio.html">View item</a></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="slider-item">
-                            <div class="slider-image">
-                                <div class="hover_img">
-                                    <img src="/front/img/small/s3.jpg" alt="" />
-                                    <span class="portfolio_zoom"><a href="/front/img/large/s3.jpg" data-rel="prettyPhoto[portfolio1]"></a></span>
-                                    <span class="portfolio_link"><a href="single_portfolio.html">View item</a></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="slider-item">
-                            <div class="slider-image">
-                                <div class="hover_img">
-                                    <img src="/front/img/small/s4.jpg" alt="" />
-                                    <span class="portfolio_zoom"><a href="/front/img/large/s4.jpg" data-rel="prettyPhoto[portfolio1]"></a></span>
-                                    <span class="portfolio_link"><a href="single_portfolio.html">View item</a></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="slider-item">
-                            <div class="slider-image">
-                                <div class="hover_img">
-                                    <img src="/front/img/small/s5.jpg" alt="" />
-                                    <span class="portfolio_zoom"><a href="/front/img/large/s5.jpg" data-rel="prettyPhoto[portfolio1]"></a></span>
-                                    <span class="portfolio_link"><a href="single_portfolio.html">View item</a></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="slider-item">
-                            <div class="slider-image">
-                                <div class="hover_img">
-                                    <img src="/front/img/small/s6.jpg" alt="" />
-                                    <span class="portfolio_zoom"><a href="/front/img/large/s6.jpg" data-rel="prettyPhoto[portfolio1]"></a></span>
-                                    <span class="portfolio_link"><a href="single_portfolio.html">View item</a></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="slider-item">
-                            <div class="slider-image">
-                                <div class="hover_img">
-                                    <img src="/front/img/small/s7.jpg" alt="" />
-                                    <span class="portfolio_zoom"><a href="/front/img/large/s7.jpg" data-rel="prettyPhoto[portfolio1]"></a></span>
-                                    <span class="portfolio_link"><a href="single_portfolio.html">View item</a></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="slider-item">
-                            <div class="slider-image">
-                                <div class="hover_img">
-                                    <img src="/front/img/small/s8.jpg" alt="" />
-                                    <span class="portfolio_zoom"><a href="/front/img/large/s8.jpg" data-rel="prettyPhoto[portfolio1]"></a></span>
-                                    <span class="portfolio_link"><a href="single_portfolio.html">View item</a></span>
-                                </div>
-                            </div>
-                        </div>--}}
-
                     </div>
                     <div id="sl-prev3" class="widget-scroll-prev3"><i class=" icon-caret-left grey"></i></div>
                     <div id="sl-next3" class="widget-scroll-next3"><i class=" icon-caret-right grey"></i></div>

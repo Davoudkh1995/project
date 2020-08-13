@@ -43,7 +43,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="/admin/saveSocialChange" method="post" id="changeModal">
+                <form action="/{{app()->getLocale()}}/admin/saveSocialChange" method="post" id="changeModal">
                     @csrf
                     <div class="modal-body">
                         <div class="col-12">
@@ -190,7 +190,8 @@
         });
         $('.editItem').click(function () {
             var item_id = $(this).data('id');
-            $.post('/admin/getSocialmediaItem', {id: item_id, '_token': "{{csrf_token()}}"}, function ($response) {
+            var url = "/{{app()->getLocale()}}/admin/getSocialmediaItem";
+            $.post(url, {id: item_id, '_token': "{{csrf_token()}}"}, function ($response) {
                 $('#customSocialMedia').val($response['link']);
                 $('#editItemId').val($response['id']);
             });
@@ -198,10 +199,11 @@
         });
         $('#saveEdit').click(function () {
             $(this).parents('#changeModal').submit();
-        })
+        });
         $('.custom-control-input').click(function () {
             var item_id = $(this).data('id');
-            $.post('/admin/changeSocialStatus', {id: item_id, '_token': "{{csrf_token()}}"}, function ($response) {
+            var url1 = "/{{app()->getLocale()}}/admin/changeSocialStatus";
+            $.post(url1, {id: item_id, '_token': "{{csrf_token()}}"}, function ($response) {
                 alert('وضعیت تغییر کرد')
             });
         });

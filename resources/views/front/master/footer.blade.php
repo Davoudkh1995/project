@@ -40,7 +40,7 @@
                             <img class="drop @if(app()->getLocale() == "fa") pull-right @else pull-left @endif" src="{{$article->picture['others'][1]}}"
                                  alt="{{$article->title}}" height="42" width="42">
                             <div class="media-body  @if(app()->getLocale() == "fa") text-right @endif">
-                                <a href="/article/{{$article->slug}}" dir="rtl">{{\Illuminate\Support\Str::limit($article->title,100)}}</a>
+                                <a href="/{{app()->getLocale()}}/article/{{$article->slug}}" dir="rtl">{{\Illuminate\Support\Str::limit($article->title,100)}}</a>
                                 <br/>@if(app()->getLocale() == "fa"){{$article->date}} @else {{substr($article->created_at,0,9)}} @endif<i class="icon-time hue"></i></div>
                         </li>
                     @endforeach
@@ -74,12 +74,12 @@
             <div class="span3">
                 <h6>{{__('messages.footer.important_article.title')}}</h6>
                 <img src="{{$latestBlog->picture['others'][1]}}" alt="{{$latestBlog->title}}"/>
-                <h5><a href="/portfolio/{{$latestBlog->slug}}">{{\Illuminate\Support\Str::limit($article->title,150)}}</a></h5>
+                <h5><a href="/{{app()->getLocale()}}/portfolio/{{$latestBlog->slug}}">{{\Illuminate\Support\Str::limit($article->title,150)}}</a></h5>
                 <p class="@if(app()->getLocale() == "fa") text-right @endif">
                     {!! \Illuminate\Support\Str::limit($article->title,150) !!}
                 </p>
                 <p>
-                    <a href="/article/{{$latestBlog->slug}}" class="more-link">{{__('messages.footer.important_article.button')}} &rarr;</a>
+                    <a href="/{{app()->getLocale()}}/article/{{$latestBlog->slug}}" class="more-link">{{__('messages.footer.important_article.button')}} &rarr;</a>
                 </p>
             </div>
             <!--column 4-->

@@ -51,7 +51,8 @@ Route::namespace('front')->group(function (){
     Route::get('about_us','MainController@about');
     Route::get('portfolio/{slug}','MainController@portfolioDetails');
     Route::get('portfolio','MainController@portfolios');
-    Route::get('article/{slug}','MainController@articleDetails');
+//    Route::get("/".session()->get('lang')."/article/{slug}",'MainController@articleDetails');
+    Route::get("/article/{slug}",'MainController@articleDetails');
     Route::get('beforeArticle/{article_id}','MainController@beforeArticle');
     Route::get('afterArticle/{article_id}','MainController@afterArticle');
     Route::get('article','MainController@articles');
@@ -59,6 +60,7 @@ Route::namespace('front')->group(function (){
     Route::post('art_search','MainController@articlesSearch');
 
 });
+Route::get('/changeLanguage/{lang}','front\MainController@changeLanguage');
 Route::get('/site/{slug}','admin\MenuController@front_page');
 
 Auth::routes();

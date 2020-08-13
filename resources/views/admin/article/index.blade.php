@@ -51,7 +51,6 @@
                 </thead>
                 <tbody>
                 @foreach($items as $key=>$item)
-
                     <tr>
                         <td>{{$key+1}}</td>
                         <td><a href="{{json_decode($item->picture)->main}}"><img

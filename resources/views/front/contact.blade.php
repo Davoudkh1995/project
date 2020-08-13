@@ -1,6 +1,6 @@
 @extends('front.master.index')
 @section('content')
-    <div class="breadcrumbs"><a href="/">{{__('messages.home')}}</a> <i class="@if(app()->getLocale() == "fa") icon-double-angle-left @else icon-double-angle-right marginL10 @endif grey "></i>{{__('messages.contactUs.title')}}</div>
+    <div class="breadcrumbs"><a href="/{{app()->getLocale()}}">{{__('messages.home')}}</a> <i class="@if(app()->getLocale() == "fa") icon-double-angle-left @else icon-double-angle-right marginL10 @endif grey "></i>{{__('messages.contactUs.title')}}</div>
 
     <div class="inner_content">
         <h1 class="title">{{__('messages.contactUs.title')}}</h1>
@@ -47,7 +47,7 @@
                 <div class="contact_form well">
                     <div id="note"></div>
                     <div id="fields">
-                        <form action="{{route('message.store')}}" method="post">
+                        <form action="/{{app()->getLocale()}}/message" method="post">
                             @csrf
                             <input type="hidden" name="contact" value="{{password_hash(1,PASSWORD_BCRYPT)}}">
                             <p class="form_info"><span class="required">*</span>{{__('messages.contactUs.form.name')}}</p>

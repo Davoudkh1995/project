@@ -121,7 +121,7 @@
     @endphp
     <div class="card" id="page-creator" style="display: {{$display}};">
         <div class="card-body">
-            <form action="/admin/page_creator" method="post">
+            <form action="/{{app()->getLocale()}}/admin/page_creator" method="post">
                 @csrf
                 <input type="hidden" name="menu_id" value="{{$menu->id}}">
                 <div class="row">

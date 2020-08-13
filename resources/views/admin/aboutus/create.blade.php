@@ -43,7 +43,7 @@
         <h5 class="card-header">درباره ما</h5>
         <div class="card-body">
             <div class="mb-4">
-                <a href="/admin/updateAboutEn" class="btn btn-primary" style="margin: auto;display: table;">درباره ما( انگلیسی )</a>
+                <a href="/{{app()->getLocale()}}/admin/updateAboutEn" class="btn btn-primary" style="margin: auto;display: table;">درباره ما( انگلیسی )</a>
             </div>
             <form action="{{route('aboutus.update',1)}}" method="post" class="needs-validation"
                   novalidate="" enctype="multipart/form-data"

@@ -344,54 +344,54 @@
         <ul>
             <li class="side-menu-divider">فهرست</li>
             <li><a href="/"><i class="icon ti-world"></i> <span>بازدید از سایت</span> </a></li>
-            <li><a class="@if(Request::is('home')) active @endif" href="{{route('home')}}"><i class="icon ti-home"></i> <span>داشبورد</span> </a></li>
+            <li><a class="@if(Request::is(app()->getLocale().'/home')) active @endif" href="{{route('home')}}"><i class="icon ti-home"></i> <span>داشبورد</span> </a></li>
             @can('menu')
-            <li><a class="@if(Request::is('admin/menu*')) active @endif" href="/admin/menu"><i class="icon ti-menu"></i> <span>منو</span> </a></li>
+            <li><a class="@if(Request::is(app()->getLocale().'/admin/menu*')) active @endif" href="/{{app()->getLocale()}}/admin/menu"><i class="icon ti-menu"></i> <span>منو</span> </a></li>
             @endcan
             @can('slider')
-            <li><a class="@if(Request::is('admin/slider*')) active @endif" href="/admin/slider"><i class="icon ti-image"></i> <span>اسلایدر</span> </a></li>
+            <li><a class="@if(Request::is(app()->getLocale().'/admin/slider*')) active @endif" href="/{{app()->getLocale()}}/admin/slider"><i class="icon ti-image"></i> <span>اسلایدر</span> </a></li>
             @endcan
             @can('article')
-            <li class="@if(Request::is('admin/article*') or Request::is('admin/category_article*')) open @endif"><a href="/admin/article"><i class="icon ti-book"></i> <span>اخبار و مقالات</span> </a>
+            <li class="@if(Request::is(app()->getLocale().'/admin/article*') or Request::is('admin/category_article*')) open @endif"><a href="/{{app()->getLocale()}}/admin/article"><i class="icon ti-book"></i> <span>اخبار و مقالات</span> </a>
                 <ul>
-                    <li><a class="@if(Request::is('admin/article*')) active @endif" href="{{route('article.index')}}">مقالات</a></li>
-                    <li><a class="@if(Request::is('admin/category_article*')) active @endif" href="{{route('category_article.index')}}">دسته بندی</a></li>
+                    <li><a class="@if(Request::is(app()->getLocale().'/admin/article*')) active @endif" href="{{route('article.index')}}">مقالات</a></li>
+                    <li><a class="@if(Request::is(app()->getLocale().'/admin/category_article*')) active @endif" href="{{route('category_article.index')}}">دسته بندی</a></li>
                 </ul>
             </li>
                 @endcan
             @can('service')
-            <li class="@if(Request::is('admin/service*') or Request::is('admin/category_service*')) open @endif"><a href="/admin/service"><i class="icon ti-shopping-cart"></i> <span>خدمات</span> </a>
+            <li class="@if(Request::is(app()->getLocale().'/admin/service*') or Request::is(app()->getLocale().'/admin/category_service*')) open @endif"><a href="/{{app()->getLocale()}}/admin/service"><i class="icon ti-shopping-cart"></i> <span>خدمات</span> </a>
                 <ul>
-                    <li><a class="@if(Request::is('admin/service*')) active @endif" href="{{route('service.index')}}">خدمات</a></li>
-                    <li><a class="@if(Request::is('admin/category_service*')) active @endif" href="{{route('category_service.index')}}">دسته بندی</a></li>
+                    <li><a class="@if(Request::is(app()->getLocale().'/admin/service*')) active @endif" href="{{route('service.index')}}">خدمات</a></li>
+                    <li><a class="@if(Request::is(app()->getLocale().'/admin/category_service*')) active @endif" href="{{route('category_service.index')}}">دسته بندی</a></li>
                 </ul>
             </li>
             @endcan
             @can('portfolio')
-            <li class="@if(Request::is('admin/portfolio*') or Request::is('admin/category_portfolio*')) open @endif"><a href="/admin/portfolio"><i class="icon ti-shopping-cart"></i> <span>نمونه کار</span> </a>
+            <li class="@if(Request::is(app()->getLocale().'/admin/portfolio*') or Request::is(app()->getLocale().'/admin/category_portfolio*')) open @endif"><a href="/{{app()->getLocale()}}/admin/portfolio"><i class="icon ti-shopping-cart"></i> <span>نمونه کار</span> </a>
                 <ul>
-                    <li><a class="@if(Request::is('admin/portfolio*')) active @endif" href="{{route('portfolio.index')}}">نمونه کار</a></li>
-                    <li><a class="@if(Request::is('admin/category_portfolio*')) active @endif" href="{{route('category_portfolio.index')}}">دسته بندی</a></li>
+                    <li><a class="@if(Request::is(app()->getLocale().'/admin/portfolio*')) active @endif" href="{{route('portfolio.index')}}">نمونه کار</a></li>
+                    <li><a class="@if(Request::is(app()->getLocale().'/admin/category_portfolio*')) active @endif" href="{{route('category_portfolio.index')}}">دسته بندی</a></li>
                 </ul>
             </li>
             @endcan
             @can('contact')
-            <li><a class="@if(Request::is('admin/contactus') or Request::is('admin/updateContactEn')) active @endif" href="/admin/contactus"><i class="icon ti-agenda"></i> <span>تماس با ما</span> </a></li>
+            <li><a class="@if(Request::is(app()->getLocale().'/admin/contactus') or Request::is(app()->getLocale().'/admin/updateContactEn')) active @endif" href="/{{app()->getLocale()}}/admin/contactus"><i class="icon ti-agenda"></i> <span>تماس با ما</span> </a></li>
             @endcan
             @can('about')
-            <li><a class="@if(Request::is('admin/aboutus') or Request::is('admin/updateAboutEn')) active @endif" href="/admin/aboutus"><i class="icon ti-agenda"></i> <span>درباره ما</span> </a></li>
+            <li><a class="@if(Request::is(app()->getLocale().'/admin/aboutus') or Request::is(app()->getLocale().'/admin/updateAboutEn')) active @endif" href="/{{app()->getLocale()}}/admin/aboutus"><i class="icon ti-agenda"></i> <span>درباره ما</span> </a></li>
             @endcan
             @can('socialmedia')
-            <li><a class="@if(Request::is('admin/socialmedia')) active @endif" href="/admin/socialmedia"><i class="icon ti-cloud"></i> <span>فضای مجازی</span> </a></li>
+            <li><a class="@if(Request::is(app()->getLocale().'/admin/socialmedia')) active @endif" href="/{{app()->getLocale()}}/admin/socialmedia"><i class="icon ti-cloud"></i> <span>فضای مجازی</span> </a></li>
             @endcan
             @can('user')
-            <li><a class="@if(Request::is('admin/admin*')) active @endif" href="/admin/admin"><i class="icon ti-stamp"></i> <span>مدیریت کاربران</span> </a></li>
+            <li><a class="@if(Request::is(app()->getLocale().'/admin/admin*')) active @endif" href="/{{app()->getLocale()}}/admin/admin"><i class="icon ti-stamp"></i> <span>مدیریت کاربران</span> </a></li>
             @endcan
             @can('permission')
-            <li><a class="@if(Request::is('admin/permission*')) active @endif" href="/admin/permission"><i class="icon ti-lock"></i> <span>مدیریت دسترسی</span> </a></li>
+            <li><a class="@if(Request::is(app()->getLocale().'/admin/permission*')) active @endif" href="/{{app()->getLocale()}}/admin/permission"><i class="icon ti-lock"></i> <span>مدیریت دسترسی</span> </a></li>
             @endcan
             @can('role')
-            <li><a class="@if(Request::is('admin/role*')) active @endif" href="/admin/role"><i class="icon ti-user"></i> <span>مدیریت مشاغل</span> </a></li>
+            <li><a class="@if(Request::is(app()->getLocale().'/admin/role*')) active @endif" href="/{{app()->getLocale()}}/admin/role"><i class="icon ti-user"></i> <span>مدیریت مشاغل</span> </a></li>
             @endcan
             {{--<li><a href="#"><i class="icon ti-rocket"></i> <span>اپ ها</span> </a>
                 <ul>

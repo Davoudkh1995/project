@@ -1,6 +1,6 @@
 @extends('front.master.index')
 @section('content')
-    <div class="breadcrumbs"><a href="/">{{__('messages.home')}}</a> <i
+    <div class="breadcrumbs"><a href="/{{app()->getLocale()}}">{{__('messages.home')}}</a> <i
                 class="@if(app()->getLocale() == "fa") icon-double-angle-left @else icon-double-angle-right @endif"></i>{{__('messages.article_page.archive.title')}}
     </div>
 
@@ -23,7 +23,7 @@
                                     <img src="{{json_decode($article->picture)->main}}" alt="{{$article->title}}"></a>
 
                                 <h2 class="title-divider span9 post_link pad15"><a
-                                            href="/article/{{$article->slug}}"><strong>{{$article->title}}</strong></a><span></span>
+                                            href="/{{app()->getLocale()}}/article/{{$article->slug}}"><strong>{{$article->title}}</strong></a><span></span>
                                 </h2>
 
                                 <div class="clear"></div>
@@ -51,7 +51,7 @@
 
                                 <p class="text-right">{!! \Illuminate\Support\Str::limit($article->content,300) !!}</p>
 
-                                <p><a href="/article/{{$article->tags}}"
+                                <p><a href="/{{app()->getLocale()}}/article/{{$article->slug}}"
                                       class="more-link">{{__('messages.more')}} &rarr;</a></p>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
             <!--sidebar-->
             <div class="span3 @if(app()->getLocale() == "fa") rtl @else ltr @endif">
                 <!--search-->
-                <form action="/art_search/" method="post" id="searchItem">
+                <form action="/{{app()->getLocale()}}/art_search/" method="post" id="searchItem">
                     @csrf
                     <div class="input-append">
                         @if(app()->getLocale() == "fa")
@@ -104,7 +104,7 @@
                 <ul class="icons ">
                     @foreach($categories as $category)
                         <li><i class=" icon-caret-left"></i><a class="categ"
-                                                               href="/category_archive/{{$category->slug}}">{{$category->title}}</a>
+                                                               href="/{{app()->getLocale()}}/category_archive/{{$category->slug}}">{{$category->title}}</a>
                         </li>
                     @endforeach
                 </ul>
@@ -137,7 +137,7 @@
                                         <div class="media-body">
                                             <small>@if(app()->getLocale() == "fa") {{$latestArticle->date}} @else {{substr($latestArticle->created_at,0,9)}} @endif</small>
                                             <br>
-                                            <a href="/article/{{$latestArticle->slug}}">{{$latestArticle->title}}</a>
+                                            <a href="/{{app()->getLocale()}}/article/{{$latestArticle->slug}}">{{$latestArticle->title}}</a>
                                         </div>
                                     </li>
                                 @endforeach
@@ -155,7 +155,7 @@
                                         <div class="media-body">
                                             <small>@if(app()->getLocale() == "fa") {{$popularArticle->date}} @else {{substr($popularArticle->created_at,0,9)}} @endif</small>
                                             <br>
-                                            <a href="/article/{{$popularArticle->slug}}">{{$popularArticle->title}}</a>
+                                            <a href="/{{app()->getLocale()}}/article/{{$popularArticle->slug}}">{{$popularArticle->title}}</a>
                                         </div>
                                     </li>
                                 @endforeach

@@ -42,7 +42,7 @@
     <div class="card">
         <h5 class="card-header">تماس با ما</h5>
         <div class="card-body">
-            <form action="/admin/updateContactEn" method="post" class="needs-validation"
+            <form action="/{{app()->getLocale()}}/admin/updateContactEn" method="post" class="needs-validation"
                   novalidate="" enctype="multipart/form-data"
                   autocomplete="off">
                 @csrf

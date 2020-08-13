@@ -92,7 +92,7 @@
         <div class="span12 pad15">
             <div class="hero-unit">
                 <h2>
-                    <a href="/contact_us" class="btn btn-inverse btn-large hero-button mr4">{{__('messages.contact_us.button')}}</a>
+                    <a href="/{{app()->getLocale()}}/contact_us" class="btn btn-inverse btn-large hero-button mr4">{{__('messages.contact_us.button')}}</a>
                     {{__('messages.contact_us.content')}}
                 </h2>
             </div>
@@ -108,7 +108,7 @@
                 <div class="span4 pad10">
                     <h3 class="title-divider span4"><strong>{{__('messages.latestPortfolios.title')}}</strong><span></span></h3>
                     <p class="@if(app()->getLocale() == "fa") text-right @endif">{{__('messages.latestPortfolios.content')}}</p>
-                    <a href="#" class="btn btn-primary btn-medium">{{__('messages.latestPortfolios.button')}}</a>
+                    <a href="/{{app()->getLocale()}}/portfolio" class="btn btn-primary btn-medium">{{__('messages.latestPortfolios.button')}}</a>
                 </div>
 
                 <div class="span8 pad15 col_full2">
@@ -118,12 +118,12 @@
                         @foreach($portfolios as $portfolio)
                             <div class="slider-item">
                                 <div class="slider-image ">
-                                    <a href="{{$portfolio->picture['main']}}" data-rel="prettyPhoto"><img src="{{$portfolio->picture['main']}}" class="height153" alt="{{$portfolio->title}}"/></a>
+                                    <a href="/{{$portfolio->picture['main']}}" data-rel="prettyPhoto"><img src="{{$portfolio->picture['main']}}" class="height153" alt="{{$portfolio->title}}"/></a>
                                 </div>
                                 <div class="slider-title">
-                                    <h3 class="@if(app()->getLocale() == "fa") text-right @endif"><a href="/portfolio/{{$portfolio->slug}}">{{$portfolio->title}}</a></h3>
+                                    <h3 class="@if(app()->getLocale() == "fa") text-right @endif"><a href="/{{app()->getLocale()}}/portfolio/{{$portfolio->slug}}">{{$portfolio->title}}</a></h3>
                                     <p class="@if(app()->getLocale() == "fa") text-right @endif">{!! Illuminate\Support\Str::limit($portfolio->title,50) !!}</p>
-                                    <p><a href="/portfolio/{{$portfolio->slug}}"><span class="read_more">{{__('messages.details')}} &rarr;</span></a></p>
+                                    <p><a href="/{{app()->getLocale()}}/portfolio/{{$portfolio->slug}}"><span class="read_more">{{__('messages.details')}} &rarr;</span></a></p>
                                 </div>
                             </div>
                         @endforeach

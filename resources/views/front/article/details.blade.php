@@ -1,6 +1,6 @@
 @extends('front.master.index')
 @section('content')
-    <div class="breadcrumbs"><a href="/">{{__('messages.home')}}</a> <i class="@if(app()->getLocale() == "fa") icon-double-angle-left @else icon-double-angle-right @endif"></i>{{__('messages.article_page.detail.title')}}</div>
+    <div class="breadcrumbs"><a href="/{{app()->getLocale()}}">{{__('messages.home')}}</a> <i class="@if(app()->getLocale() == "fa") icon-double-angle-left @else icon-double-angle-right @endif"></i>{{__('messages.article_page.detail.title')}}</div>
 
     <div class="inner_content">
         <h1 class="title">{{__('messages.article_page.detail.title')}}</h1>
@@ -74,15 +74,15 @@
                 <div class="pad5"></div>
                 <!--prev/next-->
                 <hr>
-                &larr; @if($beforeBool)<a href="/beforeArticle/{{$beforeSlug}}" class="pointer">{{__('messages.article_page.detail.beforeArticle')}}</a> @else <a disabled="" class="pointer" >{{__('messages.article_page.detail.beforeArticle')}}</a> @endif :: @if($afterBool) <a href="/afterArticle/{{$afterSlug}}" class="pointer">{{__('messages.article_page.detail.afterArticle')}} </a> @else <a disabled="" class="pointer">{{__('messages.article_page.detail.afterArticle')}} </a>@endif &rarr;
+                &larr; @if($beforeBool)<a href="/{{app()->getLocale()}}/beforeArticle/{{$beforeSlug}}" class="pointer">{{__('messages.article_page.detail.beforeArticle')}}</a> @else <a disabled="" class="pointer" >{{__('messages.article_page.detail.beforeArticle')}}</a> @endif :: @if($afterBool) <a href="/{{app()->getLocale()}}/afterArticle/{{$afterSlug}}" class="pointer">{{__('messages.article_page.detail.afterArticle')}} </a> @else <a disabled="" class="pointer">{{__('messages.article_page.detail.afterArticle')}} </a>@endif &rarr;
                 <hr>
                 <div class="pad5"></div>
 
-                @if(count($messages))
-                    @foreach($messages as $message)
                 <!-- Comments -->
                 <h6><span>{{count($messages)}} {{__('messages.article_page.detail.comment')}}</span></h6>
                 <!--Comment 1-->
+                @if(count($messages))
+                    @foreach($messages as $message)
                 <div class="media">
                     <a class=" @if(app()->getLocale() == "fa") pull-right @endif " href="javascript:void(0)">
                         <img src="/front/img/image/customer1.png" alt="" class="avatar img-circle" width="40" height="40"/></a>
@@ -119,7 +119,7 @@
                         <!-- Comment form -->
                         <h3>{{__('messages.article_page.detail.contact.title')}}</h3>
                         <div class="contact_form well">
-                            <form action="{{route('message.store')}}" method="post">
+                            <form action="/{{app()->getLocale()}}/message" method="post">
                                 @csrf
                                 <input type="hidden" name="comment" value="{{password_hash(1,PASSWORD_BCRYPT)}}">
                                 <input type="hidden" name="article_id" value="{{$article->id}}">
@@ -144,15 +144,15 @@
                     var error = "{{session('error')}}";
                     Swal.fire({
                         icon: 'error',
-                        title: "{{__('messages.article_page.detail.contact.errorAlert')}}",
-                        text: "{{__('messages.article_page.detail.contact.error')}}",
+                        title: "{{__('messages.article_page.detail.errorAlert')}}",
+                        text: "{{__('messages.article_page.detail.error')}}",
                     });
                             @elseif(session('message'))
                     var message = "{{session('message')}}";
                     Swal.fire({
                         icon: 'success',
-                        title: "{{__('messages.article_page.detail.contact.successAlert')}}",
-                        text: "{{__('messages.article_page.detail.contact.success')}}",
+                        title: "{{__('messages.article_page.detail.successAlert')}}",
+                        text: "{{__('messages.article_page.detail.success')}}",
                     });
                     @endif
                 </script>
@@ -160,7 +160,7 @@
             <!--sidebar-->
             <div class="span3  @if(app()->getLocale() == "fa") rtl @endif">
                 <!--search-->
-                <form action="/art_search/" method="post" id="searchItem">
+                <form action="/{{app()->getLocale()}}/art_search/" method="post" id="searchItem">
                     @csrf
                     <div class="input-append">
                         @if(app()->getLocale() == "fa")
@@ -199,7 +199,7 @@
                 <div class="clear"></div>
                 <ul class="icons ">
                     @foreach($categories as $category)
-                        <li><i class=" icon-caret-left"></i><a class="categ" href="/category_archive/{{$category->slug}}">{{$category->title}}</a></li>
+                        <li><i class=" icon-caret-left"></i><a class="categ" href="/{{app()->getLocale()}}/category_archive/{{$category->slug}}">{{$category->title}}</a></li>
                     @endforeach
                 </ul>
 
@@ -231,7 +231,7 @@
                                         <div class="media-body">
                                             <small>@if(app()->getLocale() == "fa") {{$latestArticle->date}} @else {{substr($latestArticle->created_at,0,9)}} @endif</small>
                                             <br>
-                                            <a href="/article/{{$latestArticle->slug}}">{{$latestArticle->title}}</a>
+                                            <a href="/{{app()->getLocale()}}/article/{{$latestArticle->slug}}">{{$latestArticle->title}}</a>
                                         </div>
                                     </li>
                                 @endforeach
@@ -246,7 +246,7 @@
                                         <img class=" pull-left" src="{{json_decode($popularArticle->picture)->others[1]}}" alt="{{$popularArticle->title}}" width="60" height="60"/>
                                         <div class="media-body">
                                             <small>@if(app()->getLocale() == "fa") ({{$popularArticle->date}}) @else {{'('.substr($popularArticle->created_at,0,9).')'}} @endif</small><br>
-                                            <a href="/article/{{$popularArticle->slug}}">{{$popularArticle->title}}</a></div>
+                                            <a href="/{{app()->getLocale()}}/article/{{$popularArticle->slug}}">{{$popularArticle->title}}</a></div>
                                     </li>
                                 @endforeach
                             </ul>
@@ -256,7 +256,7 @@
                             <p>
                                 @if(isset($tags))
                                     @foreach($tags as $tag)
-                                        <a href="#" class="btn btn-small btn-inverse marg-bottom5">{{$tag}}</a>
+                                        <a href="javascript:void(0)" class="btn btn-small btn-inverse marg-bottom5">{{$tag}}</a>
                             @endforeach
                             @endif
                         </div>

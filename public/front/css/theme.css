@@ -1617,6 +1617,7 @@ input{
     cursor: pointer;
 }
 .fa {
+    margin: 22px 0 0 0;
     padding: 7px;
     border: none;
     background: #857d50;
@@ -1630,6 +1631,7 @@ input{
     height: 35px;
 }
 .en {
+    margin: 22px 0 0 0;
     border: none;
     padding: 7px;
     background: #313131;

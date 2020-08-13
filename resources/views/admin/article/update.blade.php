@@ -194,7 +194,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $.post( "/saveAnswer",{data:{"_token": "{{ csrf_token() }}", message: message, message_id: id}},function(response) {
+            var url = "/{{app()->getLocale()}}/saveAnswer";
+            $.post( url,{data:{"_token": "{{ csrf_token() }}", message: message, message_id: id}},function(response) {
                 Swal.fire({
                     icon: 'success',
                     title: 'موفقیت!',
