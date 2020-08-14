@@ -263,6 +263,42 @@ class PermissionController extends Controller
 
     public function remove_all(Request $request)
     {
+        try {
+            if (!$this->authorize('permission')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+        $ids = $request['ids'];
+        $ids = explode(',', $ids);
+        foreach ($ids as $id) {
+            $item = Permission::find($id);
+            $roles = $item->roles->all();
+            if (count($roles) > 0) {
+                foreach ($roles as $role) {
+                    $item->roles()->wherePivot('role_id', '=', $role->id)->detach();
+                }
+            }
+            $menuDynamicTable = MenuDynamicTable::where('permission_id', $item->id)->first();
+            $menuDynamicTable->delete();
+            $item->delete();
+        }
+        return redirect(route('permission.index'))->with('message', 'عملیات موفقیت آمیز بود');
+    }
+
+
+
+    /*public function singleRemove(Request $request)
+    {
+        $id = $request['permissionId'];
+        Permission::where('id', $id)->delete();
+        $permissions = Role::all();
+        return response()->json(['delete' => 'success', 'permissions' => $permissions]);
+    }*/
+
+    /*public function remove_all(Request $request)
+    {
         $ids = $request['allCheckedSelect'];
         if (count($ids) == 0) {
             return back()->with('message', 'موردی را انتخاب نکردید');
@@ -280,10 +316,9 @@ class PermissionController extends Controller
             $item->delete();
         }
         return response()->json(['delete' => 'success']);
-    }
+    }*/
 
-
-    public function multiRemove(Request $request)
+    /*public function multiRemove(Request $request)
     {
         $ids = $request['allCheckedSelect'];
         foreach ($ids as $id) {
@@ -291,17 +326,9 @@ class PermissionController extends Controller
         }
         $permissions = Permission::all();
         return response()->json(['delete' => 'success', 'permissions' => $permissions]);
-    }
+    }*/
 
-    public function singleRemove(Request $request)
-    {
-        $id = $request['permissionId'];
-        Permission::where('id', $id)->delete();
-        $permissions = Role::all();
-        return response()->json(['delete' => 'success', 'permissions' => $permissions]);
-    }
-
-    public function searchTitle(Request $request)
+    /*public function searchTitle(Request $request)
     {
         $title = $request['value'];
 
@@ -316,6 +343,6 @@ class PermissionController extends Controller
         $size = count($permissions);
 
         return response()->json(['arrive' => 'success', 'permissions' => $permissions, 'size' => $size]);
-    }
+    }*/
 
 }

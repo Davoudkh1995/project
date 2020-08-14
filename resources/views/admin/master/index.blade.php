@@ -352,7 +352,7 @@
             <li><a class="@if(Request::is(app()->getLocale().'/admin/slider*')) active @endif" href="/{{app()->getLocale()}}/admin/slider"><i class="icon ti-image"></i> <span>اسلایدر</span> </a></li>
             @endcan
             @can('article')
-            <li class="@if(Request::is(app()->getLocale().'/admin/article*') or Request::is('admin/category_article*')) open @endif"><a href="/{{app()->getLocale()}}/admin/article"><i class="icon ti-book"></i> <span>اخبار و مقالات</span> </a>
+            <li class="@if(Request::is(app()->getLocale().'/admin/article*') or Request::is(app()->getLocale().'/admin/category_article*')) open @endif"><a href="/{{app()->getLocale()}}/admin/article"><i class="icon ti-book"></i> <span>اخبار و مقالات</span> </a>
                 <ul>
                     <li><a class="@if(Request::is(app()->getLocale().'/admin/article*')) active @endif" href="{{route('article.index')}}">مقالات</a></li>
                     <li><a class="@if(Request::is(app()->getLocale().'/admin/category_article*')) active @endif" href="{{route('category_article.index')}}">دسته بندی</a></li>

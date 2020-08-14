@@ -87,7 +87,7 @@ class SliderController extends MainController
                 'priority' => $request['priority'],
                 'status' => $status,
             ]);
-        }else{
+        } else {
             return redirect(route('slider.index'))->with('error', 'تعداد اسلایدر ها بیش از 5 است');
         }
         return redirect(route('slider.index'))->with('message', 'عملیات موفقیت آمیز بود');
@@ -172,7 +172,7 @@ class SliderController extends MainController
                 'priority' => $priority,
                 'status' => $status,
             ]);
-        }else{
+        } else {
             return redirect(route('slider.index'))->with('error', 'تعداد اسلایدر ها بیش از 5 است');
         }
         return redirect(route('slider.index'))->with('message', 'عملیات موفقیت آمیز بود');
@@ -196,6 +196,25 @@ class SliderController extends MainController
 
         $this->removeFile($slider->picture);
         $slider->delete();
+        return redirect(route('slider.index'))->with('message', 'عملیات موفقیت آمیز بود');
+    }
+
+    public function remove_all(Request $request)
+    {
+        try {
+            if (!$this->authorize('slider')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+        $ids = $request['ids'];
+        $ids = explode(',', $ids);
+        foreach ($ids as $id) {
+            $slider = Slider::find($id);
+            $this->removeFile($slider->picture);
+            $slider->delete();
+        }
         return redirect(route('slider.index'))->with('message', 'عملیات موفقیت آمیز بود');
     }
 

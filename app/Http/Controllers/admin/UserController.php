@@ -308,6 +308,30 @@ class UserController extends MainController
 
     public function remove_all(Request $request)
     {
+        try {
+            if (!$this->authorize('user')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+        $ids = $request['ids'];
+        $ids = explode(',', $ids);
+        foreach ($ids as $id) {
+            $item = User::find($id);
+            $roles = $item->roles->all();
+            if (count($roles) > 0) {
+                foreach ($roles as $role) {
+                    $item->roles()->wherePivot('role_id', '=', $role->id)->detach();
+                }
+            }
+            $item->delete();
+        }
+        return redirect(route('admin.index'))->with('message', 'عملیات موفقیت آمیز بود');
+    }
+
+    /*public function remove_all(Request $request)
+    {
         $ids = $request['allCheckedSelect'];
         if (count($ids) == 0) {
             back()->with('message', 'موردی را انتخاب نکردید');
@@ -323,5 +347,5 @@ class UserController extends MainController
             $item->delete();
         }
         return response()->json(['delete' => 'success']);
-    }
+    }*/
 }

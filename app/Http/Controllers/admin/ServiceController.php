@@ -294,4 +294,23 @@ class ServiceController extends MainController
         $service->delete();
         return redirect(route('service.index'))->with('message', 'عملیات موفقیت آمیز بود');;
     }
+
+    public function remove_all(Request $request)
+    {
+        try {
+            if (!$this->authorize('service')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+        $ids = $request['ids'];
+        $ids = explode(',', $ids);
+        foreach ($ids as $id) {
+            $service = Service::find($id);
+            $this->removeImageOfObject($service);
+            $service->delete();
+        }
+        return redirect(route('service.index'))->with('message', 'عملیات موفقیت آمیز بود');
+    }
 }

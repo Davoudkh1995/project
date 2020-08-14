@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\CategoryArticle;
 use App\CategoryPortfolio;
 use App\Http\Controllers\Controller;
 use App\Portfolio;
@@ -193,8 +194,29 @@ class CategoryPortfolioController extends MainController
     }
 
 
-    public function destroy_all(Request $request)
+    public function remove_all(Request $request)
     {
-        dd($request->all());
+        try {
+            if (!$this->authorize('portfolio')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+        $ids = $request['ids'];
+        $ids = explode(',', $ids);
+        foreach ($ids as $id) {
+            $categoryArticle = CategoryPortfolio::find($id);
+            $subcategories = CategoryPortfolio::where('parent_id', $categoryArticle->id)->get();
+            if (count($subcategories)) {
+                foreach ($subcategories as $category) {
+                    $this->updatePortfolioToNonCategory($category);
+                    $category->delete();
+                }
+            }
+            $this->updatePortfolioToNonCategory($categoryArticle);
+            $categoryArticle->delete();
+        }
+        return redirect(route('category_portfolio.index'))->with('message', 'عملیات موفقیت آمیز بود');
     }
 }

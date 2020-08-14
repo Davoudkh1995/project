@@ -230,6 +230,36 @@ class RoleController extends Controller
 
     public function remove_all(Request $request)
     {
+        try {
+            if (!$this->authorize('role')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+        $ids = $request['ids'];
+        $ids = explode(',', $ids);
+        foreach ($ids as $id) {
+            $item = Role::find($id);
+            $permissions = $item->permissions->all();
+            $users = $item->users->all();
+            if (count($permissions) > 0) {
+                foreach ($permissions as $permission) {
+                    $item->permissions()->wherePivot('permission_id', '=', $permission->id)->detach();
+                }
+            }
+            if (count($users) > 0) {
+                foreach ($users as $user) {
+                    $item->users()->wherePivot('user_id', '=', $user->id)->detach();
+                }
+            }
+            $item->delete();
+        }
+        return redirect(route('role.index'))->with('message', 'عملیات موفقیت آمیز بود');
+    }
+
+    /*public function remove_all(Request $request)
+    {
         $ids = $request['allCheckedSelect'];
         if (count($ids) == 0) {
             Alert::error('ناموفق', 'موردی را انتخاب نکردید');
@@ -252,10 +282,9 @@ class RoleController extends Controller
             $item->delete();
         }
         return response()->json(['delete' => 'success']);
-    }
+    }*/
 
-
-    public function multiRemove(Request $request)
+    /*public function multiRemove(Request $request)
     {
         $ids = $request['allCheckedSelect'];
         foreach ($ids as $id) {
@@ -263,17 +292,17 @@ class RoleController extends Controller
         }
         $roles = Role::all();
         return response()->json(['delete' => 'success', 'roles' => $roles]);
-    }
+    }*/
 
-    public function singleRemove(Request $request)
+    /*public function singleRemove(Request $request)
     {
         $id = $request['roleId'];
         Role::where('id', $id)->delete();
         $roles = Role::all();
         return response()->json(['delete' => 'success', 'roles' => $roles]);
-    }
+    }*/
 
-    public function searchTitle(Request $request)
+    /*public function searchTitle(Request $request)
     {
         $title = $request['value'];
 
@@ -288,5 +317,5 @@ class RoleController extends Controller
         $size = count($roles);
 
         return response()->json(['arrive' => 'success', 'roles' => $roles, 'size' => $size]);
-    }
+    }*/
 }

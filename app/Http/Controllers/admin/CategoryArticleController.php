@@ -182,4 +182,30 @@ class CategoryArticleController extends MainController
         $categoryArticle->delete();
         return back()->with('message', 'عملیات موفقیت آمیز بود');
     }
+
+    public function remove_all(Request $request)
+    {
+        try {
+            if (!$this->authorize('article')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+        $ids = $request['ids'];
+        $ids = explode(',', $ids);
+        foreach ($ids as $id) {
+            $categoryArticle = CategoryArticle::find($id);
+            $subcategories = CategoryArticle::where('parent_id', $categoryArticle->id)->get();
+            if (count($subcategories)) {
+                foreach ($subcategories as $category) {
+                    $this->updateArticleToNonCategory($category);
+                    $category->delete();
+                }
+            }
+            $this->updateArticleToNonCategory($categoryArticle);
+            $categoryArticle->delete();
+        }
+        return redirect(route('category_article.index'))->with('message', 'عملیات موفقیت آمیز بود');
+    }
 }

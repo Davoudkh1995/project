@@ -296,4 +296,23 @@ class PortfolioController extends MainController
         $portfolio->delete();
         return redirect(route('portfolio.index'))->with('message', 'عملیات موفقیت آمیز بود');
     }
+
+    public function remove_all(Request $request)
+    {
+        try {
+            if (!$this->authorize('portfolio')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+        $ids = $request['ids'];
+        $ids = explode(',', $ids);
+        foreach ($ids as $id) {
+            $portfolio = Portfolio::find($id);
+            $this->removeImageOfObject($portfolio);
+            $portfolio->delete();
+        }
+        return redirect(route('portfolio.index'))->with('message', 'عملیات موفقیت آمیز بود');
+    }
 }

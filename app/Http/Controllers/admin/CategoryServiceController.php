@@ -191,4 +191,30 @@ class CategoryServiceController extends MainController
         $categoryService->delete();
         return back()->with('message', 'عملیات موفقیت آمیز بود');
     }
+
+    public function remove_all(Request $request)
+    {
+        try {
+            if (!$this->authorize('service')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+        $ids = $request['ids'];
+        $ids = explode(',', $ids);
+        foreach ($ids as $id) {
+            $categoryService = CategoryService::find($id);
+            $subcategories = CategoryService::where('parent_id', $categoryService->id)->get();
+            if (count($subcategories)) {
+                foreach ($subcategories as $category) {
+                    $this->updateServiceToNonCategory($category);
+                    $category->delete();
+                }
+            }
+            $this->updateServiceToNonCategory($categoryService);
+            $categoryService->delete();
+        }
+        return redirect(route('category_service.index'))->with('message', 'عملیات موفقیت آمیز بود');
+    }
 }

@@ -191,6 +191,40 @@ class MenuController extends Controller
         return back()->with('menu.index', 'عملیات موفقیت آمیز بود');
     }
 
+    public function remove_all(Request $request)
+    {
+        try {
+            if (!$this->authorize('menu')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+        $ids = $request['ids'];
+        $ids = explode(',', $ids);
+        foreach ($ids as $id) {
+            $menu = Menu::find($id);
+            $submenus = Menu::select(['id'])->where(['parent_id'=>$menu->id])->get();
+            if (count($submenus)) {
+                foreach ($submenus as $submenu) {
+                    $page = Page::where(['menu_id'=>$submenu->id]);
+                    if (isset($page)){
+                        $page->delete();
+                    }
+                    $submenu->delete();
+                }
+            }
+            $page = Page::where(['menu_id'=>$menu->id]);
+            $page->delete();
+            $menu->delete();
+        }
+        return redirect(route('menu.index'))->with('message', 'عملیات موفقیت آمیز بود');
+    }
+
+
+
+
+
     public function pageCreator(Request $request)
     {
         try {

@@ -29,6 +29,11 @@
         </button>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
             <a class="dropdown-item" href="{{route('article.create')}}">افزودن</a>
+            <form action="{{route('multiRemoveArt')}}" method="post">
+                @csrf
+                <input type="hidden" name="ids" id="ids" >
+                <a class="dropdown-item" onclick="removeAll(this)" style="cursor: pointer;">حذف موارد</a>
+            </form>
         </div>
     </div>
 @endsection
@@ -40,6 +45,7 @@
             <table id="example1" style="width: 100%" class="table table-striped table-bordered">
                 <thead>
                 <tr>
+                    <th>مورد</th>
                     <th>ردیف</th>
                     <th>تصویر</th>
                     <th>عنوان</th>
@@ -52,6 +58,14 @@
                 <tbody>
                 @foreach($items as $key=>$item)
                     <tr>
+                        <td class="checkboxDiv" data-id="{{$item->id}}">
+                            <div class="custom-control custom-checkbox custom-checkbox-dark">
+                                <input type="checkbox" class="custom-control-input inputcheckbox"
+                                       id="customCheck{{$item->id}}"
+                                       name="ids[]" data-check="{{$item->id}}">
+                                <label class="custom-control-label" for="customCheck{{$item->id}}"></label>
+                            </div>
+                        </td>
                         <td>{{$key+1}}</td>
                         <td><a href="{{json_decode($item->picture)->main}}"><img
                                         src="{{json_decode($item->picture)->main}}" alt="{{$item->title}}" width="100"
@@ -86,6 +100,42 @@
         </div>
     </div>
     <script>
+        function removeAll(tag) {
+            let arr_of_ids = [];
+            var form = $(tag).parent();
+            Swal.fire({
+                title: 'تذکر',
+                text: "عملیات حذف انجام شود؟",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'حذف شود',
+                cancelButtonText: 'انصراف',
+            }).then((result) => {
+                if (result.value) {
+                    var body = $('#example1').find('tbody');
+                    var checkboxes = body.find('.checkboxDiv');
+                    checkboxes.each(function (index, value) {
+                        var input = $(this).find('input[type="checkbox"]');
+                        if(input.prop("checked") == true){
+                            arr_of_ids.push($(this).data('id'));
+                        }
+                    });
+                    $('#ids').val(arr_of_ids);
+                    if (arr_of_ids.length > 0){
+                        form.submit();
+                    } else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ناموفق!',
+                            text: 'هیچ موردی انتخاب نشده',
+                        });
+                    }
+                }
+            });
+        }
+
         function removeItem(tag) {
             var form = $(tag).parent();
             Swal.fire({

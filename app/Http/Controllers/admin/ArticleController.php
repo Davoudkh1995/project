@@ -251,4 +251,23 @@ class ArticleController extends MainController
         $article->delete();
         return redirect(route('article.index'))->with('message','عملیات موفقیت آمیز بود');
     }
+
+    public function remove_all(Request $request)
+    {
+        try {
+            if (!$this->authorize('article')) {
+                abort(403);
+            }
+        } catch (AuthorizationException $e) {
+            abort(403);
+        }
+        $ids = $request['ids'];
+        $ids = explode(',', $ids);
+        foreach ($ids as $id) {
+            $article = Article::find($id);
+            $this->removeImageOfObject($article);
+            $article->delete();
+        }
+        return redirect(route('article.index'))->with('message', 'عملیات موفقیت آمیز بود');
+    }
 }
