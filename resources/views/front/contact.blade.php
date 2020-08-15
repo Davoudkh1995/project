@@ -1,4 +1,9 @@
 @extends('front.master.index')
+@section('title') {{$data->seo->title}} @endsection
+@section('description') {{$data->seo->description}} @endsection
+@section('keywords') {{$data->seo->keywords}} @endsection
+@section('canonical') {{$data->seo->canonical}} @endsection
+@section('indexFollow')  @endsection
 @section('content')
     <div class="breadcrumbs"><a href="/{{app()->getLocale()}}">{{__('messages.home')}}</a> <i class="@if(app()->getLocale() == "fa") icon-double-angle-left @else icon-double-angle-right marginL10 @endif grey "></i>{{__('messages.contactUs.title')}}</div>
 

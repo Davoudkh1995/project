@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
 use App\ImageModel;
 use App\Portfolio;
+use App\Seo;
 use App\Vw_CategoryPortfolio;
 use App\Vw_Portfolio;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 
 class PortfolioController extends MainController
@@ -173,7 +172,8 @@ class PortfolioController extends MainController
                 }
             }
         }
-        return view('admin.portfolio.update', compact('categories', 'portfolio', 'priorities', 'otherImages'));
+        $seo = $portfolio->seo;
+        return view('admin.portfolio.update', compact('categories', 'portfolio', 'priorities', 'otherImages','seo'));
     }
 
     /**
@@ -314,5 +314,45 @@ class PortfolioController extends MainController
             $portfolio->delete();
         }
         return redirect(route('portfolio.index'))->with('message', 'عملیات موفقیت آمیز بود');
+    }
+
+    public function save_seo_portfolio(Request $request)
+    {
+        $id = $request['object'];
+        $item = Portfolio::find($id);
+        $seo = Seo::find($item->seo_id);
+        if (isset($object)) {
+            $index = 0;
+            $follow = 0;
+            if (isset($request['index'])) {$index = 1;}
+            if (isset($request['follow'])) {$follow = 1;}
+            $seo->update([
+                'index'=>$index,
+                'follow'=>$follow,
+                'title'=>$request['title'],
+                'description'=>$request['description'],
+                'keywords'=>$request['keywords'],
+                'seo_url'=>$request['seo_url'],
+                'canonical'=>$request['canonical'],
+            ]);
+        } else {
+            $index = 0;
+            $follow = 0;
+            if (isset($request['index'])) {$index = 1;}
+            if (isset($request['follow'])) {$follow = 1;}
+            $seo = Seo::create([
+                'index'=>$index,
+                'follow'=>$follow,
+                'title'=>$request['title'],
+                'description'=>$request['description'],
+                'keywords'=>$request['keywords'],
+                'seo_url'=>$request['seo_url'],
+                'canonical'=>$request['canonical'],
+            ]);
+        }
+        $item->update([
+            'seo_id'=> $seo->id
+        ]);
+        return back()->with('massage', 'تغییرات صورت گرفت');
     }
 }

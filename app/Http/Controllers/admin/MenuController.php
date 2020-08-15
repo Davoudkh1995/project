@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+
 use App\Menu;
 use App\Page;
 use App\Vw_Menus;
-use foo\bar;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\DB;
 
 class MenuController extends Controller
 {
@@ -120,7 +118,8 @@ class MenuController extends Controller
 
         $menus = Vw_Menus::where('status',1)->select(['title','id'])->get();
 //        $menus = \DB::select('select * from vw_menus');
-        return view('admin.menu.update',compact('menus','menu'));
+        $seo = $menu->page->seo;
+        return view('admin.menu.update',compact('menus','menu','seo'));
     }
 
     /**
@@ -261,5 +260,45 @@ class MenuController extends Controller
         }else{
             abort(404);
         }
+    }
+
+    public function save_seo_menu(Request $request)
+    {
+        $id = $request['object'];
+        $item = Page::find($id);
+        $seo = Seo::find($item->seo_id);
+        if (isset($object)) {
+            $index = 0;
+            $follow = 0;
+            if (isset($request['index'])) {$index = 1;}
+            if (isset($request['follow'])) {$follow = 1;}
+            $seo->update([
+                'index'=>$index,
+                'follow'=>$follow,
+                'title'=>$request['title'],
+                'description'=>$request['description'],
+                'keywords'=>$request['keywords'],
+                'seo_url'=>$request['seo_url'],
+                'canonical'=>$request['canonical'],
+            ]);
+        } else {
+            $index = 0;
+            $follow = 0;
+            if (isset($request['index'])) {$index = 1;}
+            if (isset($request['follow'])) {$follow = 1;}
+            $seo = Seo::create([
+                'index'=>$index,
+                'follow'=>$follow,
+                'title'=>$request['title'],
+                'description'=>$request['description'],
+                'keywords'=>$request['keywords'],
+                'seo_url'=>$request['seo_url'],
+                'canonical'=>$request['canonical'],
+            ]);
+        }
+        $item->update([
+            'seo_id'=> $seo->id
+        ]);
+        return back()->with('massage', 'تغییرات صورت گرفت');
     }
 }

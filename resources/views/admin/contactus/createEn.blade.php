@@ -114,4 +114,74 @@
         });
         @endif
     </script>
+
+
+    <div class="card">
+        <div class="card-header">
+            فیلد سئو
+        </div>
+        <div class="card-body">
+            <form action="{{route('save_seo_contactEn')}}" method="post">
+                @csrf
+                @method('patch')
+                <input type="hidden" name="object" value="{{$contactus->id}}">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="">عنوان صفحه</label>
+                            <input type="text" name="title" class="form-control"
+                                   value="@if(isset($seo)) {{$seo->title}} @endif">
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="">کنونیکال</label>
+                            <input type="text" name="canonical"
+                                   class="form-control" value="@if(isset($seo)) {{$seo->canonical}} @endif">
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="">آدرس URL</label>
+                            <input type="text" name="seo_url"
+                                   class="form-control" value="@if(isset($seo)) {{$seo->seo_url}} @endif">
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="">کلمات کلیدی</label>
+                            <input type="text" name="keywords"
+                                   class="form-control tagsinput" value="@if(isset($seo)) {{$seo->keywords}} @endif">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <label for="">متاتوضیحات</label>
+                        <textarea name="description"
+                                  class="form-control"> @if(isset($seo)) {{$seo->description}} @endif</textarea>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="">index
+                            <input type="checkbox" name="index" class="form-control"
+                                   @if(isset($seo)) @if($seo->index == 1) checked @endif @endif>
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="">follow
+                            <input type="checkbox" name="follow" class="form-control"
+                                   @if(isset($seo)) @if($seo->follow == 1) checked @endif @endif>
+                        </label>
+                    </div>
+                </div>
+                <div class="row mt-3 mr-0">
+                    <button class="btn btn-success">اعمال</button>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection

@@ -4,13 +4,12 @@ namespace App\Http\Controllers\admin;
 
 use App\Article;
 use App\Customer;
-use App\Http\Controllers\Controller;
 use App\Message;
 use App\Vw_articles;
 use App\Vw_CategoryArticles;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
-use function Sodium\add;
+
 
 class ArticleController extends MainController
 {
@@ -164,7 +163,8 @@ class ArticleController extends MainController
         foreach ($messages as $message){
             $message['customerName'] = Customer::find($message->customer_id)->name;
         }
-        return view('admin.article.update', compact('categories', 'article', 'priorities','messages'));
+        $seo = $article->seo;
+        return view('admin.article.update', compact('categories', 'article', 'priorities','messages','seo'));
     }
 
     /**
@@ -269,5 +269,45 @@ class ArticleController extends MainController
             $article->delete();
         }
         return redirect(route('article.index'))->with('message', 'عملیات موفقیت آمیز بود');
+    }
+
+    public function save_seo_article(Request $request)
+    {
+        $id = $request['object'];
+        $item = Article::find($id);
+        $seo = Seo::find($item->seo_id);
+        if (isset($object)) {
+            $index = 0;
+            $follow = 0;
+            if (isset($request['index'])) {$index = 1;}
+            if (isset($request['follow'])) {$follow = 1;}
+            $seo->update([
+                'index'=>$index,
+                'follow'=>$follow,
+                'title'=>$request['title'],
+                'description'=>$request['description'],
+                'keywords'=>$request['keywords'],
+                'seo_url'=>$request['seo_url'],
+                'canonical'=>$request['canonical'],
+            ]);
+        } else {
+            $index = 0;
+            $follow = 0;
+            if (isset($request['index'])) {$index = 1;}
+            if (isset($request['follow'])) {$follow = 1;}
+            $seo = Seo::create([
+                'index'=>$index,
+                'follow'=>$follow,
+                'title'=>$request['title'],
+                'description'=>$request['description'],
+                'keywords'=>$request['keywords'],
+                'seo_url'=>$request['seo_url'],
+                'canonical'=>$request['canonical'],
+            ]);
+        }
+        $item->update([
+            'seo_id'=> $seo->id
+        ]);
+        return back()->with('massage', 'تغییرات صورت گرفت');
     }
 }

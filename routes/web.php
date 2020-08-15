@@ -36,23 +36,31 @@ Route::prefix('admin')->namespace('admin')->group(function () {
     Route::post('/saveSocialChange', 'SocialmediaController@saveSocialChange');
     Route::post('/changeSocialStatus', 'SocialmediaController@changeSocialStatus');
     Route::resource('/role', 'RoleController');
-//    Route::post('/role/remove_all', 'RoleController@remove_all')->name('multiRemoveRole');
     Route::resource('/permission', 'PermissionController');
-//    Route::post('/permission/remove_all', 'PermissionController@remove_all')->name('multiRemovePermission');
     Route::resource('/admin', 'UserController');
-//    Route::post('/admin/remove_all', 'UserController@remove_all')->name('multiRemoveAdmin');
+    Route::post('/cat_art_remove_all', 'CategoryArticleController@remove_all')->name('multiRemoveCatArt');
+    Route::post('/art_remove_all', 'ArticleController@remove_all')->name('multiRemoveArt');
+    Route::post('/menu_remove_all', 'MenuController@remove_all')->name('multiRemoveMenu');
+    Route::post('/permission_remove_all', 'PermissionController@remove_all')->name('multiRemovePermission');
+    Route::post('/cat_por_remove_all', 'CategoryPortfolioController@remove_all')->name('multiRemoveCatPor');
+    Route::post('/por_remove_all', 'PortfolioController@remove_all')->name('multiRemovePor');
+    Route::post('/role_remove_all', 'RoleController@remove_all')->name('multiRemoveRole');
+    Route::post('/cat_ser_remove_all', 'CategoryServiceController@remove_all')->name('multiRemoveCatSer');
+    Route::post('/ser_remove_all', 'ServiceController@remove_all')->name('multiRemoveSer');
+    Route::post('/slider_remove_all', 'SliderController@remove_all')->name('multiRemoveSlider');
+    Route::post('/admin_remove_all', 'UserController@remove_all')->name('multiRemoveAdmin');
 
-    Route::post('/admin/cat_art_remove_all', 'CategoryArticleController@remove_all')->name('multiRemoveCatArt');
-    Route::post('/admin/art_remove_all', 'ArticleController@remove_all')->name('multiRemoveArt');
-    Route::post('/admin/menu_remove_all', 'MenuController@remove_all')->name('multiRemoveMenu');
-    Route::post('/admin/permission_remove_all', 'PermissionController@remove_all')->name('multiRemovePermission');
-    Route::post('/admin/cat_por_remove_all', 'CategoryPortfolioController@remove_all')->name('multiRemoveCatPor');
-    Route::post('/admin/por_remove_all', 'PortfolioController@remove_all')->name('multiRemovePor');
-    Route::post('/admin/role_remove_all', 'RoleController@remove_all')->name('multiRemoveRole');
-    Route::post('/admin/cat_ser_remove_all', 'CategoryServiceController@remove_all')->name('multiRemoveCatSer');
-    Route::post('/admin/ser_remove_all', 'ServiceController@remove_all')->name('multiRemoveSer');
-    Route::post('/admin/slider_remove_all', 'SliderController@remove_all')->name('multiRemoveSlider');
-    Route::post('/admin/admin_remove_all', 'UserController@remove_all')->name('multiRemoveAdmin');
+    Route::patch('save_seo_about', 'AboutusController@save_seo_about')->name('save_seo_about');
+    Route::patch('save_seo_aboutEn', 'AboutusController@save_seo_aboutEn')->name('save_seo_aboutEn');
+    Route::patch('save_seo_article_cat', 'CategoryArticleController@save_seo_article_cat')->name('save_seo_article_cat');
+    Route::patch('save_seo_article', 'ArticleController@save_seo_article')->name('save_seo_article');
+    Route::patch('save_seo_portfolio_cat', 'CategoryPortfolioController@save_seo_portfolio_cat')->name('save_seo_portfolio_cat');
+    Route::patch('save_seo_portfolio', 'PortfolioController@save_seo_portfolio')->name('save_seo_portfolio');
+    Route::patch('save_seo_service_cat', 'CategoryServiceController@save_seo_service_cat')->name('save_seo_service_cat');
+    Route::patch('save_seo_service', 'ServiceController@save_seo_service')->name('save_seo_service');
+    Route::patch('save_seo_menu', 'MenuController@save_seo_menu')->name('save_seo_menu');
+    Route::patch('save_seo_contact', 'ContactusController@save_seo_contact')->name('save_seo_contact');
+    Route::patch('save_seo_contactEn', 'ContactusController@save_seo_contactEn')->name('save_seo_contactEn');
 });
 /*front routes*/
 Route::namespace('front')->group(function () {

@@ -2,10 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>{{__('messages.siteTitle')}}</title>
+    <title>@if(Request::is('')) {{__('messages.siteTitle')}} @else @yield('title') @endif </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{__('messages.siteDescription')}}">
+    <meta name="description" content="@if(Request::is('')) {{__('messages.siteDescription')}} @else @yield('description') @endif">
+    <meta name="keywords" content="@yield('keywords')">
     <meta name="author" content="Davoud Khoshkar">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="canonical" href="{{url()->current()}}/@yield('canonical')"/>
+    <meta name="googlebot" content="@section('indexFollow')@show"/>
+    <meta name="robots" content="@section('indexFollow')@show"/>
+    <meta name="token" content="{{ csrf_token() }}">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="favicon.ico">
+
 
 {{--    <link href='http://fonts.googleapis.com/css?family=Arvo:400|Open+Sans:400,700,300' rel='stylesheet' type='text/css'>--}}
 <!--[if IE]>

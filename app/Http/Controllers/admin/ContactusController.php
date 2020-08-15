@@ -26,7 +26,8 @@ class ContactusController extends Controller
         }
 
         $contactus = Contactus::where('lang','fa')->first();
-        return view('admin.contactus.create',compact('contactus'));
+        $seo = $contactus->seo;
+        return view('admin.contactus.create',compact('contactus','seo'));
     }
 
     /**
@@ -132,7 +133,8 @@ class ContactusController extends Controller
         }
 
         $contactus = Contactus::where('lang','en')->first();
-        return view('admin.contactus.createEn',compact('contactus'));
+        $seo = $contactus->seo;
+        return view('admin.contactus.createEn',compact('contactus','seo'));
     }
 
     public function updateContactEn(Request $request, Contactus $contactus)
@@ -186,5 +188,85 @@ class ContactusController extends Controller
     public function destroy(Contactus $contactus)
     {
         //
+    }
+
+    public function save_seo_contact(Request $request)
+    {
+        $id = $request['object'];
+        $item = Contactus::find($id);
+        $seo = Seo::find($item->seo_id);
+        if (isset($object)) {
+            $index = 0;
+            $follow = 0;
+            if (isset($request['index'])) {$index = 1;}
+            if (isset($request['follow'])) {$follow = 1;}
+            $seo->update([
+                'index'=>$index,
+                'follow'=>$follow,
+                'title'=>$request['title'],
+                'description'=>$request['description'],
+                'keywords'=>$request['keywords'],
+                'seo_url'=>$request['seo_url'],
+                'canonical'=>$request['canonical'],
+            ]);
+        } else {
+            $index = 0;
+            $follow = 0;
+            if (isset($request['index'])) {$index = 1;}
+            if (isset($request['follow'])) {$follow = 1;}
+            $seo = Seo::create([
+                'index'=>$index,
+                'follow'=>$follow,
+                'title'=>$request['title'],
+                'description'=>$request['description'],
+                'keywords'=>$request['keywords'],
+                'seo_url'=>$request['seo_url'],
+                'canonical'=>$request['canonical'],
+            ]);
+        }
+        $item->update([
+            'seo_id'=> $seo->id
+        ]);
+        return back()->with('massage', 'تغییرات صورت گرفت');
+    }
+
+    public function save_seo_contactEn(Request $request)
+    {
+        $id = $request['object'];
+        $item = Contactus::find($id);
+        $seo = Seo::find($item->seo_id);
+        if (isset($object)) {
+            $index = 0;
+            $follow = 0;
+            if (isset($request['index'])) {$index = 1;}
+            if (isset($request['follow'])) {$follow = 1;}
+            $seo->update([
+                'index'=>$index,
+                'follow'=>$follow,
+                'title'=>$request['title'],
+                'description'=>$request['description'],
+                'keywords'=>$request['keywords'],
+                'seo_url'=>$request['seo_url'],
+                'canonical'=>$request['canonical'],
+            ]);
+        } else {
+            $index = 0;
+            $follow = 0;
+            if (isset($request['index'])) {$index = 1;}
+            if (isset($request['follow'])) {$follow = 1;}
+            $seo = Seo::create([
+                'index'=>$index,
+                'follow'=>$follow,
+                'title'=>$request['title'],
+                'description'=>$request['description'],
+                'keywords'=>$request['keywords'],
+                'seo_url'=>$request['seo_url'],
+                'canonical'=>$request['canonical'],
+            ]);
+        }
+        $item->update([
+            'seo_id'=> $seo->id
+        ]);
+        return back()->with('massage', 'تغییرات صورت گرفت');
     }
 }

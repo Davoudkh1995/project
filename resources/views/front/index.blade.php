@@ -1,4 +1,8 @@
 @extends('front.master.index')
+@section('title') {{__('messages.siteTitle')}} @endsection
+@section('description') {{__('messages.siteDescription')}} @endsection
+@section('keywords') {{'طراحی سایت,نرم افزار تحت وب'}} @endsection
+@section('indexFollow')  @endsection
 @section('content')
     <!--welcome-->
     <div class="welcome @if(app()->getLocale() == "fa") text-right @endif">
