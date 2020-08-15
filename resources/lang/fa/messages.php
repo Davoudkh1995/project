@@ -171,5 +171,8 @@ return [
         'error' => 'شما قبلا یک پیام ارسال کردید',
         'successAlert' => 'موفقیت!',
         'errorAlert' => 'ناموفق!',
-    ]
+    ],
+    'reset_password' =>'تعویض گذرواژه',
+    'resetEmailButton' =>'ارسال لینک تعویض',
+    'EmailAddress' =>'رایانامه',
 ];

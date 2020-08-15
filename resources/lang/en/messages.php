@@ -170,5 +170,8 @@ return [
         'error' => 'You have already sent an unanswered message',
         'successAlert' => 'successful!',
         'errorAlert' => 'Unsuccessful!',
-    ]
+    ],
+    'reset_password' =>'Reset Password',
+    'resetEmailButton' =>'Send Password Reset Link',
+    'EmailAddress' =>'E-Mail Address',
 ];
