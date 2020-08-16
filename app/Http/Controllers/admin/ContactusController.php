@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Contactus;
 use App\Http\Controllers\Controller;
+use App\Seo;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 
@@ -227,7 +228,7 @@ class ContactusController extends Controller
         $item->update([
             'seo_id'=> $seo->id
         ]);
-        return back()->with('massage', 'تغییرات صورت گرفت');
+        return back()->with('message', 'تغییرات صورت گرفت');
     }
 
     public function save_seo_contactEn(Request $request)
@@ -267,6 +268,6 @@ class ContactusController extends Controller
         $item->update([
             'seo_id'=> $seo->id
         ]);
-        return back()->with('massage', 'تغییرات صورت گرفت');
+        return back()->with('message', 'تغییرات صورت گرفت');
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\CategoryService;
-
+use App\Seo;
 use App\Vw_CategoryServices;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
@@ -255,6 +255,6 @@ class CategoryServiceController extends MainController
         $item->update([
             'seo_id'=> $seo->id
         ]);
-        return back()->with('massage', 'تغییرات صورت گرفت');
+        return back()->with('message', 'تغییرات صورت گرفت');
     }
 }

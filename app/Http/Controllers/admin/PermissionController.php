@@ -2,18 +2,12 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Requests\PermissionRequest;
 use App\MenuDynamicTable;
 use App\Permission;
 use App\Role;
-use function Couchbase\defaultDecoder;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
-use RealRashid\SweetAlert\Facades\Alert;
-use Redirect;
 
 class PermissionController extends Controller
 {

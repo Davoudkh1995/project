@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Menu;
 use App\Page;
+use App\Seo;
 use App\Vw_Menus;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
@@ -299,6 +300,6 @@ class MenuController extends Controller
         $item->update([
             'seo_id'=> $seo->id
         ]);
-        return back()->with('massage', 'تغییرات صورت گرفت');
+        return back()->with('message', 'تغییرات صورت گرفت');
     }
 }

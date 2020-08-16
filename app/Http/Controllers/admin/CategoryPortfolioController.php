@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\CategoryPortfolio;
 
+use App\Seo;
 use App\Vw_CategoryPortfolio;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
@@ -256,6 +257,6 @@ class CategoryPortfolioController extends MainController
         $item->update([
             'seo_id'=> $seo->id
         ]);
-        return back()->with('massage', 'تغییرات صورت گرفت');
+        return back()->with('message', 'تغییرات صورت گرفت');
     }
 }
